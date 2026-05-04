@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import platform
 from io import BytesIO
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -27,11 +28,22 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-KOREAN_FONT_PATH = (
-    "/System/Library/Fonts/AppleSDGothicNeo.ttc"
-    if platform.system() == "Darwin"
-    else None
-)
+
+def _resolve_korean_font() -> str | None:
+    sys = platform.system()
+    if sys == "Darwin":
+        return "/System/Library/Fonts/AppleSDGothicNeo.ttc"
+    bundled = Path(__file__).resolve().parent / "assets" / "fonts" / "NanumGothic.ttf"
+    if bundled.exists():
+        return str(bundled)
+    if sys == "Linux":
+        linux_nanum = Path("/usr/share/fonts/truetype/nanum/NanumGothic.ttf")
+        if linux_nanum.exists():
+            return str(linux_nanum)
+    return None
+
+
+KOREAN_FONT_PATH = _resolve_korean_font()
 PLOTLY_TEMPLATE = "plotly_white"
 
 

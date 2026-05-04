@@ -1,0 +1,503 @@
+# 인도철학 저자 정규화 사전
+#
+# 본 학술지 게재 저자 + 자주 인용되는 외국 학자 모두 포함.
+# 한자 부속(예: "안성두(安性斗)") 패턴은 본 데이터에 없으나, 향후 KCI API 보강 시
+# 또는 참고문헌의 인용된 저자에서 등장 가능 — alias로 미리 등록.
+#
+# 한국 학자의 한자 표기는 일부 추정값. 잘못된 경우 수정 환영.
+#
+# canonical_form : 한글 표준 표기 (논문 메타데이터의 저자명 기준)
+# affiliation : 주요 소속 (참고용)
+# surface_forms : 한자 부속, 영문 transliteration 변형 등
+
+# ============================================================
+# 본 학술지 TOP 저자 (게재 + 자주 인용)
+# ============================================================
+
+- canonical_id: jeong_seungseok
+  canonical_form: 정승석
+  affiliation: 동국대학교
+  surface_forms:
+    - 정승석
+    - 鄭承碩
+    - "Jeong, Seung-seok"
+  verified: true
+  notes: 본 학술지 최다 게재(42편), 인용도 1위(113건).
+
+- canonical_id: lee_jisoo
+  canonical_form: 이지수
+  affiliation: 동국대학교
+  surface_forms:
+    - 이지수
+    - 李智洙
+    - "Lee, Ji-soo"
+  verified: true
+
+- canonical_id: lee_taeseung
+  canonical_form: 이태승
+  affiliation: 위덕대학교
+  surface_forms:
+    - 이태승
+    - 李泰昇
+    - "Lee, Tae-seung"
+  verified: true
+
+- canonical_id: kim_hosung
+  canonical_form: 김호성
+  affiliation: 동국대학교
+  surface_forms:
+    - 김호성
+    - 金浩星
+    - "Kim, Ho-sung"
+  verified: true
+
+- canonical_id: park_hyoyeop
+  canonical_form: 박효엽
+  surface_forms:
+    - 박효엽
+    - 朴孝燁
+    - "Park, Hyo-yeop"
+  verified: true
+
+- canonical_id: ahn_seongdu
+  canonical_form: 안성두
+  affiliation: 서울대학교
+  surface_forms:
+    - 안성두
+    - 安性斗
+    - "Ahn, Sung-doo"
+    - "An, Sung-doo"
+  verified: true
+  notes: 한국 유식학 대표 학자. 인용 2위(85건).
+
+- canonical_id: kim_seongchul
+  canonical_form: 김성철
+  surface_forms:
+    - 김성철
+    - 金星喆
+    - "Kim, Seong-chul"
+  verified: true
+
+- canonical_id: hwang_soonil
+  canonical_form: 황순일
+  affiliation: 동국대학교
+  surface_forms:
+    - 황순일
+    - 黃順逸
+    - "Hwang, Soon-il"
+  verified: true
+
+- canonical_id: kim_seonkun
+  canonical_form: 김선근
+  surface_forms:
+    - 김선근
+    - "Kim, Seon-keun"
+  verified: true
+
+- canonical_id: park_giyeol
+  canonical_form: 박기열
+  surface_forms:
+    - 박기열
+    - "Park, Ki-yeol"
+  verified: true
+
+- canonical_id: kwon_omin
+  canonical_form: 권오민
+  affiliation: 경상국립대학교
+  surface_forms:
+    - 권오민
+    - 權五民
+    - "Kwon, O-min"
+  verified: true
+  notes: 경량부 / 설일체유부 연구의 주요 학자.
+
+- canonical_id: kim_seongok
+  canonical_form: 김성옥
+  surface_forms:
+    - 김성옥
+    - "Kim, Seong-ok"
+  verified: true
+
+# 추가 — 인용 측 TOP에 등장하는 본 학술지 저자
+- canonical_id: kim_jaegwon
+  canonical_form: 김재권
+  surface_forms:
+    - 김재권
+    - "Kim, Jae-gwon"
+  verified: true
+
+- canonical_id: jeon_jaeseong
+  canonical_form: 전재성
+  surface_forms:
+    - 전재성
+    - 全在星
+    - "Jeon, Jae-seong"
+  verified: true
+
+- canonical_id: park_yeonggil
+  canonical_form: 박영길
+  surface_forms:
+    - 박영길
+    - "Park, Young-gil"
+  verified: true
+
+- canonical_id: jeong_taehyeok
+  canonical_form: 정태혁
+  surface_forms:
+    - 정태혁
+    - "Jeong, Tae-hyeok"
+  verified: true
+
+- canonical_id: im_seungtaek
+  canonical_form: 임승택
+  surface_forms:
+    - 임승택
+    - "Im, Seung-taek"
+  verified: true
+
+- canonical_id: ryu_hyeonjeong
+  canonical_form: 류현정
+  surface_forms:
+    - 류현정
+  verified: true
+
+# ============================================================
+# 외국 인도철학자 (인용 빈도 높은 순)
+# ============================================================
+
+- canonical_id: schmithausen_lambert
+  canonical_form: Lambert Schmithausen
+  surface_forms:
+    - "Schmithausen, Lambert"
+    - "Lambert Schmithausen"
+    - Schmithausen
+  verified: true
+  notes: 독일 함부르크대, 유식학(특히 알라야식) 권위자. 인용 38건.
+
+- canonical_id: bronkhorst_johannes
+  canonical_form: Johannes Bronkhorst
+  surface_forms:
+    - "Bronkhorst, Johannes"
+    - "Johannes Bronkhorst"
+    - Bronkhorst
+  verified: true
+  notes: 스위스 로잔대, 인도철학 전반. 인용 33건.
+
+# ============================================================
+# 일본 인도철학자 (한자명만 등장 — 한글 표기는 참고용)
+# ============================================================
+
+- canonical_id: hirakawa_akira
+  canonical_form: 平川彰
+  surface_forms:
+    - 平川彰
+    - 平川 彰
+    - "Hirakawa Akira"
+    - "Hirakawa, Akira"
+    - 히라카와 아키라
+  verified: true
+  notes: 동경대, 율장·아비달마 연구. 인용 30건.
+
+- canonical_id: nagao_gajin
+  canonical_form: 長尾雅人
+  surface_forms:
+    - 長尾雅人
+    - 長尾 雅人
+    - "Nagao Gajin"
+    - "Nagao, Gajin"
+    - 나가오 가진
+  verified: true
+  notes: 경도대, 중관·유식 연구.
+
+- canonical_id: nakamura_hajime
+  canonical_form: 中村元
+  surface_forms:
+    - 中村元
+    - 中村 元
+    - "Nakamura Hajime"
+    - "Nakamura, Hajime"
+    - 나카무라 하지메
+  verified: true
+  notes: 동경대, 인도철학 통사.
+
+- canonical_id: takasaki_jikido
+  canonical_form: 高崎直道
+  surface_forms:
+    - 高崎直道
+    - 高崎 直道
+    - "Takasaki Jikidō"
+    - "Takasaki, Jikido"
+    - 다카사키 지키도
+  verified: true
+  notes: 동경대, 여래장 연구 권위자.
+
+- canonical_id: tosaki_hiromasa
+  canonical_form: 戸崎宏正
+  surface_forms:
+    - 戸崎宏正
+    - 戸崎 宏正
+    - "Tosaki Hiromasa"
+    - "Tosaki, Hiromasa"
+    - 토사키 히로마사
+  verified: true
+  notes: 다르마키르티 양평석 연구. 본 분석에서 핵심.
+
+# 일본 학자 보강
+- canonical_id: kajiyama_yuichi
+  canonical_form: 梶山雄一
+  surface_forms:
+    - 梶山雄一
+    - 梶山 雄一
+    - "Kajiyama Yuichi"
+    - "Kajiyama, Yuichi"
+    - 카지야마 유이치
+  verified: true
+  notes: 京都大, 중관·논리학 연구.
+
+- canonical_id: yamaguchi_susumu
+  canonical_form: 山口益
+  surface_forms:
+    - 山口益
+    - 山口 益
+    - "Yamaguchi Susumu"
+    - "Yamaguchi, Susumu"
+    - 야마구치 스스무
+  verified: true
+  notes: 大谷大, 중관학.
+
+- canonical_id: katsura_shoryu
+  canonical_form: 桂紹隆
+  surface_forms:
+    - 桂紹隆
+    - 桂 紹隆
+    - "Katsura Shoryu"
+    - "Katsura, Shoryū"
+    - "Katsura, Shoryu"
+    - 카츠라 쇼류
+    - 가츠라 쇼류
+  verified: true
+  notes: 廣島大, 다르마키르티 / 디그나가 인식론 연구.
+
+- canonical_id: fujita_kotatsu
+  canonical_form: 藤田宏達
+  surface_forms:
+    - 藤田宏達
+    - 藤田 宏達
+    - "Fujita Kotatsu"
+    - "Fujita, Kotatsu"
+    - 후지타 코타츠
+  verified: true
+  notes: 北海道大, 정토교 연구.
+
+- canonical_id: mizuno_kogen
+  canonical_form: 水野弘元
+  surface_forms:
+    - 水野弘元
+    - 水野 弘元
+    - "Mizuno Kōgen"
+    - "Mizuno, Kogen"
+    - "Mizuno Kogen"
+    - 미즈노 코겐
+  verified: true
+  notes: 駒澤大, 빠알리 불교학.
+
+- canonical_id: ui_hakuju
+  canonical_form: 宇井伯壽
+  surface_forms:
+    - 宇井伯壽
+    - 宇井伯寿
+    - 宇井 伯壽
+    - "Ui Hakuju"
+    - "Ui, Hakuju"
+    - 우이 하쿠주
+  verified: true
+  notes: 東京大, 인도철학사 정초.
+
+- canonical_id: wogihara_unrai
+  canonical_form: 萩原雲来
+  surface_forms:
+    - 萩原雲来
+    - 荻原雲来
+    - "Wogihara Unrai"
+    - "Wogihara, Unrai"
+    - "Unrai Wogihara"
+    - 오기와라 운라이
+  verified: true
+  notes: 일본 산스크리트학자, 사전 편찬.
+
+- canonical_id: kajihara_mieko
+  canonical_form: 梶原三恵子
+  surface_forms:
+    - 梶原三恵子
+    - 梶原 三恵子
+    - "Kajihara Mieko"
+    - "Kajihara, Mieko"
+    - 카지하라 미에코
+  verified: true
+
+# ============================================================
+# 외국 인도학자 보강 (영문권)
+# ============================================================
+
+- canonical_id: olivelle_patrick
+  canonical_form: Patrick Olivelle
+  surface_forms:
+    - "Olivelle, Patrick"
+    - "Patrick Olivelle"
+    - Olivelle
+  verified: true
+  notes: U. Texas Austin, 베다·우파니샤드·다르마샤스트라 번역.
+
+- canonical_id: rukmani_ts
+  canonical_form: T. S. Rukmani
+  surface_forms:
+    - "Rukmani, T. S."
+    - "Rukmani, T.S."
+    - "T. S. Rukmani"
+    - Rukmani
+  verified: true
+  notes: 요가·베단타 연구 권위자.
+
+- canonical_id: seyfort_ruegg
+  canonical_form: David Seyfort Ruegg
+  surface_forms:
+    - "Seyfort Ruegg, David"
+    - "Ruegg, David Seyfort"
+    - "David Seyfort Ruegg"
+    - "D. Seyfort Ruegg"
+  verified: true
+  notes: 중관·티베트 불교 연구.
+
+- canonical_id: sanderson_alexis
+  canonical_form: Alexis Sanderson
+  surface_forms:
+    - "Sanderson, Alexis"
+    - "Alexis Sanderson"
+    - Sanderson
+  verified: true
+  notes: Oxford, 탄트라 / 시바교 연구 권위자.
+
+- canonical_id: radhakrishnan_s
+  canonical_form: S. Radhakrishnan
+  surface_forms:
+    - "Radhakrishnan, S."
+    - "S. Radhakrishnan"
+    - "Sarvepalli Radhakrishnan"
+    - Radhakrishnan
+  verified: true
+  notes: 인도 철학사가, 前 인도 대통령.
+
+- canonical_id: cardona_george
+  canonical_form: George Cardona
+  surface_forms:
+    - "Cardona, George"
+    - "George Cardona"
+    - Cardona
+  verified: true
+  notes: 산스크리트 문법학(파니니) 권위자.
+
+- canonical_id: halbfass_wilhelm
+  canonical_form: Wilhelm Halbfass
+  surface_forms:
+    - "Halbfass, Wilhelm"
+    - "Wilhelm Halbfass"
+    - Halbfass
+  verified: true
+  notes: 독일 인도학자, 비교철학.
+
+- canonical_id: levi_sylvain
+  canonical_form: Sylvain Lévi
+  surface_forms:
+    - "Lévi, Sylvain"
+    - "Sylvain Lévi"
+    - "Sylvain Levi"
+    - "Lévi"
+  verified: true
+  notes: 프랑스 인도학자, 19세기말~20세기초.
+
+- canonical_id: gerow_edwin
+  canonical_form: Edwin Gerow
+  surface_forms:
+    - "Gerow, Edwin"
+    - "Edwin Gerow"
+    - Gerow
+  verified: true
+  notes: 산스크리트 시학 연구.
+
+# ============================================================
+# 한국 학자 보강 (인용 측 빈도 높은)
+# ============================================================
+
+- canonical_id: shim_junbo
+  canonical_form: 심준보
+  surface_forms:
+    - 심준보
+    - "Shim, Jun-bo"
+  verified: true
+
+- canonical_id: kim_jaeseong
+  canonical_form: 김재성
+  surface_forms:
+    - 김재성
+    - "Kim, Jae-seong"
+  verified: true
+
+- canonical_id: im_geundong
+  canonical_form: 임근동
+  surface_forms:
+    - 임근동
+    - "Im, Geun-dong"
+  verified: true
+
+- canonical_id: yang_yeongsoon
+  canonical_form: 양영순
+  surface_forms:
+    - 양영순
+    - "Yang, Young-soon"
+  verified: true
+
+- canonical_id: kim_jaemin
+  canonical_form: 김재민
+  surface_forms:
+    - 김재민
+    - "Kim, Jae-min"
+  verified: true
+
+- canonical_id: nam_sooyoung
+  canonical_form: 남수영
+  surface_forms:
+    - 남수영
+    - "Nam, Soo-young"
+  verified: true
+
+- canonical_id: kang_seongyong
+  canonical_form: 강성용
+  affiliation: 서울대학교
+  surface_forms:
+    - 강성용
+    - "Kang, Seong-yong"
+  verified: true
+
+- canonical_id: kang_hyeongchul
+  canonical_form: 강형철
+  surface_forms:
+    - 강형철
+    - "Kang, Hyeong-chul"
+  verified: true
+
+- canonical_id: gakmuk_sunim
+  canonical_form: 각묵스님
+  surface_forms:
+    - 각묵스님
+    - 각묵
+    - "Ven. Gakmuk"
+  verified: true
+  notes: 빠알리 경전 번역자.
+
+- canonical_id: daerim_sunim
+  canonical_form: 대림스님
+  surface_forms:
+    - 대림스님
+    - 대림
+  verified: true
+  notes: 청정도론(Visuddhimagga) 등 번역.

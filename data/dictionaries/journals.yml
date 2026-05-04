@@ -1,0 +1,465 @@
+# 인용 학술지 정규화 사전
+#
+# 같은 학술지가 표기/문자권/시기에 따라 여러 형태로 나타나는 경우 통합.
+# 한국 학술지는 한글 캐노니컬, 일본 학술지는 일본어 신자체(현행) 캐노니컬,
+# 영문 학술지는 영문 캐노니컬을 기본으로.
+
+# ============================================================
+# 일본 인도/불교학 학술지 — 신자체/번체/구표기 혼재 다수
+# ============================================================
+
+- canonical_id: jibs_japan
+  canonical_form: 印度学仏教学研究
+  canonical_en: "Journal of Indian and Buddhist Studies"
+  publisher: 日本印度学仏教学会
+  surface_forms:
+    - 印度学仏教学研究
+    - 印度學佛敎學硏究
+    - 印度學佛教學研究
+    - 印度学仏教学硏究
+    - 印度學佛敎學硏究
+    - 印度学仏敎学硏究
+    - 印度學仏教学研究
+    - 印度佛敎學硏究
+    - 印度佛教學硏究
+    - 日本印度学仏教学研究
+    - 印度學佛敎學論叢
+    - 印仏研
+    - 印佛硏
+    - "Journal of Indian and Buddhist Studies"
+    - インド哲学仏教学研究
+  verified: true
+  notes: "일본 인도학불교학회의 대표 학회지. 신자체-번체 + 약칭(印仏研) + 영문명 + 가타카나 모두 통합."
+
+- canonical_id: ibt_japan
+  canonical_form: 印度学宗教学会論集
+  publisher: 印度学宗教学会
+  surface_forms:
+    - 印度学宗敎学會論集
+    - 印度学宗教学会論集
+  verified: false
+
+- canonical_id: bukkyogaku_kenkyu
+  canonical_form: 仏教学研究
+  publisher: 龍谷大学仏教学会
+  surface_forms:
+    - 仏教学研究
+    - 佛敎學硏究
+    - 佛教學研究
+  verified: false
+
+# ============================================================
+# 한국 학술지
+# ============================================================
+
+- canonical_id: ksip_journal
+  canonical_form: 인도철학
+  canonical_en: "Korean Journal of Indian Philosophy"
+  publisher: 인도철학회
+  issn: "1226-3230"
+  surface_forms:
+    - 인도철학
+    - 印度哲學
+    - 印度哲学
+  verified: true
+  notes: 본 분석 대상 학술지(자기인용 식별 핵심).
+
+- canonical_id: korean_buddhist_studies
+  canonical_form: 한국불교학
+  publisher: 한국불교학회
+  surface_forms:
+    - 한국불교학
+    - 韓國佛敎學
+  verified: true
+
+- canonical_id: buddhist_studies_research
+  canonical_form: 불교학연구
+  publisher: 불교학연구회
+  surface_forms:
+    - 불교학연구
+    - 佛敎學硏究
+  verified: true
+
+- canonical_id: buddhist_research
+  canonical_form: 불교연구
+  publisher: 한국불교연구원
+  surface_forms:
+    - 불교연구
+    - 佛敎硏究
+  verified: true
+
+- canonical_id: buddhist_review
+  canonical_form: 불교학리뷰
+  publisher: 금강대학교 불교문화연구소
+  surface_forms:
+    - 불교학리뷰
+  verified: true
+
+- canonical_id: south_asian_studies
+  canonical_form: 남아시아연구
+  publisher: 한국외국어대학교 남아시아연구소
+  surface_forms:
+    - 남아시아연구
+    - 남아시아 연구
+  verified: true
+
+- canonical_id: dongguk_buddhist_culture
+  canonical_form: 동아시아불교문화
+  publisher: 동아시아불교문화학회
+  surface_forms:
+    - 동아시아불교문화
+  verified: true
+
+- canonical_id: korean_seon
+  canonical_form: 한국선학
+  publisher: 한국선학회
+  surface_forms:
+    - 한국선학
+  verified: true
+
+# ============================================================
+# 영문 학술지
+# ============================================================
+
+- canonical_id: jip
+  canonical_form: "Journal of Indian Philosophy"
+  publisher: Springer
+  issn: "0022-1791"
+  surface_forms:
+    - "Journal of Indian Philosophy"
+    - JIP
+  verified: true
+
+- canonical_id: jiabs
+  canonical_form: "Journal of the International Association of Buddhist Studies"
+  publisher: IABS
+  surface_forms:
+    - "Journal of the International Association of Buddhist Studies"
+    - JIABS
+  verified: true
+
+- canonical_id: pew
+  canonical_form: "Philosophy East and West"
+  publisher: University of Hawaii Press
+  surface_forms:
+    - "Philosophy East and West"
+    - "Philosophy East & West"
+    - PEW
+  verified: true
+
+- canonical_id: wzks
+  canonical_form: "Wiener Zeitschrift für die Kunde Südasiens"
+  publisher: Austrian Academy of Sciences
+  surface_forms:
+    - "Wiener Zeitschrift für die Kunde Südasiens"
+    - WZKS
+    - WZKSO
+    - "Wiener Zeitschrift fur die Kunde Sudasiens"
+    - "Wiener Zeitschrift für die Kunde Süd- und Ostasiens"
+  verified: true
+  notes: "WZKSO는 옛 명칭(Süd- und Ostasiens), 현재는 WZKS."
+
+- canonical_id: jaos
+  canonical_form: "Journal of the American Oriental Society"
+  publisher: American Oriental Society
+  surface_forms:
+    - "Journal of the American Oriental Society"
+    - JAOS
+  verified: true
+
+- canonical_id: iij
+  canonical_form: "Indo-Iranian Journal"
+  publisher: Brill
+  surface_forms:
+    - "Indo-Iranian Journal"
+    - IIJ
+  verified: true
+
+- canonical_id: jpts
+  canonical_form: "Journal of the Pali Text Society"
+  publisher: Pali Text Society
+  surface_forms:
+    - "Journal of the Pali Text Society"
+    - JPTS
+  verified: true
+
+- canonical_id: history_of_religions
+  canonical_form: "History of Religions"
+  publisher: University of Chicago Press
+  surface_forms:
+    - "History of Religions"
+  verified: true
+
+# ============================================================
+# 한국 학술지 (인용 빈도 보강)
+# ============================================================
+
+- canonical_id: bojo_thought
+  canonical_form: 보조사상
+  publisher: 보조사상연구원
+  surface_forms:
+    - 보조사상
+  verified: true
+
+- canonical_id: india_studies_korea
+  canonical_form: 인도연구
+  publisher: 한국인도학회
+  surface_forms:
+    - 인도연구
+  verified: true
+
+- canonical_id: bulgyohakbo
+  canonical_form: 불교학보
+  publisher: 동국대학교 불교문화연구원
+  surface_forms:
+    - 불교학보
+    - 佛敎學報
+  verified: true
+
+- canonical_id: religion_studies_korea
+  canonical_form: 종교연구
+  publisher: 한국종교학회
+  surface_forms:
+    - 종교연구
+    - 宗敎硏究
+  verified: true
+
+- canonical_id: east_west_phil_studies
+  canonical_form: 동서철학연구
+  publisher: 한국동서철학회
+  surface_forms:
+    - 동서철학연구
+  verified: true
+
+- canonical_id: buddhism_review
+  canonical_form: 불교평론
+  surface_forms:
+    - 불교평론
+  verified: true
+
+- canonical_id: cheolhak_sasang
+  canonical_form: 철학사상
+  publisher: 서울대학교 철학사상연구소
+  surface_forms:
+    - 철학사상
+  verified: true
+
+- canonical_id: yoga_studies_korea
+  canonical_form: 요가학연구
+  publisher: 한국요가학회
+  surface_forms:
+    - 요가학연구
+  verified: true
+
+- canonical_id: korean_seon_studies
+  canonical_form: 禪學
+  publisher: 한국선학회
+  surface_forms:
+    - 禪學
+    - 禪學(선학)
+    - 선학
+  verified: true
+
+- canonical_id: philosophy_studies_korea
+  canonical_form: 철학연구
+  surface_forms:
+    - 철학연구
+  verified: false
+  notes: "'철학연구'는 여러 학회지가 공유하는 이름(대한철학회·고려대 등). 발행기관 확인 후 분리 또는 통합 필요."
+
+# ============================================================
+# 일본 학술지 (인용 빈도 보강)
+# ============================================================
+
+- canonical_id: mikkyo_bunka
+  canonical_form: 密教文化
+  publisher: 密教研究会
+  surface_forms:
+    - 密教文化
+    - 密敎文化
+  verified: true
+
+- canonical_id: nanto_bukkyo
+  canonical_form: 南都佛敎
+  publisher: 南都仏教研究会
+  surface_forms:
+    - 南都佛敎
+    - 南都仏教
+  verified: true
+
+- canonical_id: hasegawa_buddhist_research
+  canonical_form: 長谷川仏教文化研究所年報
+  publisher: 長谷川仏教文化研究所
+  surface_forms:
+    - 長谷川仏教文化研究所年報
+    - 長谷川佛敎文化硏究所年報
+  verified: true
+
+- canonical_id: nihon_bukkyo_gakkai
+  canonical_form: 日本仏教学会年報
+  publisher: 日本仏教学会
+  surface_forms:
+    - 日本仏教学会年報
+    - 日本佛敎學會年報
+  verified: true
+
+- canonical_id: chizan_gakuho
+  canonical_form: 智山学報
+  publisher: 智山勧学会
+  surface_forms:
+    - 智山学報
+    - 智山學報
+  verified: true
+
+- canonical_id: bukkyogaku_seminar
+  canonical_form: 仏教学セミナー
+  publisher: 大谷大学
+  surface_forms:
+    - 仏教学セミナー
+    - 佛敎學セミナー
+  verified: true
+
+- canonical_id: arir_iab
+  canonical_form: "Annual Report of the International Research Institute for Advanced Buddhology"
+  publisher: 創価大学 国際仏教学高等研究所
+  surface_forms:
+    - "Annual Report of the International Research Institute for Advanced Buddhology"
+    - "Annual Report of The International Research Institute for Advanced Buddhology"
+    - ARIRIAB
+  verified: true
+
+- canonical_id: japan_shukyo_kenkyu
+  canonical_form: 宗教研究
+  publisher: 日本宗教学会
+  surface_forms:
+    - 宗教研究
+  verified: true
+  notes: "일본의 宗教研究. 한국의 '종교연구'(religion_studies_korea)와 별개."
+
+- canonical_id: hiroshima_bunka_kiyo
+  canonical_form: 広島大学文学部紀要
+  publisher: 広島大学
+  surface_forms:
+    - 広島大学文学部紀要
+    - 廣島大學文學部紀要
+  verified: true
+
+- canonical_id: tohogaku
+  canonical_form: 東方學
+  publisher: 東方学会
+  surface_forms:
+    - 東方學
+    - 東方学
+  verified: true
+
+# ============================================================
+# 영문 학술지 (인도학·불교학·종교학)
+# ============================================================
+
+- canonical_id: bsoas
+  canonical_form: "Bulletin of the School of Oriental and African Studies"
+  publisher: Cambridge University Press
+  surface_forms:
+    - "Bulletin of the School of Oriental and African Studies"
+    - BSOAS
+  verified: true
+
+- canonical_id: modern_asian_studies
+  canonical_form: "Modern Asian Studies"
+  publisher: Cambridge University Press
+  surface_forms:
+    - "Modern Asian Studies"
+  verified: true
+
+- canonical_id: asiatische_studien
+  canonical_form: "Asiatische Studien"
+  publisher: Schweizerische Asiengesellschaft
+  surface_forms:
+    - "Asiatische Studien"
+    - "Asiatische Studien / Études Asiatiques"
+  verified: true
+
+- canonical_id: numen
+  canonical_form: "Numen"
+  publisher: Brill
+  surface_forms:
+    - "Numen"
+  verified: true
+
+- canonical_id: abori
+  canonical_form: "Annals of the Bhandarkar Oriental Research Institute"
+  publisher: Bhandarkar Oriental Research Institute
+  surface_forms:
+    - "Annals of the Bhandarkar Oriental Research Institute"
+    - ABORI
+  verified: true
+
+- canonical_id: ijhs
+  canonical_form: "International Journal of Hindu Studies"
+  publisher: Springer
+  surface_forms:
+    - "International Journal of Hindu Studies"
+  verified: true
+
+- canonical_id: purana
+  canonical_form: "Purāṇa"
+  publisher: All India Kashiraj Trust
+  surface_forms:
+    - "Purāṇa"
+    - Purana
+  verified: true
+
+- canonical_id: jaee
+  canonical_form: "Journal of Agricultural and Environmental Ethics"
+  publisher: Springer
+  surface_forms:
+    - "Journal of Agricultural and Environmental Ethics"
+  verified: true
+
+# ============================================================
+# 한국 학술지 (보강)
+# ============================================================
+
+- canonical_id: wonbulgyo_thought
+  canonical_form: 원불교사상과 종교문화
+  publisher: 원광대학교 원불교사상연구원
+  surface_forms:
+    - 원불교사상과 종교문화
+    - 원불교사상과종교문화
+  verified: true
+
+- canonical_id: bumhan_philosophy
+  canonical_form: 범한철학
+  publisher: 범한철학회
+  surface_forms:
+    - 범한철학
+  verified: true
+
+- canonical_id: cheolhak_nonchong
+  canonical_form: 철학논총
+  publisher: 새한철학회
+  surface_forms:
+    - 철학논총
+  verified: true
+
+- canonical_id: cheolhak_nonjip
+  canonical_form: 철학논집
+  publisher: 서강대학교 철학연구소
+  surface_forms:
+    - 철학논집
+  verified: false
+  notes: "서강대 철학논집. 다른 대학에도 같은 이름 학회지 존재 — 발행기관 확인 필요."
+
+- canonical_id: hwangyeong_cheolhak
+  canonical_form: 환경철학
+  publisher: 한국환경철학회
+  surface_forms:
+    - 환경철학
+  verified: true
+
+- canonical_id: samok_yeongu
+  canonical_form: 사목연구
+  publisher: 가톨릭대학교 사목연구소
+  surface_forms:
+    - 사목연구
+  verified: true

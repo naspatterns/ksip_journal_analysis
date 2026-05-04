@@ -1,0 +1,37 @@
+# Raw bibliographic data (KCI 반출본)
+*.csv
+*.xls
+*.xlsx
+
+# Python / venv
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+
+# Streamlit secrets (config.toml은 커밋)
+.streamlit/secrets.toml
+
+# Editor / agent local state
+.claude/
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+
+# Old typo folder (empty .git inside)
+ksip_jouyrnal_analysis/
+
+# Old session logs
+이전세션의대화CLAUDE.txt
+
+# Misc
+data/raw/wos_export/
+
+# Local backup of corrupted .git (Drive sync artifacts)
+.git.broken.*/

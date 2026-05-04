@@ -1,0 +1,11 @@
+streamlit
+pandas
+plotly
+matplotlib
+seaborn
+wordcloud
+networkx
+xlrd
+pyarrow
+pyyaml
+requests

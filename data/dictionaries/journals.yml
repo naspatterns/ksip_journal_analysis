@@ -156,8 +156,12 @@
     - WZKSO
     - "Wiener Zeitschrift fur die Kunde Sudasiens"
     - "Wiener Zeitschrift für die Kunde Süd- und Ostasiens"
+    - "Vienna Journal of South Asian Studies"
+    - "Wiener Zeitschrift für die Kunde Südasiens / Vienna Journal of South Asian Studies"
+    - "Wiener Zeitschrift für die Kunde Südasiens/Vienna Journal of South Asian Studies"
+    - "Wiener Zeitschrift Für Die Kunde Südasiens/Vienna Journal of South Asian Studies"
   verified: true
-  notes: "WZKSO는 옛 명칭(Süd- und Ostasiens), 현재는 WZKS."
+  notes: "WZKSO는 옛 명칭(Süd- und Ostasiens), 현재는 WZKS. 영문명 'Vienna Journal of South Asian Studies' 와 이중언어 병기형(공백·대문자 변형 포함) 모두 통합."
 
 - canonical_id: jaos
   canonical_form: "Journal of the American Oriental Society"
@@ -377,7 +381,15 @@
   surface_forms:
     - "Asiatische Studien"
     - "Asiatische Studien / Études Asiatiques"
+    - "Études Asiatiques"
+    - "Études Asiatiques / Asiatische Studien"
+    - "Études Asiatiques/Asiatische Studien"
+    - "Asiatische Studies / Études Asiatiques"
+    - "Asiatische Studies/Études Asiatiques"
+    - "Asiatische Studien / Etudes asiatigues"
+    - "Asiatische Studien/Etudes asiatigues"
   verified: true
+  notes: "스위스 아시아학회 학회지. 독·불 이중언어 병기 + 원본 데이터의 'Studies' / 'Etudes asiatigues' 오타 변형 + 슬래시 공백 변형 통합."
 
 - canonical_id: numen
   canonical_form: "Numen"
@@ -463,3 +475,15 @@
   surface_forms:
     - 사목연구
   verified: true
+
+# ============================================================
+# 분야결합형 학술지 (이름 자체에 슬래시 포함)
+# ============================================================
+
+- canonical_id: munhak_sahak_cheolhak
+  canonical_form: "문학/사학/철학"
+  publisher: 한국불교사학회 한국불교사연구소
+  surface_forms:
+    - "문학/사학/철학"
+  verified: true
+  notes: "문학·사학·철학 3분야 결합 학회지. 학술지명 자체에 '/' 포함 — 참고문헌 파서의 슬래시 split 와 충돌하므로 references.py 의 multi-slash 감지로 보정."

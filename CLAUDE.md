@@ -75,30 +75,50 @@ ksip_journal_analysis/
 ├── requirements.txt
 ├── app.py                            ★ 지형도 (Plan A)
 ├── data_utils.py, visualize.py       (옛 미사용 파일, 어디서도 import 안 됨)
+├── KCI_OpenAPI_Key.txt               (.gitignore — 절대 커밋 금지)
 ├── ksip/                             ★ 순수 Python 패키지 (Streamlit 의존 없음)
 │   ├── __init__.py
 │   ├── load.py                       papers/authors/keywords long-form 추출 + 클리닝/정규화 적용
-│   ├── references.py                 12,887 참고문헌 유형별 슬래시 파서
+│   ├── references.py                 12,887 참고문헌 유형별 슬래시 파서 (legacy fallback)
 │   ├── normalize.py                  Authority + load_authority + resolve_person (인물 통합)
 │   ├── clean.py                      PUA 제거 / 트레일링 underscore / NFKC
 │   ├── institutions.py               parent_institution() — 사전 + 정규식 하이브리드
-│   ├── data.py                       parquet 로더 + Filter (Streamlit 페이지가 사용)
-│   ├── citations.py                  ego-network 집계 + landscape_stats
-│   └── concepts.py                   개념 탐험기 집계(시계열/공출현/저자/대표논문)
+│   ├── data.py                       parquet 로더 (legacy + KCI 6종)
+│   ├── citations.py                  ego-network 집계 (KCI 권위 source) + landscape_stats
+│   ├── concepts.py                   개념 탐험기 집계
+│   └── kci_api.py                    KCI Open API 클라이언트 (재시도/캐시/rate limit)
 ├── pages/
 │   ├── 1_개념_탐험기.py
 │   └── 2_인용의_풍경.py
 ├── data/
 │   ├── raw/                          .xls 3개 + .csv 통합본 (.gitignore)
-│   ├── processed/                    parquet 4개 (git 포함, build_data.py 산출물 — 배포용)
+│   ├── processed/                    parquet (git 포함 — stlite 배포용)
+│   │   ├── papers.parquet            논문 메타 (xls 기반)
+│   │   ├── authors.parquet           저자 long-form (xls)
+│   │   ├── keywords.parquet          키워드 long-form (xls)
+│   │   ├── references.parquet        참고문헌 (xls, fallback 전용)
+│   │   ├── kci_papers.parquet        ★ KCI 논문 enrichment (FWCI / citation-count / 영문제목)
+│   │   ├── kci_authors.parquet       ★ KCI 저자 (영문 저자명 90.2%)
+│   │   ├── kci_references.parquet    ★ KCI 참고문헌 (REFARTIID — 권위 source)
+│   │   ├── journal_metrics.{parquet,csv}        17년 IF/ZIF 시계열
+│   │   ├── journal_change_history.{parquet,csv} 등재 변천사
+│   │   └── journal_static_meta.csv              학술지 정적 메타
+│   ├── cache/                        ★ KCI API 응답 raw XML (.gitignore)
+│   │   ├── articleDetail/            636 파일
+│   │   ├── citationDetail/           1 파일
+│   │   └── ...
 │   └── dictionaries/                 ★ Authority files (git 포함)
 │       ├── concepts.yml              학자/학파/개념/원전/인물 (~70 entries)
 │       ├── authors.yml               한국·일본·서구 학자 (~45 entries, 모두 verified)
 │       ├── journals.yml              한·일·영문 인용 학술지 (~52 entries)
 │       └── institutions.yml          기관 alias 예외 (정규식 미해결 케이스만)
 ├── scripts/
-│   ├── build_data.py                 raw → processed 빌드 (재실행 가능)
-│   └── diagnose_data.py              데이터 품질 진단 (어디 클리닝 필요한지 점검)
+│   ├── build_all.py                  ★ 마스터 빌드 — 4단계 일괄 실행
+│   ├── build_data.py                 raw .xls → processed (xls 기반 4종)
+│   ├── fetch_journal_metrics.py      KCI citationDetail → 학술지 시계열
+│   ├── fetch_articles.py             KCI articleDetail × 636 → cache (5분, resume)
+│   ├── parse_articles.py             cache XML → kci_*.parquet
+│   └── diagnose_data.py              데이터 품질 진단
 ├── .streamlit/
 │   └── config.toml                   showSidebarNavigation = false
 ├── .claude/
@@ -109,29 +129,38 @@ ksip_journal_analysis/
 
 ---
 
-## 5. 구현 상황 (2026-04-27 기준)
+## 5. 구현 상황 (2026-05-09 기준)
 
 ### ✅ 완료
-- **데이터 파이프라인** (`scripts/build_data.py`):
-    - `papers.parquet` 636 rows + `기관_부모` 컬럼 + `논문명_원본` 백업
-    - `authors.parquet` 654 rows (208 unique surface, canonical **266건/40.7%**)
-    - `keywords.parquet` 3,089 rows (2,333 unique, canonical **384건/12.4%**)
-    - `references.parquet` 12,887 rows (학술지 canonical **1,546건/53.9%**, 자기인용 312건/2.4%)
+- **데이터 파이프라인** — xls 기반 (`scripts/build_data.py`):
+    - `papers.parquet` 636 rows + `기관_부모` + `논문명_원본` 백업
+    - `authors.parquet` 654 rows (208 surface, canonical 266/40.7%)
+    - `keywords.parquet` 3,089 rows (2,333 surface, canonical 384/12.4%)
+    - `references.parquet` 12,887 rows (legacy fallback 전용)
+- **KCI Open API 통합 (단계 1-3 완료)** — `scripts/build_all.py`로 일괄 빌드:
+    - `journal_metrics.{parquet,csv}` 17년 시계열 (IF/ZIF/SJR/자기인용/즉시성지수)
+    - `journal_change_history.{parquet,csv}` 등재 변천 12개 이정표
+    - `journal_static_meta.csv` 학술지 정적 메타 (창간/발행/등재상태/홈페이지)
+    - **`kci_papers.parquet`** 636 rows (FWCI 96.7%, kci_citation_count 100%, 영문제목 99.8%)
+    - **`kci_authors.parquet`** 654 rows (영문 저자명 90.2%)
+    - **`kci_references.parquet`** 12,357 rows (cited_artiId/REFARTIID 843건 = 학술지 type 24.7%)
+    - 자기인용 KCI 정밀 매칭: 247건 (학술지명 정확 일치)
 - **데이터 클리닝 (단계 0.5)**: 논문명 119편 / 키워드 PUA 14건 / 동국대 14변형 → 297편 통합
 - **Authority Control**: YAML 사전 + surface 보존 + verified 토글 + `resolve_person()` (concepts.학자 + authors 통합)
 - **사전 v3**: concepts.yml 70+, journals.yml 52+, authors.yml 45+(모두 verified), institutions.yml 예외만
 - **3개 화면 Streamlit 대시보드** (Plan A: 클릭=이동):
-    - 지형도(`app.py`) — 4분할 + 클릭으로 다른 화면 진입
+    - 지형도(`app.py`) — 4분할 + 등재 변천 12개 이정표 vertical line overlay
     - 개념 탐험기(`pages/1_개념_탐험기.py`) — 4분할 + 통합/분리 토글
-    - 인용의 풍경(`pages/2_인용의_풍경.py`) — ego-network 5탭 + 우측 정적 풍경
-- **UI 개선**: 자기인용 별 모양 강조, http: 노이즈 제거, 도넛 라벨 자동, 사이드바 중복 제거
+    - 인용의 풍경(`pages/2_인용의_풍경.py`) — ego-network (KCI 권위 source) + entity FWCI 4-메트릭 + 우측 IF 시계열 + 학술지 메타 헤더 + cited_artiId hover
+- **stlite + GitHub Pages 정적 배포** (gh-pages 브랜치): https://naspatterns.github.io/ksip_journal_analysis/
 
 ### ⏸ 진행 예정
-1. **CLAUDE.md / README.md 마무리** (문서 정리)
-2. **KCI Open API 키 신청** (사용자 액션, 안정 환경 이동 후 — 5분, 자동 승인): `https://www.kci.go.kr` 회원가입 → 데이터 → OPEN API → 인증키. 공인 IP 필요(`curl -s https://api.ipify.org`).
-3. **단계 2: REFARTIID 보강** (API 키 도착 후): 482편 artiId로 `referenceSearch` 호출 → `REFARTIID` 추출 → 정확한 인용 그래프 엣지 patch.
-4. **단계 3: 학술지 메타**: `citationDetail`로 IF/ZIF/자기인용비율 시계열 → 헤더 KPI.
-5. **추가 사전 보강** (롱테일): 쫑카파, 하타 요가, Frauwallner, Mallinson, 眞諦 등 미해상도 빈도 높은 항목.
+1. **사전 보강 라운드 3** (선택): kci_authors의 영문 저자명을 `authors.yml`에 자동 추가 (외국인 인용 매칭 ↑)
+2. **시각화 보강** (선택):
+    - 「개념 탐험기」 대표 논문 카드 FWCI 정렬 + 영문제목 옵션
+    - 「지형도」 ④ 저자 막대 KCI verified 마크 또는 평균 FWCI 색상
+    - 「인용의 풍경」 학자 탭에 영문 저자명 부가 표시
+3. **단계 4 (선택, ROI 낮음)**: 피인용 데이터 — KCI Open API에 없음. WoS-KJD(학교 구독) 또는 KCI 데이터 신청(서면) 필요.
 
 ### 🚫 의도적 비범위
 - 공저자 네트워크 (단독저자 97%)
@@ -145,12 +174,16 @@ ksip_journal_analysis/
 | # | 내용 | 의존 | 상태 |
 |---|---|---|---|
 | 0 | 로컬 .xls 파싱 → references.parquet | 없음 | ✅ 완료 |
-| 1 | KCI Open API 키 신청 (사용자) | kci.go.kr 회원가입, 공인 IP | ⏸ 대기 (1주일 ETA) |
-| 2 | `referenceSearch` → REFARTIID 매칭 | 단계 1 키 | ⏸ |
-| 3 | `citationDetail` → IF/ZIF 시계열 | 단계 1 키 | ⏸ |
-| 4 (선택) | 피인용 데이터 (KCI 데이터 신청 또는 WoS KJD) | 별도 신청 | 우선순위 낮음 |
+| 1 | KCI Open API 키 신청 + IP 등록 | kci.go.kr | ✅ 완료 |
+| 2 | `articleDetail × 636` → REFARTIID + FWCI + 영문메타 + structured refs | 단계 1 키 | ✅ 완료 |
+| 3 | `citationDetail` → IF/ZIF/등재 변천 시계열 | 단계 1 키 | ✅ 완료 |
+| 4 (선택) | 피인용 데이터 (누가 인도철학을 인용?) — KCI 데이터 신청 또는 WoS-KJD | 별도 신청 | 우선순위 낮음 |
 
-**핵심 발견:** `referenceSearch` 응답에 `REFARTIID` 필드가 있어, 인용된 논문이 KCI 등재면 텍스트 매칭 없이 정확한 그래프 엣지 구축 가능. 엔드포인트: `https://open.kci.go.kr/po/openapi/openApiSearch.kci?apiCode=referenceSearch&key={KEY}&id={artiId}`. 인도철학 학술지 식별자: sereId=001529, ISSN 1226-3230.
+**탐침 결과 사용 가능한 endpoint = 4개**: articleSearch / articleDetail / referenceSearch / citationDetail. `citingArticleSearch`, `authorDetail`, `journalSearch`, `institutionSearch` 등은 모두 "등록되지 않은 서비스".
+
+**핵심 단순화:** 원래 계획은 단계 2(`referenceSearch`) + 단계 3(`articleDetail` for cited papers)로 분리였으나, **`articleDetail` 한 endpoint가 reference list + REFARTIID + cited 논문 메타를 모두 포함**한다는 것이 smoke test에서 발견됨. → 단계 2/3 통합, `referenceSearch`는 무용함이 판명(text-only). `articleDetail × 636`만 호출하면 끝.
+
+엔드포인트: `https://open.kci.go.kr/po/openapi/openApiSearch.kci?apiCode={code}&key={KEY}&id={artiId}`. 인도철학 학술지 식별자: sereId=001529, ISSN 1226-3230.
 
 ---
 
@@ -167,6 +200,8 @@ ksip_journal_analysis/
 
 원본은 항상 백업: `논문명_원본` + `주저자 소속기관`(surface) + `기관_부모`(canonical) 둘 다 보존.
 
+**참고문헌 권위 source 전환 (2026-05-09)**: 슬래시 텍스트 파싱 기반 `references.parquet`(.xls) 12,887건 → KCI articleDetail 기반 `kci_references.parquet` 12,357건으로 전환. 530건 차이는 .xls 파서의 false positive로 추정. KCI 기반은 구조화 + REFARTIID 보유로 정밀 자기인용/그래프 매칭 가능. legacy 파일은 KCI 미빌드 환경의 fallback으로만 사용.
+
 ---
 
 ## 8. Authority Control (정규화) 시스템
@@ -178,6 +213,8 @@ ksip_journal_analysis/
 - `authors.yml` — 현대 학자 (한국 + 일본 + 서구 인도학자: 정승석, 桂紹隆, Schmithausen, Olivelle 등)
 - `journals.yml` — 인용 학술지 (印度学仏教学研究 표기 변형 통합 등)
 - `institutions.yml` — 기관 예외 alias (정규식 `^.+?대학교\b` 가 못 잡는 약칭만)
+
+**KCI 영문 저자명 보강 (선택)**: `kci_authors.parquet`에 영문 저자명이 90.2%(590/654) 있어, `authors.yml`의 surface_forms에 자동 추가 가능. 외국인 인용 측 매칭 정확도를 높이는 데 유용 (e.g., `이길산` ↔ `GIL-SAN LEE`).
 
 ### 사전 스키마 (YAML)
 
@@ -224,8 +261,16 @@ report["unresolved_top"]
 ## 9. 명령어 참고
 
 ```bash
-# 데이터 빌드 (raw → processed parquet 재생성)
-.venv/bin/python scripts/build_data.py
+# ★ 마스터 빌드 — raw + KCI API 모두 일괄 (다른 환경에서도 이거 하나면 끝)
+.venv/bin/python scripts/build_all.py
+#   --skip-api       : KCI API 단계 건너뛰기 (캐시·기존 parquet만 사용)
+#   --only 1 --only 4: 특정 단계만 실행
+
+# 개별 단계
+.venv/bin/python scripts/build_data.py             # xls → 4 parquet
+.venv/bin/python scripts/fetch_journal_metrics.py  # KCI citationDetail (1 호출)
+.venv/bin/python scripts/fetch_articles.py         # KCI articleDetail × 636 (캐시 시 즉시)
+.venv/bin/python scripts/parse_articles.py         # cache → kci_*.parquet
 
 # 데이터 품질 진단 (사전 보강 우선순위 확인)
 .venv/bin/python scripts/diagnose_data.py
@@ -236,7 +281,7 @@ report["unresolved_top"]
 # 패키지 설치 (pip 래퍼가 깨졌으니 python -m pip 사용)
 .venv/bin/python -m pip install <pkg>
 
-# 공인 IP 조회 (KCI API 키 신청 시)
+# 공인 IP 조회 (KCI API 키 IP 갱신 시)
 curl -s https://api.ipify.org
 ```
 
@@ -296,3 +341,6 @@ Streamlit의 `st.plotly_chart(on_select="rerun")` 은 selection 상태가 리렌
 - ❌ 옛 `data_utils.py / visualize.py` 의 함수 import (폐기 코드, 어디서도 안 씀)
 - ❌ `pages/__init__.py` 생성 (Streamlit 페이지 자동 디스커버리 깨짐)
 - ❌ Crossref/OpenAlex/RISS/DBpia API 시도 (인도철학 커버리지 약함, 검증 완료)
+- ❌ KCI `referenceSearch` endpoint 사용 (text-only, REFARTIID 없음 — `articleDetail`이 권위 source)
+- ❌ KCI API 키 / `data/cache/` git 커밋 (.gitignore에 등록됨)
+- ❌ Streamlit 페이지에서 KCI API 직접 호출 (CORS/키 노출 — 빌드 단계에서만 호출, parquet에 저장)

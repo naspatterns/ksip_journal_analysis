@@ -28,12 +28,17 @@ URL `?entity=author|institution&id=…` 진입 (디폴트=동국대학교). 5개
 | 단독저자 비율 | 97.3% |
 | 동국대 비율 | 44% (297편 family rollup) |
 | 키워드 surface unique | 2,333개 |
-| 참고문헌 | 12,887건 (482편/76% 등록) |
+| 참고문헌 (KCI 권위) | 12,357건 + REFARTIID 843건 |
+| 학술지 IF/ZIF 시계열 | 17년 (2008–2024) |
 | Authority canonical | 저자 40.7% / 키워드 12.4% / 학술지 53.9% |
 
-원본 .xls 3개 + 통합 .csv 는 `data/raw/` 에 (.gitignore). 빌드 산출물 parquet 4종은 `data/processed/` 에 git 포함 (배포용).
+**두 source 통합:**
+- 로컬 .xls 3개 → 논문 메타·저자·키워드·참고문헌 fallback
+- KCI Open API (`articleDetail`/`citationDetail`) → REFARTIID 정밀 인용 그래프, FWCI/피인용수, 영문 저자명, 학술지 시계열 + 등재 변천사
 
-자세한 데이터 노트와 의도적 비범위는 [CLAUDE.md](CLAUDE.md) 참조.
+원본 .xls 는 `data/raw/` 에 (.gitignore). 빌드 산출물 parquet은 모두 `data/processed/` 에 git 포함 (배포용). KCI API 응답 raw XML 캐시는 `data/cache/` 에 (.gitignore).
+
+자세한 데이터 노트와 의도적 비범위는 [CLAUDE.md](CLAUDE.md) 참조. KCI API 활용은 [docs/kci_api_overview.md](docs/kci_api_overview.md) + [docs/kci_api_workflow.md](docs/kci_api_workflow.md) 참조.
 
 ---
 
@@ -53,8 +58,10 @@ URL `?entity=author|institution&id=…` 진입 (디폴트=동국대학교). 5개
 python3 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 
-# 2. (선택) raw 데이터가 있다면 빌드 재실행
-.venv/bin/python scripts/build_data.py
+# 2. (선택) 빌드 재실행 — raw .xls + KCI API 모두 일괄
+.venv/bin/python scripts/build_all.py
+#   --skip-api : KCI API 단계 건너뛰기 (캐시·기존 parquet만 사용)
+#   --only 1   : 특정 단계만
 
 # 3. 대시보드
 .venv/bin/python -m streamlit run app.py
@@ -62,7 +69,9 @@ python3 -m venv .venv
 
 > ⚠️ `.venv/bin/pip` / `.venv/bin/streamlit` 직접 호출은 폴더 이동 이력으로 깨져 있을 수 있음. 항상 `python -m pip` / `python -m streamlit` 로.
 
-`data/processed/*.parquet` 이 리포에 포함되어 있어 raw 없이도 바로 실행 가능.
+`data/processed/*.parquet` 이 리포에 포함되어 있어 raw + API 키 없이도 대시보드 즉시 실행 가능.
+
+KCI API 키가 있으면 `KCI_OpenAPI_Key.txt` 평문 파일로 루트에 저장 (.gitignore 처리됨). `scripts/build_all.py` 가 자동으로 감지해 단계 2-3을 실행. 키 없으면 자동 skip.
 
 ---
 

@@ -12,6 +12,14 @@ __pycache__/
 # Streamlit secrets (config.toml은 커밋)
 .streamlit/secrets.toml
 
+# KCI Open API key (절대 커밋 금지)
+KCI_OpenAPI_Key.txt
+*.key
+.env
+
+# KCI Open API 응답 캐시 (대용량 XML, 재호출로 복원 가능)
+data/cache/
+
 # Editor / agent local state
 .claude/
 .vscode/

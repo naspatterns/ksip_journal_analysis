@@ -1,6 +1,10 @@
 """인용의 풍경 페이지 — ego network 데이터 집계 + 시각화 헬퍼.
 
 순수 Python (Streamlit 의존 없음). 호출자가 @st.cache_data로 감쌀 것.
+
+데이터 source: A안 — KCI articleDetail에서 회수한 `kci_references.parquet`가
+권위 source. cited_artiId(REFARTIID) 정밀 매칭을 사용.
+.xls 텍스트 파싱 기반 `references.parquet`는 fallback용 (kci 빌드 안 됐을 때).
 """
 from __future__ import annotations
 
@@ -10,8 +14,14 @@ import networkx as nx
 import pandas as pd
 import plotly.graph_objects as go
 
-from .data import load_authors, load_papers, load_references
-from .normalize import load_authority, resolve_person
+from .data import (
+    load_authors,
+    load_kci_papers,
+    load_kci_references,
+    load_papers,
+    load_references,
+)
+from .normalize import add_canonical_column, load_authority, resolve_person
 
 EntityType = Literal["author", "institution"]
 
@@ -42,9 +52,49 @@ def paper_ids_for_entity(entity_type: EntityType, entity_id: str) -> set[str]:
     raise ValueError(f"unknown entity_type: {entity_type}")
 
 
+SELF_JOURNAL_NAME = "인도철학"
+
+
+def _normalize_kci_refs(refs: pd.DataFrame) -> pd.DataFrame:
+    """KCI references 컬럼명을 legacy schema와 호환되게 재명명 + 자기인용/canonical 계산.
+
+    legacy 스키마 핵심: 저자_원본 / 제목_원본 / 학술지_원본 / 연도 / DOI / 자기인용 / 학술지_canonical
+    추가: cited_artiId (REFARTIID), 참조ID_kci, cited_권/호/페이지/발행기관
+    """
+    if refs.empty:
+        return refs
+
+    sub = refs.copy()
+    sub = sub.rename(columns={
+        "cited_저자": "저자_원본",
+        "cited_제목": "제목_원본",
+        "cited_학술지": "학술지_원본",
+        "cited_연도": "연도",
+        "cited_DOI": "DOI",
+    })
+    # 자기인용: cited_학술지 == '인도철학' (KCI 정밀 매칭)
+    sub["자기인용"] = sub["학술지_원본"].fillna("").str.strip() == SELF_JOURNAL_NAME
+    # 학술지 canonical 적용 (journals.yml)
+    sub = add_canonical_column(sub, "학술지_원본", "journals",
+                               out_col="학술지_canonical")
+    return sub
+
+
+def _all_refs_kci_authoritative() -> pd.DataFrame:
+    """전체 references (KCI 권위 + legacy fallback).
+
+    KCI parquet이 빌드돼 있으면 그것을 사용 (cited_artiId 포함).
+    아니면 legacy .xls 기반 references.parquet로 fallback (cited_artiId 없음).
+    """
+    kci = load_kci_references()
+    if not kci.empty:
+        return _normalize_kci_refs(kci)
+    return load_references().copy()
+
+
 def references_for(paper_ids: set[str]) -> pd.DataFrame:
-    """주어진 논문들이 작성한 참고문헌 long-form."""
-    refs = load_references()
+    """주어진 논문들이 작성한 참고문헌 long-form (KCI 권위 source)."""
+    refs = _all_refs_kci_authoritative()
     return refs[refs["논문ID"].isin(paper_ids)].copy()
 
 
@@ -100,27 +150,49 @@ def aggregate_targets(
     type_filter: list[str] | None = None,
     exclude_self: bool = False,
 ) -> pd.DataFrame:
-    """refs(long-form) → (label, type, count)의 TOP N."""
+    """refs(long-form) → (label, type, count, is_self, sample_artiId)의 TOP N.
+
+    sample_artiId: KCI 등재 cited paper면 REFARTIID (KCI URL 점프 가능),
+    아니면 None.
+    """
     df = refs
     if type_filter is not None:
         df = df[df["유형"].isin(type_filter)]
     if exclude_self:
         df = df[~df["자기인용"]]
     if df.empty:
-        return pd.DataFrame(columns=["label", "type", "count", "is_self"])
+        return pd.DataFrame(columns=["label", "type", "count", "is_self", "sample_artiId"])
+
+    has_arti_id = "cited_artiId" in df.columns
 
     rows = []
     for _, r in df.iterrows():
         lbl = _cited_label(r)
-        if lbl:
-            rows.append({"label": lbl, "type": r["유형"], "is_self": bool(r["자기인용"])})
+        if not lbl:
+            continue
+        rows.append({
+            "label": lbl,
+            "type": r["유형"],
+            "is_self": bool(r["자기인용"]),
+            "cited_artiId": (r["cited_artiId"] if has_arti_id else None),
+        })
     if not rows:
-        return pd.DataFrame(columns=["label", "type", "count", "is_self"])
+        return pd.DataFrame(columns=["label", "type", "count", "is_self", "sample_artiId"])
 
     long = pd.DataFrame(rows)
+
+    def _first_artiid(s: pd.Series) -> str | None:
+        valid = s.dropna()
+        valid = valid[valid.astype(str).str.strip() != ""]
+        return valid.iloc[0] if not valid.empty else None
+
     agg = (
         long.groupby(["label", "type"])
-        .agg(count=("label", "size"), is_self=("is_self", "any"))
+        .agg(
+            count=("label", "size"),
+            is_self=("is_self", "any"),
+            sample_artiId=("cited_artiId", _first_artiid),
+        )
         .reset_index()
         .sort_values("count", ascending=False)
         .head(n)
@@ -149,6 +221,7 @@ def ego_network_figure(
             type=t["type"],
             count=int(t["count"]),
             is_self=bool(t["is_self"]),
+            arti_id=(t.get("sample_artiId") if "sample_artiId" in targets.columns else None),
         )
         G.add_edge(focal, t["label"], weight=int(t["count"]))
 
@@ -222,11 +295,21 @@ def ego_network_figure(
                 (SELF_CITE_COLOR if self_flag else REF_TYPE_COLORS.get(typ, "#888"))
                 for _ in sub
             ]
-            hover = [
-                f"<b>{n}</b><br>유형: {typ}<br>인용 횟수: {G.nodes[n]['count']}"
-                f"{'<br><b>(자기인용)</b>' if self_flag else ''}"
-                for n in sub
-            ]
+            def _hover_for(n: str) -> str:
+                lines = [
+                    f"<b>{n}</b>",
+                    f"유형: {typ}",
+                    f"인용 횟수: {G.nodes[n]['count']}",
+                ]
+                if self_flag:
+                    lines.append("<b>(자기인용)</b>")
+                aid = G.nodes[n].get("arti_id")
+                if aid:
+                    lines.append(f"KCI artiId: {aid}")
+                    lines.append(f"<i>https://www.kci.go.kr/...artiId={aid}</i>")
+                return "<br>".join(lines)
+
+            hover = [_hover_for(n) for n in sub]
             name = f"{typ} (자기인용)" if self_flag else typ
             fig.add_trace(
                 go.Scatter(
@@ -271,15 +354,42 @@ def ego_network_figure(
 def entity_summary(entity_type: EntityType, entity_id: str) -> dict:
     paper_ids = paper_ids_for_entity(entity_type, entity_id)
     if not paper_ids:
-        return {"papers": 0, "refs": 0, "year_min": None, "year_max": None}
+        return {
+            "papers": 0, "refs": 0,
+            "year_min": None, "year_max": None,
+            "avg_fwci": None, "max_fwci": None,
+            "total_kci_cite": None, "avg_kci_cite": None,
+        }
     papers = load_papers()
     sub = papers[papers["논문 ID"].isin(paper_ids)]
     refs = references_for(paper_ids)
+
+    # KCI enrichment (단계 2 산출). 빌드 안 됐으면 None.
+    kci_papers = load_kci_papers()
+    avg_fwci = max_fwci = total_kci_cite = avg_kci_cite = None
+    if not kci_papers.empty:
+        sub_kci = kci_papers[kci_papers["논문ID"].isin(paper_ids)]
+        fwci_series = sub_kci["fwci"].dropna() if "fwci" in sub_kci.columns else pd.Series(dtype=float)
+        cc_series = (
+            sub_kci["kci_citation_count"].dropna()
+            if "kci_citation_count" in sub_kci.columns else pd.Series(dtype=float)
+        )
+        if not fwci_series.empty:
+            avg_fwci = float(fwci_series.mean())
+            max_fwci = float(fwci_series.max())
+        if not cc_series.empty:
+            total_kci_cite = int(cc_series.sum())
+            avg_kci_cite = float(cc_series.mean())
+
     return {
         "papers": len(paper_ids),
         "refs": len(refs),
         "year_min": int(sub["발행연도"].min()),
         "year_max": int(sub["발행연도"].max()),
+        "avg_fwci": avg_fwci,
+        "max_fwci": max_fwci,
+        "total_kci_cite": total_kci_cite,
+        "avg_kci_cite": avg_kci_cite,
     }
 
 
@@ -287,7 +397,8 @@ def entity_summary(entity_type: EntityType, entity_id: str) -> dict:
 # 전체 풍경 (정적, 캐시 가능)
 # ────────────────────────────────────────────────────────────
 def landscape_stats() -> dict:
-    refs = load_references()
+    """전체 학술지 인용 풍경 (KCI 권위 source)."""
+    refs = _all_refs_kci_authoritative()
     type_dist = refs["유형"].value_counts()
 
     # TOP 인용 학술지 (canonical 우선, 없으면 surface)

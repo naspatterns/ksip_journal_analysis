@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import platform
 from io import BytesIO
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -16,7 +17,12 @@ import plotly.express as px
 import streamlit as st
 from wordcloud import WordCloud
 
-from ksip.data import load_authors, load_keywords, load_papers
+from ksip.data import (
+    load_authors,
+    load_journal_history,
+    load_keywords,
+    load_papers,
+)
 
 # ────────────────────────────────────────────────────────────
 # 페이지 설정
@@ -27,11 +33,22 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-KOREAN_FONT_PATH = (
-    "/System/Library/Fonts/AppleSDGothicNeo.ttc"
-    if platform.system() == "Darwin"
-    else None
-)
+
+def _resolve_korean_font() -> str | None:
+    sys = platform.system()
+    if sys == "Darwin":
+        return "/System/Library/Fonts/AppleSDGothicNeo.ttc"
+    bundled = Path(__file__).resolve().parent / "assets" / "fonts" / "NanumGothic.ttf"
+    if bundled.exists():
+        return str(bundled)
+    if sys == "Linux":
+        linux_nanum = Path("/usr/share/fonts/truetype/nanum/NanumGothic.ttf")
+        if linux_nanum.exists():
+            return str(linux_nanum)
+    return None
+
+
+KOREAN_FONT_PATH = _resolve_korean_font()
 PLOTLY_TEMPLATE = "plotly_white"
 
 
@@ -109,9 +126,10 @@ top_left, top_right = st.columns(2)
 bot_left, bot_right = st.columns(2)
 
 
-# ① 연도별 논문 수 라인 (읽기 전용)
+# ① 연도별 논문 수 라인 (KCI 등재 변천 이정표 overlay)
 with top_left:
     st.subheader("① 연도별 논문 수")
+    st.caption("KCI 등재 단계 변천을 vertical line으로 표시.")
     yearly = papers.groupby("발행연도").size().reset_index(name="논문 수")
     fig1 = px.line(
         yearly, x="발행연도", y="논문 수",
@@ -119,6 +137,27 @@ with top_left:
     )
     fig1.update_layout(height=320, margin=dict(l=10, r=10, t=10, b=10),
                        hovermode="x unified")
+
+    # KCI citationDetail에서 받은 등재 변천 이정표를 vertical line으로 overlay
+    history = load_journal_history()
+    if not history.empty:
+        # 날짜에서 연도 추출. '2028' 같은 4자리만 있는 케이스도 처리.
+        history = history.copy()
+        history["연도"] = history["날짜"].astype(str).str[:4]
+        history["연도"] = pd.to_numeric(history["연도"], errors="coerce")
+        # 화면 연도 범위 안에 들어오는 이정표만
+        in_range = history[history["연도"].between(lo, hi, inclusive="both")]
+        for _, ev in in_range.iterrows():
+            year_x = int(ev["연도"])
+            label_short = (ev["내용"] or "")[:20]
+            fig1.add_vline(
+                x=year_x,
+                line=dict(color="rgba(160, 80, 80, 0.55)", width=1, dash="dot"),
+                annotation_text=label_short,
+                annotation_position="top",
+                annotation_font_size=9,
+                annotation_font_color="#a05050",
+            )
     st.plotly_chart(fig1, use_container_width=True)
 
 

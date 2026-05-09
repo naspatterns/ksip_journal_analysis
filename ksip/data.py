@@ -28,6 +28,71 @@ def load_references() -> pd.DataFrame:
     return pd.read_parquet(PROCESSED_DIR / "references.parquet")
 
 
+def load_journal_metrics() -> pd.DataFrame:
+    """KCI citationDetail의 17년 시계열 (단계 1 산출). 파일 없으면 빈 DF."""
+    p = PROCESSED_DIR / "journal_metrics.parquet"
+    return pd.read_parquet(p) if p.exists() else pd.DataFrame()
+
+
+def load_journal_history() -> pd.DataFrame:
+    """학술지 등재 단계 변천사 (단계 1 산출). 파일 없으면 빈 DF."""
+    p = PROCESSED_DIR / "journal_change_history.parquet"
+    return pd.read_parquet(p) if p.exists() else pd.DataFrame()
+
+
+def load_journal_static_meta() -> dict:
+    """학술지 정적 메타(이름·ISSN·창간·발행자 등) 1행 dict.
+
+    journal_static_meta.csv를 사용. 파일 없으면 빈 dict.
+    """
+    p = PROCESSED_DIR / "journal_static_meta.csv"
+    if not p.exists():
+        return {}
+    df = pd.read_csv(p)
+    if df.empty:
+        return {}
+    return df.iloc[0].to_dict()
+
+
+# ────────────────────────────────────────────────────────────
+# KCI articleDetail 산출물 (단계 2 — articleDetail × 636)
+# 별도 파일로 유지. 페이지에서 필요 시 JOIN.
+# ────────────────────────────────────────────────────────────
+def load_kci_papers() -> pd.DataFrame:
+    """KCI articleDetail에서 회수한 논문 단위 enrichment.
+
+    핵심 컬럼: 논문ID, fwci, kci_citation_count, title_english, kci_categories,
+    kci_verified, kci_url, abstract_english_len 등.
+    파일 없으면 빈 DF.
+    """
+    p = PROCESSED_DIR / "kci_papers.parquet"
+    return pd.read_parquet(p) if p.exists() else pd.DataFrame()
+
+
+def load_kci_authors() -> pd.DataFrame:
+    """KCI articleDetail에서 회수한 저자 long-form (영문 저자명 포함).
+
+    핵심 컬럼: 논문ID, 저자_원본, 저자_영문, 저자_소속_kci,
+    author_division, author_part.
+    """
+    p = PROCESSED_DIR / "kci_authors.parquet"
+    return pd.read_parquet(p) if p.exists() else pd.DataFrame()
+
+
+def load_kci_references() -> pd.DataFrame:
+    """KCI articleDetail에서 회수한 참고문헌 long-form (REFARTIID 포함).
+
+    핵심 컬럼: 논문ID, 참조ID_kci, **cited_artiId**(REFARTIID),
+    유형/유형코드, cited_제목, cited_저자, cited_학술지, cited_연도,
+    cited_권/호/페이지, cited_발행기관, cited_DOI.
+
+    A안: 인용 그래프의 권위 source. .xls 기반 references.parquet는
+    fallback으로만 사용 (REFARTIID 정밀도 + KCI 검증 우선).
+    """
+    p = PROCESSED_DIR / "kci_references.parquet"
+    return pd.read_parquet(p) if p.exists() else pd.DataFrame()
+
+
 @dataclass
 class Filter:
     """페이지에 적용 가능한 필터 슬라이스. None = 미설정.

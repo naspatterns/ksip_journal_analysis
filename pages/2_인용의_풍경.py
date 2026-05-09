@@ -18,7 +18,13 @@ from ksip.citations import (
     paper_ids_for_entity,
     references_for,
 )
-from ksip.data import load_authors, load_papers
+from ksip.data import (
+    load_authors,
+    load_journal_metrics,
+    load_journal_static_meta,
+    load_papers,
+)
+import plotly.graph_objects as go
 
 st.set_page_config(page_title="인용의 풍경", layout="wide")
 
@@ -65,6 +71,11 @@ def _summary(entity_type: str, entity_id: str) -> dict:
 @st.cache_data
 def _landscape() -> dict:
     return landscape_stats()
+
+
+@st.cache_data
+def _journal_kpi() -> tuple[pd.DataFrame, dict]:
+    return load_journal_metrics(), load_journal_static_meta()
 
 
 # ────────────────────────────────────────────────────────────
@@ -133,11 +144,25 @@ with left:
         if summary["year_min"] != summary["year_max"]
         else f"{summary['year_min']}"
     )
+    st.markdown(f"### {selected}")
     st.markdown(
-        f"### {selected}\n"
         f"논문 **{summary['papers']:,}편** · "
         f"인용 **{summary['refs']:,}건** · 활동 **{yr}**"
     )
+    # KCI enrichment 메트릭 (있을 때만)
+    if summary.get("avg_fwci") is not None or summary.get("total_kci_cite") is not None:
+        m1, m2, m3, m4 = st.columns(4)
+        if summary.get("avg_fwci") is not None:
+            m1.metric("평균 FWCI", f"{summary['avg_fwci']:.2f}",
+                      help="Field-Weighted Citation Impact 평균. "
+                           "1.0 = 동분야 평균. 1보다 높으면 평균 이상의 영향력.")
+        if summary.get("max_fwci") is not None:
+            m2.metric("최대 FWCI", f"{summary['max_fwci']:.2f}")
+        if summary.get("total_kci_cite") is not None:
+            m3.metric("KCI 총 피인용", f"{summary['total_kci_cite']:,}",
+                      help="이 엔터티의 논문들이 KCI에서 받은 피인용 횟수의 합.")
+        if summary.get("avg_kci_cite") is not None:
+            m4.metric("논문당 평균 피인용", f"{summary['avg_kci_cite']:.1f}")
 
     if all_refs.empty:
         st.info("이 엔터티의 논문에 등록된 참고문헌이 없습니다.")
@@ -212,7 +237,71 @@ with left:
 
 # ═══════════════ 우측: 전체 풍경 (정적) ═══════════════
 with right:
-    st.markdown("### 전체 풍경")
+    # ─── 학술지 메타 카드 (KCI citationDetail 산출) ───
+    metrics_df, journal_meta = _journal_kpi()
+    if journal_meta:
+        st.markdown(
+            f"### 📖 {journal_meta.get('kor_name', '인도철학')}"
+            f"  <span style='font-size:0.75em; color:#888'>"
+            f"({journal_meta.get('kor_abbr', '')})</span>",
+            unsafe_allow_html=True,
+        )
+        # 한 줄 메타: 창간 / 발행주기 / 현재호 / 등재상태
+        st.caption(
+            f"{journal_meta.get('창간연도', '')} 창간 · "
+            f"ISSN {journal_meta.get('ISSN', '')} · "
+            f"{journal_meta.get('현재_등재상태', '')} · "
+            f"{journal_meta.get('현재호', '')}"
+        )
+
+    # ─── IF / 자기인용지수 시계열 (KCI citationDetail 산출) ───
+    if not metrics_df.empty:
+        st.markdown("**KCI 인용 지수 시계열**")
+        fig_kpi = go.Figure()
+        # IF (좌축, 파랑)
+        fig_kpi.add_trace(go.Scatter(
+            x=metrics_df["연도"], y=metrics_df["IF_2년"],
+            mode="lines+markers", name="2년 IF",
+            line=dict(color="#1f6feb", width=2),
+            marker=dict(size=5),
+            hovertemplate="%{x}년<br>IF=%{y:.2f}<extra></extra>",
+        ))
+        fig_kpi.add_trace(go.Scatter(
+            x=metrics_df["연도"], y=metrics_df["IF_2년_자기인용제외"],
+            mode="lines", name="자기인용 제외 IF",
+            line=dict(color="#1f6feb", width=1, dash="dot"),
+            hovertemplate="%{x}년<br>제외 IF=%{y:.2f}<extra></extra>",
+        ))
+        # 자기인용지수 (우축, 빨강) — 0~1 → %로 환산해 표시
+        fig_kpi.add_trace(go.Scatter(
+            x=metrics_df["연도"],
+            y=metrics_df["자기인용지수"] * 100,
+            mode="lines+markers", name="자기인용 %",
+            line=dict(color="#E63946", width=1.5, dash="dash"),
+            marker=dict(size=4, symbol="x"),
+            yaxis="y2",
+            hovertemplate="%{x}년<br>자기인용 %{y:.1f}%<extra></extra>",
+        ))
+        fig_kpi.update_layout(
+            height=220,
+            margin=dict(l=10, r=10, t=10, b=10),
+            yaxis=dict(title="IF", title_standoff=4),
+            yaxis2=dict(title="자기인용 %", overlaying="y", side="right",
+                        title_standoff=4, range=[0, 60]),
+            legend=dict(orientation="h", yanchor="top", y=-0.15,
+                        xanchor="center", x=0.5, font=dict(size=9)),
+            template="plotly_white",
+            hovermode="x unified",
+        )
+        st.plotly_chart(fig_kpi, use_container_width=True)
+        st.caption(
+            f"📊 17년치 KCI 공식 지수. "
+            f"최근 IF {metrics_df['IF_2년'].iloc[-1]:.2f} · "
+            f"자기인용 {metrics_df['자기인용지수'].iloc[-1]:.1%}"
+        )
+
+    st.markdown("---")
+    st.markdown("### 인용 풍경 (전체)")
     st.caption(
         f"학술지 전체 {landscape['total_refs']:,}건 인용 · "
         f"자기인용 {landscape['self_cite_count']}건 ({landscape['self_cite_rate']:.1%})"

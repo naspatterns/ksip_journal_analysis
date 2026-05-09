@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>인도철학 학술지 분석 대시보드</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@stlite/browser@0.85.1/build/stlite.css">
+  <style>
+    html, body, #root {
+      margin: 0; padding: 0; height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+                   "Noto Sans KR", "Malgun Gothic", sans-serif;
+    }
+    .stlite-bootstrap {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      min-height: 80vh; padding: 2rem; gap: 1rem; color: #2b2b2b;
+    }
+    .stlite-bootstrap h1 { font-size: 1.4rem; margin: 0; }
+    .stlite-bootstrap p  { margin: 0; max-width: 36rem; line-height: 1.6; color: #555; }
+    .stlite-bootstrap .spinner {
+      width: 32px; height: 32px; border: 3px solid #ddd; border-top-color: #1f6feb;
+      border-radius: 50%; animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div id="root">
+    <div class="stlite-bootstrap">
+      <div class="spinner"></div>
+      <h1>인도철학 학술지 분석 대시보드</h1>
+      <p>
+        브라우저에서 직접 Python 을 실행합니다 (stlite + Pyodide).
+        첫 방문은 <strong>30초 ~ 1분</strong> 정도 걸립니다 — Pyodide 런타임과
+        데이터(2.5MB)를 다운로드하는 중. 이후 방문은 캐시되어 빠릅니다.
+      </p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { mount } from "https://cdn.jsdelivr.net/npm/@stlite/browser@0.85.1/build/stlite.js";
+
+    const f = (path) => ({ url: `./${path}` });
+
+    mount({
+      entrypoint: "app.py",
+      requirements: [
+        "pandas",
+        "pyarrow",
+        "plotly",
+        "matplotlib",
+        "wordcloud",
+        "networkx",
+        "pyyaml",
+      ],
+      streamlitConfig: {
+        "client.showSidebarNavigation": false,
+      },
+      files: {
+        // 메인 + 멀티페이지
+        "app.py": f("app.py"),
+        "pages/1_개념_탐험기.py": f("pages/1_%EA%B0%9C%EB%85%90_%ED%83%90%ED%97%98%EA%B8%B0.py"),
+        "pages/2_인용의_풍경.py": f("pages/2_%EC%9D%B8%EC%9A%A9%EC%9D%98_%ED%92%8D%EA%B2%BD.py"),
+
+        // ksip 패키지
+        "ksip/__init__.py": f("ksip/__init__.py"),
+        "ksip/citations.py": f("ksip/citations.py"),
+        "ksip/clean.py": f("ksip/clean.py"),
+        "ksip/concepts.py": f("ksip/concepts.py"),
+        "ksip/data.py": f("ksip/data.py"),
+        "ksip/institutions.py": f("ksip/institutions.py"),
+        "ksip/load.py": f("ksip/load.py"),
+        "ksip/normalize.py": f("ksip/normalize.py"),
+        "ksip/references.py": f("ksip/references.py"),
+
+        // 빌드 산출물 (parquet, binary)
+        "data/processed/papers.parquet":     f("data/processed/papers.parquet"),
+        "data/processed/authors.parquet":    f("data/processed/authors.parquet"),
+        "data/processed/keywords.parquet":   f("data/processed/keywords.parquet"),
+        "data/processed/references.parquet": f("data/processed/references.parquet"),
+
+        // Authority 사전 (text YAML)
+        "data/dictionaries/concepts.yml":     f("data/dictionaries/concepts.yml"),
+        "data/dictionaries/authors.yml":      f("data/dictionaries/authors.yml"),
+        "data/dictionaries/journals.yml":     f("data/dictionaries/journals.yml"),
+        "data/dictionaries/institutions.yml": f("data/dictionaries/institutions.yml"),
+
+        // 한글 폰트 (NanumGothic, WordCloud 용)
+        "assets/fonts/NanumGothic.ttf": f("assets/fonts/NanumGothic.ttf"),
+      },
+    }, document.getElementById("root"));
+  </script>
+</body>
+</html>

@@ -35,3 +35,9 @@ data/raw/wos_export/
 
 # Local backup of corrupted .git (Drive sync artifacts)
 .git.broken.*/
+
+# KCI raw API responses (포함된 API key 보호)
+evaluation/output/**/*.xml
+
+# KCI API key files
+KCI_OpenAPI_Key*.txt

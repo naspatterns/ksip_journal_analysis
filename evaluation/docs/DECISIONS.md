@@ -270,6 +270,50 @@ for paper in 논문:
 
 ---
 
+## Decision-17 — Phase 3 신규 entry 일괄 추가 (실행)
+
+**컨텍스트**: Decision-12 (대기) 의 실제 실행. Q1c·Q2c·Q3 룰 적용.
+
+**스크립트**: [`../labeling/add_phase3_entries.py`](../labeling/add_phase3_entries.py) — 멱등 실행 가능 (이미 있는 canonical_id 는 skip).
+
+**확정 결과**:
+
+| 항목 | 수 |
+|---|---|
+| 신규 entry 추가 | **27개** |
+| concepts.yml 총 entry | 69 → **96** |
+| verified=True | 67 → **94** (unverified 2 unchanged: upanishad·meditation) |
+
+**카테고리별 추가**:
+
+| 카테고리 | canonical_id 목록 |
+|---|---|
+| 학파 (6) | mimamsa / huayan / chan / pure_land / esoteric_east_asia / tibetan_buddhism_general |
+| 인물 (8) | kamalasila / zhiyi / kuiji / **kumarajiva (Q1c)** / jizang / wonchuk / iryeon / tsongkhapa |
+| 텍스트 (6) | **awakening_of_faith (Q2c)** / **avatamsaka (Q3)** / **lotus_sutra (Q3)** / larger_sukhavativyuha / smaller_sukhavativyuha / contemplation_sutra |
+| 근대 인도 (3) | ramakrishna / vivekananda / radhakrishnan |
+| 메타 (4) | hatha_yoga / chinese_buddhist_canon / tibetan_canon / dunhuang |
+
+**Q1c·Q2c·Q3 적용 결과**:
+- `kumarajiva`: `school=madhyamaka, reception=east_asia` (Q1c — 동아시아 영향 매개)
+- `awakening_of_faith`: `school=east_asian_other, reception=east_asia` (Q2c — 동아시아 자체 형성)
+- `avatamsaka` / `lotus_sutra`: `school=contextual, reception=contextual` (Q3 — 라벨링 파이프라인이 공출현 키워드로 결정)
+
+**부수 결정**: `esoteric_east_asia` school 값 신설. SCHEMA.md 동아시아 section 에 추가. (한국 5자 진언 등 비-일본 동아시아 밀교 수용을 `shingon` 과 분리.)
+
+**커버리지 영향**:
+
+| | 기존 | Phase 3 후 |
+|---|---|---|
+| keywords.parquet resolve 율 | 12.4% (384/3,089) | **14.3% (443/3,089)** |
+| 증가량 | — | **+59 rows** |
+
+**새 school 분포 (resolved 키워드 기준)**: korean_buddhism 8 / pure_land 7 / gelug 6 / hindu_modern 6 / tantric_buddhism 5 / contextual 4 / sanlun 3 / esoteric_east_asia 3 / tibetan_other 2 / mimamsa 2 / tiantai 1 / faxiang 1 / chan 1.
+
+**잔여 노이즈**: `chan` school 이 1건만 잡힘 (audit 의 substring 매칭은 9건). exact-match 한계 — surface_forms 확장은 Phase 4 검수 환류에서.
+
+---
+
 ## 변경 이력 가이드
 
 새 결정을 append 할 때:

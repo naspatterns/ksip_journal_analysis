@@ -311,7 +311,7 @@ Streamlit의 `st.plotly_chart(on_select="rerun")` 은 selection 상태가 리렌
 | 0. 분류 체계 설계 | 8축 합의 + 17개 세부 결정 (다중라벨, 4축 직교: school × era × source_language × reception_horizon) | ✅ |
 | 1. 사전 스키마 확장 | `concepts.yml` 의 69 entry 에 신규 4필드 backfill. 옛 free-form `era` → `century` rename | ✅ |
 | 2. 키워드 등장 빈도 감사 | 후보 ~85개를 keywords/제목에서 substring 매칭 → INCLUDE/MARGINAL/SKIP 판정 | ✅ |
-| 3. 신규 ~24 entry 추가 (Phase 2 통과분, Q1c·Q2c·Q3 contextual 적용) | ⏸ 대기 |
+| 3. 신규 27 entry 추가 (Q1c·Q2c·Q3 contextual). entry 69 → 96, 커버리지 12.4% → 14.3% | ✅ |
 | 4. 라벨링 파이프라인 (사전 1차 → BERTopic → contextual disambiguation → 다수결 집계) | 🚫 |
 | 5. 검수 표본 (랜덤 50 + 신뢰도 하위 50) | 🚫 |
 | 6. Streamlit 시각화 (커버리지 streamgraph + entropy / 학제경계 reception 비율) | 🚫 |

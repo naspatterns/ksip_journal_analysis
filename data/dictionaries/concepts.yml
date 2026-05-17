@@ -1228,3 +1228,462 @@
   - saṃskṛtā
   verified: true
   notes: 인도 고전어. 학파/원전의 메타 정보로 자주 등장.
+- canonical_id: mimamsa
+  canonical_kr: 미맘사
+  canonical_iast: Mīmāṃsā
+  canonical_zh: 彌曼差
+  type: 학파
+  school: mimamsa
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
+  surface_forms:
+  - 미맘사
+  - 미망사
+  - Mīmāṃsā
+  - Mimamsa
+  - 彌曼差
+  - 迷曼差
+  verified: true
+  notes: 인도 정통 6파 중 하나. 베다 해석학·제식 행위론.
+- canonical_id: huayan
+  canonical_kr: 화엄종
+  canonical_zh: 華嚴宗
+  type: 학파
+  school: huayan
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 화엄
+  - 화엄종
+  - 華嚴
+  - 華嚴宗
+  - Huayan
+  - Hua-yen
+  - Hwaom
+  verified: true
+  notes: 동아시아 화엄종. 法藏·智儼·澄觀·義湘 등. 7-8세기 중국 형성.
+- canonical_id: chan
+  canonical_kr: 선종
+  canonical_zh: 禪宗
+  type: 학파
+  school: chan
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 선
+  - 禪
+  - 선종
+  - 禪宗
+  - 선불교
+  - Chan
+  - Zen
+  - Son
+  - Seon
+  verified: true
+  notes: 중국·한국·일본 선종 통합 (사용자 결정 4). 지역은 reception_horizon 으로 분기.
+- canonical_id: pure_land
+  canonical_kr: 정토종
+  canonical_zh: 淨土宗
+  type: 학파
+  school: pure_land
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 정토
+  - 정토종
+  - 淨土
+  - 淨土宗
+  - Pure Land
+  - Jingtu
+  verified: true
+  notes: 동아시아 정토 신앙 학파. 善導·法然·親鸞 (단 일본 인물은 데이터에 부재).
+- canonical_id: esoteric_east_asia
+  canonical_kr: 동아시아 밀교 / 진언
+  canonical_zh: 眞言宗
+  type: 학파
+  school: esoteric_east_asia
+  era: post_classical
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 진언
+  - 진언종
+  - 眞言
+  - 眞言宗
+  - 동아시아 밀교
+  - Shingon
+  verified: true
+  notes: 동아시아 밀교 (한국·일본). 인도 후기 탄트라 (tantric_buddhism) 의 동아시아 수용. ★ school 값 'esoteric_east_asia' 는 SCHEMA.md 동아시아 section 에 추가됨.
+- canonical_id: tibetan_buddhism_general
+  canonical_kr: 티베트 불교 일반
+  type: 학파
+  school: tibetan_other
+  era: post_classical
+  source_language: tibetan
+  reception_horizon: tibet
+  surface_forms:
+  - 티베트 불교
+  - 티벳 불교
+  - 티벳불교
+  - 티베트불교
+  - Tibetan Buddhism
+  - 서장불교
+  verified: true
+  notes: 티베트 불교 일반어 entry. 겔룩·닝마·카규·사캬 등 학파 미세분류 키워드가 부재할 때 fallback.
+- canonical_id: kamalasila
+  canonical_kr: 까말라쉴라
+  canonical_iast: Kamalaśīla
+  canonical_zh: 蓮華戒
+  type: 학자
+  school: madhyamaka
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
+  century: 8세기
+  surface_forms:
+  - 까말라쉴라
+  - 카말라실라
+  - Kamalaśīla
+  - Kamalashila
+  - 蓮華戒
+  verified: true
+  notes: 인도 후기 중관학파. 티베트 삼예논쟁(792-794)에서 점오 입장. 활동은 티베트지만 학적 출신은 인도.
+- canonical_id: zhiyi
+  canonical_kr: 지의
+  canonical_zh: 智顗
+  type: 학자
+  school: tiantai
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  century: 6세기
+  surface_forms:
+  - 지의
+  - 智顗
+  - Zhiyi
+  - Chih-i
+  - 천태대사
+  verified: true
+  notes: 중국 천태종 대성자. 法華玄義·摩訶止觀·法華文句.
+- canonical_id: kuiji
+  canonical_kr: 규기
+  canonical_zh: 窺基
+  type: 학자
+  school: faxiang
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  century: 7세기
+  surface_forms:
+  - 규기
+  - 窺基
+  - 자은
+  - 慈恩
+  - Kuiji
+  verified: true
+  notes: 중국 법상종 (동아시아 유식) 대성자. 玄奘 문하. 成唯識論述記.
+- canonical_id: kumarajiva
+  canonical_kr: 구마라집
+  canonical_iast: Kumārajīva
+  canonical_zh: 鳩摩羅什
+  type: 학자
+  school: madhyamaka
+  era: classical
+  source_language: mixed
+  reception_horizon: east_asia
+  century: 4-5세기
+  surface_forms:
+  - 구마라집
+  - 구마라십
+  - 鳩摩羅什
+  - 羅什
+  - Kumārajīva
+  - Kumarajiva
+  verified: true
+  notes: '★ Q1c (사용자 결정): school=madhyamaka, reception=east_asia. 쿠차 출신, 인도 madhyamaka 사상가지만 한역 작업이 동아시아 불교의 토대.'
+- canonical_id: jizang
+  canonical_kr: 길장
+  canonical_zh: 吉藏
+  type: 학자
+  school: sanlun
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  century: 6-7세기
+  surface_forms:
+  - 길장
+  - 吉藏
+  - 가상
+  - 嘉祥
+  - Jizang
+  verified: true
+  notes: 중국 삼론종 (동아시아 중관) 대성자. 中觀論疏·百論疏·十二門論疏.
+- canonical_id: wonchuk
+  canonical_kr: 원측
+  canonical_zh: 圓測
+  type: 학자
+  school: yogacara
+  era: classical
+  source_language: chinese
+  reception_horizon: korea
+  century: 7세기
+  surface_forms:
+  - 원측
+  - 圓測
+  - Wonchuk
+  verified: true
+  notes: 한국(신라) 출신, 玄奘 문하의 유식학자. 解深密經疏 등. school=yogacara (인도 유식 연구), reception=korea (한국 출신).
+- canonical_id: iryeon
+  canonical_kr: 일연
+  canonical_zh: 一然
+  type: 학자
+  school: korean_buddhism
+  era: late
+  source_language: chinese
+  reception_horizon: korea
+  century: 13세기
+  surface_forms:
+  - 일연
+  - 一然
+  - Iryeon
+  verified: true
+  notes: 고려 시대 승려. 三國遺事 저자.
+- canonical_id: tsongkhapa
+  canonical_kr: 쫑카파
+  canonical_zh: 宗喀巴
+  type: 학자
+  school: gelug
+  era: late
+  source_language: tibetan
+  reception_horizon: tibet
+  century: 14-15세기
+  surface_forms:
+  - 쫑카파
+  - 쫑카빠
+  - 총카파
+  - Tsongkhapa
+  - Tsong-kha-pa
+  - Je Tsongkhapa
+  - 宗喀巴
+  verified: true
+  notes: 티베트 겔룩파 창시자. Lam rim chen mo·Lam gtso rnam gsum 등.
+- canonical_id: awakening_of_faith
+  canonical_kr: 대승기신론
+  canonical_zh: 大乘起信論
+  type: 원전
+  school: east_asian_other
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 기신론
+  - 대승기신론
+  - 大乘起信論
+  - 起信論
+  - Awakening of Faith
+  verified: true
+  notes: '★ Q2c (사용자 결정): school=east_asian_other. 전통 귀속은 馬鳴(Aśvaghoṣa)이나 위경 가능성, 동아시아 자체 형성. 여래장 + 유식 결합.'
+- canonical_id: avatamsaka
+  canonical_kr: 화엄경
+  canonical_iast: Avataṃsakasūtra
+  canonical_zh: 華嚴經
+  type: 원전
+  school: contextual
+  era: upanishadic_sutra
+  source_language: chinese
+  reception_horizon: contextual
+  surface_forms:
+  - 화엄경
+  - 華嚴經
+  - 大方廣佛華嚴經
+  - Avataṃsaka
+  - Avatamsaka
+  - Gaṇḍavyūha
+  verified: true
+  notes: '★ Q3 (사용자 결정): school·reception 단정 회피. 인도 산스크리트 원전(c.1-4세기) 이지만 동아시아 화엄종 텍스트로 더 활발히 다뤄짐. 공출현 키워드 기반 contextual disambiguation 룰이 결정 (SCHEMA.md §8).'
+- canonical_id: lotus_sutra
+  canonical_kr: 법화경
+  canonical_iast: Saddharmapuṇḍarīkasūtra
+  canonical_zh: 妙法蓮華經
+  type: 원전
+  school: contextual
+  era: upanishadic_sutra
+  source_language: chinese
+  reception_horizon: contextual
+  surface_forms:
+  - 법화경
+  - 妙法蓮華經
+  - 法華經
+  - Saddharmapuṇḍarīka
+  - Saddharmapundarika
+  - Lotus Sūtra
+  verified: true
+  notes: '★ Q3 (사용자 결정): school·reception 단정 회피. 인도 산스크리트 원전(c.1-2세기) 이지만 동아시아 천태·일련 등 다수 종파가 다룸.'
+- canonical_id: larger_sukhavativyuha
+  canonical_kr: 무량수경
+  canonical_iast: Sukhāvatīvyūhasūtra
+  canonical_zh: 無量壽經
+  type: 원전
+  school: pure_land
+  era: upanishadic_sutra
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 무량수경
+  - 無量壽經
+  - Larger Sukhāvatīvyūha
+  - Sukhāvatīvyūha
+  verified: true
+  notes: 정토삼부경의 하나. 인도 산스크리트 원전 있으나 동아시아 정토종 텍스트로 자리매김.
+- canonical_id: smaller_sukhavativyuha
+  canonical_kr: 아미타경
+  canonical_zh: 阿彌陀經
+  type: 원전
+  school: pure_land
+  era: upanishadic_sutra
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 아미타경
+  - 阿彌陀經
+  - Smaller Sukhāvatīvyūha
+  verified: true
+  notes: 정토삼부경의 하나.
+- canonical_id: contemplation_sutra
+  canonical_kr: 관무량수경
+  canonical_zh: 觀無量壽經
+  type: 원전
+  school: pure_land
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 관무량수경
+  - 觀無量壽經
+  - Contemplation Sūtra
+  - Amitāyurdhyāna
+  verified: true
+  notes: 정토삼부경의 하나. 동아시아 composed 가능성 (위경 논의).
+- canonical_id: ramakrishna
+  canonical_kr: 라마크리슈나
+  canonical_iast: Rāmakṛṣṇa
+  type: 학자
+  school: hindu_modern
+  era: modern
+  source_language: mixed
+  reception_horizon: india
+  century: 19세기
+  surface_forms:
+  - 라마크리슈나
+  - 라마끄리슈나
+  - Ramakrishna
+  - Rāmakṛṣṇa
+  verified: true
+  notes: 근대 인도 신비주의자. 비베카난다의 스승.
+- canonical_id: vivekananda
+  canonical_kr: 비베카난다
+  canonical_iast: Vivekānanda
+  type: 학자
+  school: hindu_modern
+  era: modern
+  source_language: mixed
+  reception_horizon: india
+  century: 19세기
+  surface_forms:
+  - 비베카난다
+  - 비배카난다
+  - Vivekananda
+  - Vivekānanda
+  verified: true
+  notes: 라마크리슈나 미션 창설자. 1893 시카고 종교회의.
+- canonical_id: radhakrishnan
+  canonical_kr: 라다크리슈난
+  type: 학자
+  school: hindu_modern
+  era: modern
+  source_language: mixed
+  reception_horizon: india
+  century: 20세기
+  surface_forms:
+  - 라다크리슈난
+  - 라다끄리슈난
+  - Radhakrishnan
+  - S. Radhakrishnan
+  - Sarvepalli Radhakrishnan
+  verified: true
+  notes: 근대 인도 철학자·정치가. 인도철학 통사 저술. 인도 부통령·대통령 역임.
+- canonical_id: hatha_yoga
+  canonical_kr: 하타 요가
+  canonical_iast: Haṭhayoga
+  type: 개념
+  school: yoga
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
+  surface_forms:
+  - 하타 요가
+  - 하타요가
+  - 하타
+  - 하타프라디피카
+  - 하타(요가)쁘라디삐까
+  - Haṭha Yoga
+  - Hatha Yoga
+  - Haṭhayoga
+  verified: true
+  notes: 후기 요가 신체 수행 전통 (c.10-17세기). yoga 학파의 post_classical 시대 변종. Hatha Yoga Pradīpikā·Gheraṇḍa Saṃhitā 등.
+- canonical_id: chinese_buddhist_canon
+  canonical_kr: 한역 자료 / 대장경
+  type: 개념
+  school: comparative
+  era: transversal
+  source_language: chinese
+  reception_horizon: mixed
+  surface_forms:
+  - 한역
+  - 한역(漢譯)
+  - 대장경
+  - 高麗大藏經
+  - Taishō
+  - Taisho
+  verified: true
+  notes: 자료 언어 표지. 한역 자료를 사용한 연구에 source_language=chinese 추론을 위해 추가.
+- canonical_id: tibetan_canon
+  canonical_kr: 티베트역 자료 / 깡규르 텡규르
+  type: 개념
+  school: comparative
+  era: transversal
+  source_language: tibetan
+  reception_horizon: mixed
+  surface_forms:
+  - 티벳 사본
+  - 티베트역
+  - 티벳어 번역
+  - 서장어
+  - Kangyur
+  - Tengyur
+  - bKa' 'gyur
+  - bsTan 'gyur
+  verified: true
+  notes: 자료 언어 표지. 티베트역 자료를 사용한 연구에 source_language=tibetan 추론.
+- canonical_id: dunhuang
+  canonical_kr: 돈황 사본
+  canonical_zh: 敦煌
+  type: 개념
+  school: comparative
+  era: transversal
+  source_language: mixed
+  reception_horizon: east_asia
+  surface_forms:
+  - 돈황
+  - 돈황 막고굴
+  - 돈황 필사본
+  - 돈황본
+  - 돈황사본
+  - Dunhuang
+  - 敦煌
+  verified: true
+  notes: 돈황 사본학. 동아시아 자료 + 사본학 방법론 표지.

@@ -131,15 +131,35 @@
 
 → **신규 entry 추가 후보 ~46개 → ~24개로 축소.**
 
-### Phase 3. 신규 사전 entry 추가 (대기)
+### Phase 3. 신규 사전 entry 추가 (완료)
 
-Phase 2 에서 골라낸 24개 신규 entry. 사용자 결정 3건 적용:
+Phase 2 에서 골라낸 27개 신규 entry 일괄 추가. Q1c·Q2c·Q3 contextual 룰 적용.
 
-- **Q1 (구마라집)**: 옵션 c — `school=madhyamaka, reception=east_asia` (그의 한역 작업이 동아시아 불교의 토대)
-- **Q2 (기신론)**: 옵션 c — `school=east_asian_other` (동아시아 자체 형성, 인도 yogacara 와 분리)
-- **Q3 (법화경 류 모호 텍스트)**: **단일 라벨 미결정**. **공출현 키워드 기반 contextual disambiguation** 을 라벨링 파이프라인 룰로 처리. 따라서 Phase 3 에서는 텍스트 entry 의 `school` 을 강하게 단정하지 않음 (`school: contextual` 또는 미부착).
+**스크립트**: [`../labeling/add_phase3_entries.py`](../labeling/add_phase3_entries.py) — 멱등.
 
-→ 상세 entry 목록 + 룰은 [`DECISIONS.md`](./DECISIONS.md) 의 Decision-12 참조.
+**카테고리별**:
+- 학파 6: `mimamsa` / `huayan` / `chan` / `pure_land` / `esoteric_east_asia` / `tibetan_buddhism_general`
+- 인물 8: `kamalasila` / `zhiyi` / `kuiji` / **`kumarajiva` (Q1c)** / `jizang` / `wonchuk` / `iryeon` / `tsongkhapa`
+- 텍스트 6: **`awakening_of_faith` (Q2c)** / **`avatamsaka` (Q3 contextual)** / **`lotus_sutra` (Q3 contextual)** / `larger_sukhavativyuha` / `smaller_sukhavativyuha` / `contemplation_sutra`
+- 근대 인도 3: `ramakrishna` / `vivekananda` / `radhakrishnan`
+- 메타 4: `hatha_yoga` / `chinese_buddhist_canon` / `tibetan_canon` / `dunhuang`
+
+**사용자 결정 3건 적용**:
+- **Q1c (구마라집)**: `school=madhyamaka, reception=east_asia`
+- **Q2c (기신론)**: `school=east_asian_other, reception=east_asia`
+- **Q3 (법화경·화엄경)**: `school=contextual, reception=contextual` — Phase 4 라벨링 파이프라인이 공출현 키워드 룰로 결정
+
+**부수 결정**: `esoteric_east_asia` school 값 신설 (한국 5자 진언 등 비-일본 동아시아 밀교, `shingon` 과 분리).
+
+**결과**:
+
+| | 기존 | Phase 3 후 |
+|---|---|---|
+| concepts.yml entry | 69 | **96** |
+| verified=True | 67 | **94** |
+| keywords.parquet resolve 율 | 12.4% | **14.3%** (+59 rows) |
+
+→ 상세는 [`DECISIONS.md`](./DECISIONS.md) Decision-12, Decision-17 참조.
 
 ### Phase 4 이후 (계획)
 
@@ -171,8 +191,9 @@ $PY evaluation/labeling/backfill_concepts_metadata.py              # 실 저장
 $PY evaluation/labeling/audit_keyword_coverage.py
 ls evaluation/output/keyword_audit.csv
 
-# 4. (대기) Phase 3 신규 entry 추가
-#    DECISIONS.md 의 Decision-12 목록을 backfill 스크립트와 같은 방식으로 일괄 추가
+# 4. Phase 3 신규 entry 일괄 추가 (멱등)
+$PY evaluation/labeling/add_phase3_entries.py --dry-run    # 미리 확인
+$PY evaluation/labeling/add_phase3_entries.py              # 실 저장 (27 entries)
 
 # 5. (미구현) Phase 4 라벨링
 # $PY evaluation/labeling/pipeline.py
@@ -198,6 +219,7 @@ evaluation/
 ├── labeling/
 │   ├── backfill_concepts_metadata.py   Phase 1 — 사전 메타필드 backfill (멱등)
 │   ├── audit_keyword_coverage.py       Phase 2 — 키워드 등장 빈도 감사
+│   ├── add_phase3_entries.py           Phase 3 — 신규 27 entry 일괄 추가 (멱등)
 │   └── (pipeline.py — 미구현)          Phase 4 — 라벨링 파이프라인
 ├── pages/
 │   ├── 1_커버리지.py                   (스캐폴드) 축 1 시각화

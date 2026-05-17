@@ -47,6 +47,7 @@ evaluation/
 ├── labeling/
 │   ├── backfill_concepts_metadata.py   Phase 1 — 사전 메타필드 backfill (멱등)
 │   ├── audit_keyword_coverage.py       Phase 2 — 키워드 등장 빈도 감사
+│   ├── add_phase3_entries.py           Phase 3 — 신규 27 entry 일괄 추가 (멱등)
 │   └── (pipeline.py — 미구현)          Phase 4 — 라벨링 파이프라인
 ├── pages/
 │   ├── 1_커버리지.py                   (스캐폴드) 축 1
@@ -66,6 +67,9 @@ $PY evaluation/labeling/backfill_concepts_metadata.py
 
 # 키워드 등장 빈도 감사 → CSV
 $PY evaluation/labeling/audit_keyword_coverage.py
+
+# Phase 3 신규 27 entry 일괄 추가 (멱등)
+$PY evaluation/labeling/add_phase3_entries.py
 
 # (미구현) 라벨링 파이프라인
 # $PY evaluation/labeling/pipeline.py
@@ -105,7 +109,7 @@ $PY evaluation/labeling/audit_keyword_coverage.py
 | 0. 분류 체계 설계 (8축 합의 + 17개 세부 결정) | ✅ |
 | 1. 사전 스키마 확장 + 69 entry backfill | ✅ |
 | 2. 키워드 등장 빈도 감사 | ✅ |
-| 3. 신규 ~24 entry 추가 (Q1c·Q2c 적용, Q3 contextual) | ⏸ 대기 |
+| 3. 신규 27 entry 추가 (Q1c·Q2c 적용, Q3 contextual) — 커버리지 12.4% → 14.3% | ✅ |
 | 4. 라벨링 파이프라인 | 🚫 |
 | 5. 검수 표본 추출 | 🚫 |
 | 6. Streamlit 시각화 페이지 | 🚫 |

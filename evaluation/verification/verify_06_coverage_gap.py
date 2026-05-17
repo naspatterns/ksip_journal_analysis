@@ -32,7 +32,14 @@ def main() -> int:
     out_dir = ensure_output_dir()
 
     ksip.normalize.load_authority.cache_clear()
-    auth = load_authority("concepts", include_unverified=True)
+    # build_data.py 와 동일 모드: verified=True 만 사용
+    auth = load_authority("concepts", include_unverified=False)
+    auth_with_unverified = load_authority("concepts", include_unverified=True)
+    n_unverified_gap = len(auth_with_unverified.records) - len(auth.records)
+    if n_unverified_gap > 0:
+        run.info("unverified_entries",
+                 f"verified=False entry {n_unverified_gap}개 — 분석에 미적용 (의도)",
+                 n_affected=n_unverified_gap)
 
     kw = pd.read_parquet(KEYWORDS_PARQUET)
     papers = pd.read_parquet(PAPERS_PARQUET)

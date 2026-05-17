@@ -41,3 +41,4 @@ evaluation/output/**/*.xml
 
 # KCI API key files
 KCI_OpenAPI_Key*.txt
+data/raw

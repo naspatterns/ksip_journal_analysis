@@ -1,13 +1,13 @@
-# 무결성 검증 결과 — 2026-05-17 23:54
+# 무결성 검증 결과 — 2026-05-18 00:01
 
 관련 문서: [`VERIFICATION_PLAN.md`](../../docs/VERIFICATION_PLAN.md), [`ISSUES.md`](../../docs/ISSUES.md)
 
 ## 전체 판정: **WARN**
 
 - FATAL: 0
-- WARN: 7
-- INFO: 27
-- PASS: 58
+- WARN: 6
+- INFO: 28
+- PASS: 59
 
 ## 레이어별
 
@@ -18,7 +18,7 @@
 | L4 | Cross-parquet 논문ID 무결성 | **PASS** | 0 | 0 | 2 | 8 | `verify_03_referential.csv` |
 | L5 | 클리닝 (119/297/14) | **PASS** | 0 | 0 | 1 | 8 | `verify_04_cleaning.csv` |
 | L6 | Dictionary 일관성 | **WARN** | 0 | 4 | 2 | 23 | `verify_05_dictionary.csv` |
-| L7 | Coverage gap (substring vs exact) | **WARN** | 0 | 2 | 3 | 0 | `verify_06_coverage_gap.csv` |
+| L7 | Coverage gap (substring vs exact) | **WARN** | 0 | 1 | 4 | 1 | `verify_06_coverage_gap.csv` |
 | L8 | Reference 파싱 (7유형, 자기인용) | **PASS** | 0 | 0 | 5 | 4 | `verify_07_references.csv` |
 | L9 | 기관 부모(rollup) | **PASS** | 0 | 0 | 3 | 2 | `verify_08_institutions.csv` |
 | L10 | KCI API spot-check 30편 | **PASS** | 0 | 0 | 0 | 0 | `verify_09_kci_spotcheck.csv` |
@@ -30,7 +30,6 @@
 - **[WARN]** L6 `concepts_inter_surface_dup` — concepts.yml: 여러 entry 가 공유하는 surface 5건 — normalize.py 는 last-wins. 예: [('dharmakirti', ['dharmakirti', 'dharmakirti']), ('dignaga', ['dignaga', 'dignaga']), ('나가르주나', ['nagarjuna', 'nagarjuna'])]
 - **[WARN]** L6 `journals_intra_surface_dup` — journals.yml: entry 내 surface_forms 중복 2건
 - **[WARN]** L6 `journals_inter_surface_dup` — journals.yml: 여러 entry 가 공유하는 surface 3건 — normalize.py 는 last-wins. 예: [('印度學佛敎學硏究', ['jibs_japan', 'jibs_japan']), ('佛敎學硏究', ['bukkyogaku_kenkyu', 'buddhist_studies_research']), ('annual report of the international research institute for advanced buddhology', ['arir_iab', 'arir_iab'])]
-- **[WARN]** L7 `coverage_drift` — 기존 build 384 vs 현재 455 차이 — 사전 변경 후 build_data 재실행 필요할 수 있음
 - **[WARN]** L7 `substring_exact_gap` — substring > exact gap 큰 entry TOP 30 → verify_06_coverage_gap_substring_vs_exact.csv. surface_forms 확장 필요. 예: [('yoga', 56), ('vijnanavada', 29), ('prajna', 19)]
 
 ## 산출 CSV (영향분 detail)

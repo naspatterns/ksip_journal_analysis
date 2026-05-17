@@ -128,7 +128,7 @@
 | 분류 | WARN |
 | 발견 | L7 (verify_06_coverage_gap) |
 | 발견일 | 2026-05-17 |
-| 상태 | OPEN |
+| 상태 | **RESOLVED** |
 | 영향 | `keywords.parquet.canonical_id` 컬럼의 stale 상태 |
 
 **현상**: `keywords.parquet` 의 `canonical_id` 컬럼은 build 시점 사전 (69 entry) 으로 채워졌는데, Phase 3 후 사전이 96 entry 로 확장됨. 현재 사전으로 재 resolve 시 455 (vs 기존 384 — 차이 71). 데이터 자체는 무손실, 단지 stale.
@@ -136,6 +136,20 @@
 **원인**: `scripts/build_data.py` 가 사전 변경 후 자동 재실행되지 않음.
 
 **해소 방안**: Phase 3 후 `build_data.py` 한 번 재실행해서 `keywords.parquet` 의 `canonical_id` 컬럼을 새 사전 기준으로 갱신. Phase 4 라벨링 파이프라인 착수 전 필수.
+
+**완료** (2026-05-18):
+
+1. `data/raw/` 를 메인 프로젝트로 symlink (워크트리에는 raw 데이터 부재)
+2. `.venv/bin/python scripts/build_data.py` 재실행
+3. 결과:
+   - keywords.parquet: 384 → **443** resolved (14.3%) — Phase 3 entry 59건 신규 매칭
+   - papers/authors/references: bit-for-bit 동일 (변경 없음)
+4. verify_06_coverage_gap.py 보강: `include_unverified=False` (build 와 동일 모드) → drift 0
+5. 검증 재실행: L7 PASS (coverage_drift), 마스터 WARN 7 → 6
+
+**부수 발견**: verify_06 의 원래 측정은 `include_unverified=True` 라 verified-only build 와 12 row 차이가 났음. 이는 upanishad·meditation 두 unverified entry 의 surface (각 6 row). CLAUDE.md 의 "verified=false 항목은 분석에 자동 적용 안 됨" 원칙대로, build 와 검증 모두 verified-only 가 표준.
+
+**커밋**: (이번 커밋)
 
 ---
 

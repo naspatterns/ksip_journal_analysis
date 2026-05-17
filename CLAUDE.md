@@ -296,3 +296,47 @@ Streamlit의 `st.plotly_chart(on_select="rerun")` 은 selection 상태가 리렌
 - ❌ 옛 `data_utils.py / visualize.py` 의 함수 import (폐기 코드, 어디서도 안 씀)
 - ❌ `pages/__init__.py` 생성 (Streamlit 페이지 자동 디스커버리 깨짐)
 - ❌ Crossref/OpenAlex/RISS/DBpia API 시도 (인도철학 커버리지 약함, 검증 완료)
+- ❌ 인접 학술지를 자의적으로 선정 (반드시 사용자 사전 문의 — 평가 프로젝트 운영 규칙)
+
+---
+
+## 13. evaluation/ — 학술지 평가 서브프로젝트
+
+기존 대시보드와 분리된 별도 Streamlit 프로젝트 (`evaluation/`). 학술지를 8개 축으로 통합 평가. **이 폴더에 처음 들어오면 `evaluation/README.md` → `evaluation/docs/PIPELINE.md` 순서로 읽을 것.**
+
+### 13.1 진행 단계
+
+| Phase | 내용 | 상태 |
+|---|---|---|
+| 0. 분류 체계 설계 | 8축 합의 + 17개 세부 결정 (다중라벨, 4축 직교: school × era × source_language × reception_horizon) | ✅ |
+| 1. 사전 스키마 확장 | `concepts.yml` 의 69 entry 에 신규 4필드 backfill. 옛 free-form `era` → `century` rename | ✅ |
+| 2. 키워드 등장 빈도 감사 | 후보 ~85개를 keywords/제목에서 substring 매칭 → INCLUDE/MARGINAL/SKIP 판정 | ✅ |
+| 3. 신규 ~24 entry 추가 (Phase 2 통과분, Q1c·Q2c·Q3 contextual 적용) | ⏸ 대기 |
+| 4. 라벨링 파이프라인 (사전 1차 → BERTopic → contextual disambiguation → 다수결 집계) | 🚫 |
+| 5. 검수 표본 (랜덤 50 + 신뢰도 하위 50) | 🚫 |
+| 6. Streamlit 시각화 (커버리지 streamgraph + entropy / 학제경계 reception 비율) | 🚫 |
+
+### 13.2 핵심 결정 (전체는 `evaluation/docs/DECISIONS.md`)
+
+- **4축 직교 라벨**: `school` (사상 학파) × `era` (시대 bucket) × `source_language` (자료 언어) × `reception_horizon` (다뤄진 지평).
+- **축 6 측정 정의**: `reception_horizon == "india"` 비율 = "인도철학 비중". 한역·티베트역 자료라도 사상 *원천* 이 인도면 india.
+- **다중 라벨**: 주 1 + 부 N.
+- **yoga era 필수**: classical / post_classical (하타) / modern.
+- **chan 3국 통합** (지역은 reception 으로 구분), **nyaya/vaisheshika/pramana 별도**, **vedanta 단일**.
+- **Q1 (구마라집)**: `school=madhyamaka, reception=east_asia`.
+- **Q2 (대승기신론)**: `school=east_asian_other`.
+- **Q3 (법화경류 모호 텍스트)**: 사전 단정 회피 → 공출현 키워드 contextual rule 로 Phase 4 에서 처리.
+- **신규 entry 추가 원칙**: 키워드 감사에서 빈도 ≥ 1 인 것만. 親鸞·道元·空海·법장·혜능 등 빈도 0 후보는 제외.
+
+### 13.3 산출 데이터
+
+- `data/dictionaries/concepts.yml` — 신규 4필드 (school/era/source_language/reception_horizon) + 옛 era → century rename. (전체 본 프로젝트가 공유)
+- `evaluation/output/keyword_audit.csv` — 키워드 등장 빈도 감사 결과 (멱등 재실행 가능)
+
+### 13.4 운영 규칙
+
+- 인접 학술지 비교 시 **반드시 사용자 사전 문의**. 자의적 선정 금지.
+- 라벨링 정확도 목표 80% → 시각화 → 시간 남으면 환류.
+- 모호 텍스트의 학파는 사전이 아닌 라벨링 파이프라인에서 contextual 결정.
+- ruamel.yaml 의존 (`backfill_concepts_metadata.py`).
+- evaluation/ 의 변경이 기존 대시보드 코드를 깨지 않음 (사전 신규 필드는 `extras` 로 흘러들어가 무시됨).

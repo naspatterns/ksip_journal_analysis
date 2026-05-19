@@ -32,10 +32,10 @@ CONCEPTS_PATH = ROOT / "data" / "dictionaries" / "concepts.yml"
 # ============================================================
 
 def E(canonical_id, canonical_kr, type_, school, era,
-      source_language, reception_horizon,
+      tradition_language, reception_horizon,
       surface_forms, *, canonical_iast=None, canonical_zh=None,
       century=None, notes=None, verified=True) -> dict:
-    """entry 생성 헬퍼 — 키 순서 안정화."""
+    """entry 생성 헬퍼 — 키 순서 안정화. (Decision-18 후 source_language → tradition_language)"""
     d = {
         "canonical_id": canonical_id,
         "canonical_kr": canonical_kr,
@@ -45,7 +45,7 @@ def E(canonical_id, canonical_kr, type_, school, era,
     d["type"] = type_
     d["school"] = school
     d["era"] = era
-    d["source_language"] = source_language
+    d["tradition_language"] = tradition_language
     d["reception_horizon"] = reception_horizon
     if century: d["century"] = century
     d["surface_forms"] = list(surface_forms)
@@ -227,12 +227,12 @@ NEW_ENTRIES: list[dict] = [
     E("chinese_buddhist_canon", "한역 자료 / 대장경", "개념", "comparative", "transversal",
       "chinese", "mixed",
       ["한역", "한역(漢譯)", "대장경", "高麗大藏經", "Taishō", "Taisho"],
-      notes="자료 언어 표지. 한역 자료를 사용한 연구에 source_language=chinese 추론을 위해 추가."),
+      notes="자료 언어 표지 (사전 entry 자체의 tradition_language=chinese). paper-level primary_source_basis=chinese_canon 추론에 활용."),
 
     E("tibetan_canon", "티베트역 자료 / 깡규르 텡규르", "개념", "comparative", "transversal",
       "tibetan", "mixed",
       ["티벳 사본", "티베트역", "티벳어 번역", "서장어", "Kangyur", "Tengyur", "bKa' 'gyur", "bsTan 'gyur"],
-      notes="자료 언어 표지. 티베트역 자료를 사용한 연구에 source_language=tibetan 추론."),
+      notes="자료 언어 표지 (사전 entry 자체의 tradition_language=tibetan). paper-level primary_source_basis=tibetan_canon 추론에 활용."),
 
     E("dunhuang", "돈황 사본", "개념", "comparative", "transversal",
       "mixed", "east_asia",

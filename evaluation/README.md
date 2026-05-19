@@ -92,12 +92,14 @@ $PY evaluation/labeling/add_phase3_entries.py
 
 논문 1편당 다중 라벨 (주 1 + 부 N):
 
-| 변수 | 값 예시 | 의미 |
-|---|---|---|
-| `primary_school` | yogacara / madhyamaka / vedanta / huayan / chan / gelug … | 다루는 사상 |
-| `era` | vedic / upanishadic_sutra / classical / post_classical / late / modern / transversal | 사상 시대 |
-| `source_language` | sanskrit / pali / chinese / tibetan / modern_korean / mixed | 자료 언어 |
-| `reception_horizon` | india / east_asia / tibet / korea / west / mixed | 사상이 다뤄진 지평 |
+| 변수 | 레벨 | 값 예시 | 의미 |
+|---|---|---|---|
+| `primary_school` | concept→paper | yogacara / madhyamaka / vedanta / huayan / chan / gelug … | 다루는 사상 |
+| `era` | concept→paper | vedic / upanishadic_sutra / classical / post_classical / late / modern / transversal | 사상 시대 |
+| `tradition_language` | concept-level | sanskrit / pali / chinese / tibetan / modern_korean / mixed | 사상의 원천 언어 (옛 `source_language` rename, Decision-18) |
+| `reception_horizon` | concept→paper | india / east_asia / tibet / korea / west / mixed | 사상이 형성·전개된 지평 |
+| `primary_source_basis` ⭐ | paper-level | sanskrit / pali / chinese_canon / tibetan_canon / mixed / unknown | 이 논문이 어떤 일차문헌(원전) 에 기반? |
+| `secondary_source_horizon` ⭐ | paper-level | korean / japanese / english / german / french / mixed / unknown | 이 논문이 어느 학계 영향? |
 
 축 6 (학제 경계) 측정: **`reception_horizon == india`** 비율 = "인도철학 비중".
 

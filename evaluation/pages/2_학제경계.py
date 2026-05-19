@@ -19,6 +19,6 @@ st.info(
     "🔨 **TODO** — 라벨링 파이프라인 완료 후 다음을 시각화:\n\n"
     "1. `reception_horizon` 도넛 (india / east_asia / tibet / korea / west)\n"
     "2. 시간 추이: 동아시아·티베트 비중 변화\n"
-    "3. 인도(reception=india) 안에서 source_language 분포 — 한역·티베트역 자료 기반 인도 사상 연구의 비율\n"
+    "3. 인도(reception=india) 안에서 primary_source_basis 분포 — 한역·티베트역 자료 기반 인도 사상 연구의 비율 (Decision-18 후 paper-level)\n"
     "4. 경계 사례 표 — 인도/동아시아 모호 논문 수동 검토 대상"
 )

@@ -13,7 +13,7 @@
 # ── 분류 체계 메타 (evaluation 프로젝트, evaluation/taxonomy/SCHEMA.md 참조) ──
 # school            : primary_school 라벨 (yoga/yogacara/madhyamaka/pramana 등)
 # era               : 시대 bucket (vedic/upanishadic_sutra/classical/post_classical/late/modern/transversal)
-# source_language   : 1차 자료 언어 (sanskrit/pali/prakrit/chinese/tibetan/mixed/n/a)
+# tradition_language: 사상의 원천 언어 (sanskrit/pali/prakrit/chinese/tibetan/mixed/n/a) — 옛 `source_language` rename (Decision-18, 2026-05-20)
 # reception_horizon : 지평 (india/east_asia/tibet/korea/west/mixed)
 # century           : 자유텍스트 시대 (옛 `era:` 가 이리로 rename, 예: "7세기")
 
@@ -28,7 +28,7 @@
   type: 학자
   school: pramana
   era: post_classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   century: 7세기
   surface_forms:
@@ -50,7 +50,7 @@
   type: 학자
   school: pramana
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   century: 6세기
   surface_forms:
@@ -71,7 +71,7 @@
   type: 학자
   school: madhyamaka
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   century: 2-3세기
   surface_forms:
@@ -92,7 +92,7 @@
   type: 학자
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   century: 4-5세기
   surface_forms:
@@ -111,7 +111,7 @@
   type: 학자
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   century: 4세기
   surface_forms:
@@ -130,7 +130,7 @@
   type: 학자
   school: vedanta
   era: post_classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   century: 8세기
   surface_forms:
@@ -151,7 +151,7 @@
   type: 학자
   school: yoga
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 파탄잘리
@@ -167,7 +167,7 @@
   type: 학자
   school: abhidharma
   era: classical
-  source_language: pali
+  tradition_language: pali
   reception_horizon: india
   century: 5세기
   surface_forms:
@@ -185,7 +185,7 @@
   type: 학자
   school: madhyamaka
   era: post_classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   century: 7세기
   surface_forms:
@@ -204,7 +204,7 @@
   type: 학자
   school: madhyamaka
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 바비베카
@@ -221,7 +221,7 @@
   type: 학자
   school: madhyamaka
   era: post_classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   century: 8세기
   surface_forms:
@@ -242,7 +242,7 @@
   type: 학파
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 유가행파
@@ -261,7 +261,7 @@
   type: 학파
   school: madhyamaka
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 중관학파
@@ -278,7 +278,7 @@
   type: 학파
   school: abhidharma
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 경량부
@@ -294,7 +294,7 @@
   type: 학파
   school: abhidharma
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 설일체유부
@@ -312,7 +312,7 @@
   type: 학파
   school: samkhya
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 상키야
@@ -330,7 +330,7 @@
   type: 학파
   school: vaisheshika
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 와이셰시카
@@ -347,7 +347,7 @@
   type: 학파
   school: nyaya
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 니야야
@@ -363,7 +363,7 @@
   type: 학파
   school: vedanta
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 베단타
@@ -379,7 +379,7 @@
   type: 학파
   school: vedanta
   era: post_classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 아드와이타 베단타
@@ -394,7 +394,7 @@
   type: 학파
   school: jainism
   era: classical
-  source_language: prakrit
+  tradition_language: prakrit
   reception_horizon: india
   surface_forms:
   - 자이나교
@@ -415,7 +415,7 @@
   type: 개념
   school: madhyamaka
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 공성
@@ -434,7 +434,7 @@
   type: 개념
   school: pramana
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 프라마나
@@ -451,7 +451,7 @@
   type: 개념
   school: pramana
   era: post_classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 자기인식
@@ -470,7 +470,7 @@
   type: 개념
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 삼성설
@@ -488,7 +488,7 @@
   type: 개념
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 여래장
@@ -504,7 +504,7 @@
   type: 개념
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 알라야식
@@ -523,7 +523,7 @@
   type: 개념
   school: madhyamaka
   era: upanishadic_sutra
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 연기
@@ -540,7 +540,7 @@
   type: 개념
   school: madhyamaka
   era: upanishadic_sutra
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 무아
@@ -556,7 +556,7 @@
   type: 개념
   school: vedanta
   era: upanishadic_sutra
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 아트만
@@ -573,7 +573,7 @@
   type: 개념
   school: vedanta
   era: transversal
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 업
@@ -590,7 +590,7 @@
   type: 개념
   school: vedanta
   era: transversal
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 해탈
@@ -606,7 +606,7 @@
   type: 개념
   school: yoga
   era: transversal
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 요가
@@ -621,7 +621,7 @@
   type: 개념
   school: madhyamaka
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 반야
@@ -637,7 +637,7 @@
   type: 개념
   school: madhyamaka
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 사구분별
@@ -654,7 +654,7 @@
   type: 개념
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 유식
@@ -669,7 +669,7 @@
   type: 개념
   school: pramana
   era: post_classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 아포하
@@ -690,7 +690,7 @@
   type: 원전
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 유가사지론
@@ -707,7 +707,7 @@
   type: 원전
   school: madhyamaka
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 중론
@@ -725,7 +725,7 @@
   type: 원전
   school: pramana
   era: post_classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 양평석
@@ -742,7 +742,7 @@
   type: 원전
   school: pramana
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 집량론
@@ -758,7 +758,7 @@
   type: 원전
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 유식이십론
@@ -774,7 +774,7 @@
   type: 원전
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 유식삼십송
@@ -791,7 +791,7 @@
   type: 원전
   school: abhidharma
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 구사론
@@ -808,7 +808,7 @@
   type: 원전
   school: yoga
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 요가수트라
@@ -824,7 +824,7 @@
   type: 원전
   school: vedanta
   era: upanishadic_sutra
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 바가바드기타
@@ -841,7 +841,7 @@
   type: 원전
   school: vedic
   era: upanishadic_sutra
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 우파니샤드
@@ -858,7 +858,7 @@
   type: 원전
   school: vedanta
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 브라흐마수트라
@@ -878,7 +878,7 @@
   type: 학자
   school: yogacara
   era: classical
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: india
   century: 7세기
   surface_forms:
@@ -895,7 +895,7 @@
   type: 학자
   school: korean_buddhism
   era: classical
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: korea
   century: 7세기
   surface_forms:
@@ -910,7 +910,7 @@
   type: 인물
   school: hindu_modern
   era: modern
-  source_language: mixed
+  tradition_language: mixed
   reception_horizon: india
   century: 20세기
   surface_forms:
@@ -932,7 +932,7 @@
   type: 원전
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 보성론
@@ -950,7 +950,7 @@
   type: 원전
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 보살지
@@ -965,7 +965,7 @@
   type: 원전
   school: vedic
   era: vedic
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 베다
@@ -981,7 +981,7 @@
   type: 원전
   school: yoga
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 요가주
@@ -1001,7 +1001,7 @@
   type: 개념
   school: abhidharma
   era: upanishadic_sutra
-  source_language: pali
+  tradition_language: pali
   reception_horizon: india
   surface_forms:
   - 위빠사나
@@ -1020,7 +1020,7 @@
   type: 개념
   school: madhyamaka
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 자성
@@ -1037,7 +1037,7 @@
   type: 개념
   school: abhidharma
   era: upanishadic_sutra
-  source_language: pali
+  tradition_language: pali
   reception_horizon: india
   surface_forms:
   - 사띠
@@ -1056,7 +1056,7 @@
   type: 개념
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 식전변
@@ -1073,7 +1073,7 @@
   type: 개념
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 진여
@@ -1090,7 +1090,7 @@
   type: 개념
   school: madhyamaka
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 승의제
@@ -1105,7 +1105,7 @@
   type: 개념
   school: madhyamaka
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 이제설
@@ -1122,7 +1122,7 @@
   type: 개념
   school: samkhya
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 푸루샤
@@ -1137,7 +1137,7 @@
   type: 개념
   school: comparative
   era: transversal
-  source_language: n/a
+  tradition_language: n/a
   reception_horizon: india
   surface_forms:
   - 명상
@@ -1152,7 +1152,7 @@
   type: 개념
   school: vedanta
   era: transversal
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 윤회
@@ -1168,7 +1168,7 @@
   type: 학파
   school: tantric_buddhism
   era: post_classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 밀교
@@ -1186,7 +1186,7 @@
   type: 개념
   school: comparative
   era: post_classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 알람카라
@@ -1202,7 +1202,7 @@
   type: 개념
   school: yogacara
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 허망분별
@@ -1217,7 +1217,7 @@
   type: 개념
   school: comparative
   era: transversal
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 범어
@@ -1235,7 +1235,7 @@
   type: 학파
   school: mimamsa
   era: classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 미맘사
@@ -1252,7 +1252,7 @@
   type: 학파
   school: huayan
   era: classical
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: east_asia
   surface_forms:
   - 화엄
@@ -1270,7 +1270,7 @@
   type: 학파
   school: chan
   era: classical
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: east_asia
   surface_forms:
   - 선
@@ -1290,7 +1290,7 @@
   type: 학파
   school: pure_land
   era: classical
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: east_asia
   surface_forms:
   - 정토
@@ -1307,7 +1307,7 @@
   type: 학파
   school: esoteric_east_asia
   era: post_classical
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: east_asia
   surface_forms:
   - 진언
@@ -1323,7 +1323,7 @@
   type: 학파
   school: tibetan_other
   era: post_classical
-  source_language: tibetan
+  tradition_language: tibetan
   reception_horizon: tibet
   surface_forms:
   - 티베트 불교
@@ -1341,7 +1341,7 @@
   type: 학자
   school: madhyamaka
   era: post_classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   century: 8세기
   surface_forms:
@@ -1358,7 +1358,7 @@
   type: 학자
   school: tiantai
   era: classical
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: east_asia
   century: 6세기
   surface_forms:
@@ -1375,7 +1375,7 @@
   type: 학자
   school: faxiang
   era: classical
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: east_asia
   century: 7세기
   surface_forms:
@@ -1393,7 +1393,7 @@
   type: 학자
   school: madhyamaka
   era: classical
-  source_language: mixed
+  tradition_language: mixed
   reception_horizon: east_asia
   century: 4-5세기
   surface_forms:
@@ -1411,7 +1411,7 @@
   type: 학자
   school: sanlun
   era: classical
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: east_asia
   century: 6-7세기
   surface_forms:
@@ -1428,7 +1428,7 @@
   type: 학자
   school: yogacara
   era: classical
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: korea
   century: 7세기
   surface_forms:
@@ -1443,7 +1443,7 @@
   type: 학자
   school: korean_buddhism
   era: late
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: korea
   century: 13세기
   surface_forms:
@@ -1458,7 +1458,7 @@
   type: 학자
   school: gelug
   era: late
-  source_language: tibetan
+  tradition_language: tibetan
   reception_horizon: tibet
   century: 14-15세기
   surface_forms:
@@ -1477,7 +1477,7 @@
   type: 원전
   school: east_asian_other
   era: classical
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: east_asia
   surface_forms:
   - 기신론
@@ -1494,7 +1494,7 @@
   type: 원전
   school: contextual
   era: upanishadic_sutra
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: contextual
   surface_forms:
   - 화엄경
@@ -1512,7 +1512,7 @@
   type: 원전
   school: contextual
   era: upanishadic_sutra
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: contextual
   surface_forms:
   - 법화경
@@ -1530,7 +1530,7 @@
   type: 원전
   school: pure_land
   era: upanishadic_sutra
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: east_asia
   surface_forms:
   - 무량수경
@@ -1545,7 +1545,7 @@
   type: 원전
   school: pure_land
   era: upanishadic_sutra
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: east_asia
   surface_forms:
   - 아미타경
@@ -1559,7 +1559,7 @@
   type: 원전
   school: pure_land
   era: classical
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: east_asia
   surface_forms:
   - 관무량수경
@@ -1574,7 +1574,7 @@
   type: 학자
   school: hindu_modern
   era: modern
-  source_language: mixed
+  tradition_language: mixed
   reception_horizon: india
   century: 19세기
   surface_forms:
@@ -1590,7 +1590,7 @@
   type: 학자
   school: hindu_modern
   era: modern
-  source_language: mixed
+  tradition_language: mixed
   reception_horizon: india
   century: 19세기
   surface_forms:
@@ -1605,7 +1605,7 @@
   type: 학자
   school: hindu_modern
   era: modern
-  source_language: mixed
+  tradition_language: mixed
   reception_horizon: india
   century: 20세기
   surface_forms:
@@ -1622,7 +1622,7 @@
   type: 개념
   school: yoga
   era: post_classical
-  source_language: sanskrit
+  tradition_language: sanskrit
   reception_horizon: india
   surface_forms:
   - 하타 요가
@@ -1640,7 +1640,7 @@
   type: 개념
   school: comparative
   era: transversal
-  source_language: chinese
+  tradition_language: chinese
   reception_horizon: mixed
   surface_forms:
   - 한역
@@ -1650,13 +1650,13 @@
   - Taishō
   - Taisho
   verified: true
-  notes: 자료 언어 표지. 한역 자료를 사용한 연구에 source_language=chinese 추론을 위해 추가.
+  notes: 자료 언어 표지 (사전 entry 자체의 tradition_language=chinese). paper-level primary_source_basis=chinese_canon 추론에 활용.
 - canonical_id: tibetan_canon
   canonical_kr: 티베트역 자료 / 깡규르 텡규르
   type: 개념
   school: comparative
   era: transversal
-  source_language: tibetan
+  tradition_language: tibetan
   reception_horizon: mixed
   surface_forms:
   - 티벳 사본
@@ -1668,14 +1668,14 @@
   - bKa' 'gyur
   - bsTan 'gyur
   verified: true
-  notes: 자료 언어 표지. 티베트역 자료를 사용한 연구에 source_language=tibetan 추론.
+  notes: 자료 언어 표지 (사전 entry 자체의 tradition_language=tibetan). paper-level primary_source_basis=tibetan_canon 추론에 활용.
 - canonical_id: dunhuang
   canonical_kr: 돈황 사본
   canonical_zh: 敦煌
   type: 개념
   school: comparative
   era: transversal
-  source_language: mixed
+  tradition_language: mixed
   reception_horizon: east_asia
   surface_forms:
   - 돈황

@@ -1,4 +1,4 @@
-# 무결성 검증 결과 — 2026-05-20 01:58
+# 무결성 검증 결과 — 2026-05-20 02:57
 
 관련 문서: [`VERIFICATION_PLAN.md`](../../docs/VERIFICATION_PLAN.md), [`ISSUES.md`](../../docs/ISSUES.md)
 

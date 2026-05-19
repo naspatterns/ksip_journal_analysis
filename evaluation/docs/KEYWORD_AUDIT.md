@@ -93,7 +93,7 @@
 |---|---|---|
 | 사본 | 17+8 | 사본학 방법론이 학술지의 한 흐름 |
 | 돈황 | 5+5 | 동아시아 자료 + 인도불교 한역의 핵심 |
-| 한역 | 3+4 | `source_language=chinese` 추론에 활용 |
+| 한역 | 3+4 | `tradition_language=chinese` 표지 (Decision-18 후) / 논문 paper-level `primary_source_basis=chinese_canon` 추론에 활용 |
 | 위빠사나 | 8+2 | 빠알리 불교 명상 — abhidharma + pali source |
 | bhakti | 0+4 (제목에만) | 박티 운동 — `school=hindu_modern` 의 신호 |
 

@@ -4,7 +4,7 @@
 - 모든 entry 가 unique canonical_id
 - entry 내 surface_forms 중복 없음
 - entry 간 중복 surface (last-wins 의도? 사고?)
-- school/era/source_language/reception_horizon 값이 SCHEMA enum 안
+- school/era/tradition_language/reception_horizon 값이 SCHEMA enum 안
 - verified=true entry 가 모든 분류 메타필드 보유
 - Phase 3 신규 27 entry 가 모두 로드
 - contextual school 값이 의도한 entry 에만 부착 (Q3 룰)
@@ -44,8 +44,8 @@ SCHOOL_VALUES = {
 ERA_VALUES = {"vedic", "upanishadic_sutra", "classical", "post_classical",
               "late", "modern", "transversal"}
 
-SOURCE_LANG_VALUES = {"sanskrit", "pali", "prakrit", "chinese", "tibetan",
-                      "modern_korean", "mixed", "n/a"}
+TRADITION_LANG_VALUES = {"sanskrit", "pali", "prakrit", "chinese", "tibetan",
+                         "modern_korean", "mixed", "n/a"}
 
 RECEPTION_VALUES = {"india", "east_asia", "tibet", "korea", "west", "mixed",
                     "contextual"}
@@ -169,7 +169,7 @@ def main() -> int:
         cid = e.get("canonical_id")
         school = e.get("school")
         era = e.get("era")
-        src = e.get("source_language")
+        src = e.get("tradition_language")
         rec = e.get("reception_horizon")
 
         if not school: bad_school += 1
@@ -179,7 +179,7 @@ def main() -> int:
         elif era not in ERA_VALUES:
             era_enum_violations.append((cid, era))
         if not src: bad_src += 1
-        elif src not in SOURCE_LANG_VALUES:
+        elif src not in TRADITION_LANG_VALUES:
             src_enum_violations.append((cid, src))
         if not rec: bad_rec += 1
         elif rec not in RECEPTION_VALUES:
@@ -190,7 +190,7 @@ def main() -> int:
             contextual_unexpected.append(cid)
 
     for fld, missing in [("school", bad_school), ("era", bad_era),
-                         ("source_language", bad_src),
+                         ("tradition_language", bad_src),
                          ("reception_horizon", bad_rec)]:
         if missing:
             run.warn(f"verified_missing_{fld}",
@@ -203,7 +203,7 @@ def main() -> int:
     for fld, viol, enum_name in [
         ("school", school_enum_violations, "SCHOOL_VALUES"),
         ("era", era_enum_violations, "ERA_VALUES"),
-        ("source_language", src_enum_violations, "SOURCE_LANG_VALUES"),
+        ("tradition_language", src_enum_violations, "TRADITION_LANG_VALUES"),
         ("reception_horizon", rec_enum_violations, "RECEPTION_VALUES"),
     ]:
         if viol:

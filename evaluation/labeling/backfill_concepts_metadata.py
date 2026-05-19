@@ -3,7 +3,7 @@
 추가 필드 (SCHEMA.md 기준):
 - school              : primary_school 라벨 (yoga/yogacara/madhyamaka 등)
 - era                 : 분류 시대 (classical/post_classical 등)
-- source_language     : 1차 자료 언어 (sanskrit/pali/chinese/tibetan 등)
+- tradition_language  : 사상의 원천 언어 (sanskrit/pali/chinese/tibetan 등) — Decision-18 후 rename
 - reception_horizon   : 지평 (india/east_asia/tibet/korea/west)
 
 기존 free-form `era: 7세기` 같은 필드는 `century:` 로 rename (충돌 회피).
@@ -25,7 +25,7 @@ CONCEPTS_PATH = ROOT / "data" / "dictionaries" / "concepts.yml"
 
 
 # ============================================================
-# 메타데이터 매핑 — canonical_id → (school, era, source_language, reception_horizon)
+# 메타데이터 매핑 — canonical_id → (school, era, tradition_language, reception_horizon)
 # 보수적으로: 다중 학파 후보 시 가장 대표적인 1개. 검수 단계에서 보강 가능.
 # ============================================================
 
@@ -159,7 +159,7 @@ def backfill(dry_run: bool = False) -> None:
         _insert_after_key(entry, "type",
                           [("school", school),
                            ("era", era),
-                           ("source_language", source_lang),
+                           ("tradition_language", source_lang),
                            ("reception_horizon", reception)])
         n_updated += 1
 

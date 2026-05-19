@@ -49,7 +49,9 @@ st.markdown(
 
 - **`primary_school`** — 다루는 사상의 학파 (유식·중관·베단타·화엄·겔룩 등 13~15개)
 - **`era`** — 사상 시대 (베다·고전기·후고전기·근현대 등 6구간)
-- **`source_language`** — 1차 자료 언어 (sanskrit·pali·chinese·tibetan)
+- **`tradition_language`** — 사상의 원천 언어 (sanskrit·pali·chinese·tibetan) — concept-level
+- **`primary_source_basis`** — 일차문헌 기반 (paper-level, references 에서 계산)
+- **`secondary_source_horizon`** — 이차문헌 학계 horizon (paper-level, references 에서 계산)
 - **`reception_horizon`** — 사상 지평 (india·east_asia·tibet·korea·west)
     - 축 6 의 핵심 변수: `reception_horizon == 'india'` 가 인도철학
 

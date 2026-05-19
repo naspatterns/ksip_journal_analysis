@@ -55,8 +55,8 @@
 
 **핵심 설계 결정** (전체 로그는 `DECISIONS.md`):
 
-- **분류 4축**: `school` / `era` / `source_language` / `reception_horizon`
-- **2축 라벨** (A2): `source_language` 와 `reception_horizon` 직교 — 한역 자료(`source=chinese`) 라도 사상이 인도면 `reception=india` → **인도철학**
+- **분류 6축** (Phase 0 시점엔 4축; Decision-18 으로 6축 확장): `school` / `era` / `tradition_language` / `reception_horizon` + paper-level **`primary_source_basis`** / **`secondary_source_horizon`**
+- **2축 라벨** (A2): `tradition_language` (옛 source_language) 와 `reception_horizon` 직교 — 한역 자료(`tradition=chinese`) 라도 사상이 인도면 `reception=india` → **인도철학**
 - **다중 라벨** (A5): 주 1 + 부 N
 - **요가 학파 era 필수**: classical / post_classical / modern 분리
 - **chan 3국 통합**: 중·한·일 선종은 `school=chan`, 지역은 `reception_horizon` 으로
@@ -73,7 +73,7 @@
   # ── 신규 ──
   school: pramana
   era: post_classical              # 분류 bucket
-  source_language: sanskrit
+  tradition_language: sanskrit     # Phase 1 시점엔 `source_language`, Phase 4.2 에서 rename (Decision-18)
   reception_horizon: india
   century: 7세기                   # ← 옛 free-form `era` 이리로 rename
   surface_forms: [...]
@@ -97,7 +97,7 @@
 |---|---|
 | `school` | yogacara 16 / madhyamaka 14 / vedanta 9 / pramana 7 / abhidharma 6 / yoga 4 / comparative 3 / samkhya 2 / vedic 2 / 나머지 6종 각 1 |
 | `era` | classical 44 / post_classical 10 / upanishadic_sutra 7 / transversal 6 / modern 1 / vedic 1 |
-| `source_language` | sanskrit 61 / pali 3 / chinese 2 / 나머지 3종 각 1 |
+| `tradition_language` (옛 source_language) | sanskrit 64 / chinese 18 / mixed 6 / pali 3 / tibetan 3 / prakrit 1 / n/a 1 — Phase 3 후 + Phase 4.2 rename 후 96 entry 기준 |
 | `reception_horizon` | india 68 / korea 1 (원효) |
 
 → 사전이 **인도 본토 + 산스크리트 + 고전기 + 유식·중관 중심**.

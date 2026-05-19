@@ -11,11 +11,11 @@
 
 ---
 
-## 마지막 갱신: 2026-05-20 (Phase 4.2 + 4.3 완료 직후)
+## 마지막 갱신: 2026-05-20 (Phase 4 전체 완료 직후)
 
 ### 현재 위치 (한 줄 요약)
 
-> Phase 4.1-4.3 완료. concepts.yml 96 entry rename 됨, references.parquet 의 `tier` 컬럼 분류됨 (primary 2,059 / secondary 10,592 / unknown 236). 다음은 **Phase 4.4 — paper-level 두 변수 계산** (`primary_source_basis` + `secondary_source_horizon`).
+> **Phase 4 완료** — 6축 변수 계산 끝. 사전·tier 분류·paper-level 두 변수 모두 산출됨. 다음은 **Phase 5 (검수 표본)** 또는 **Phase 6 (시각화)**.
 
 ### Phase 진행도
 
@@ -28,11 +28,11 @@
 | — | 데이터 무결성 검증 10 레이어 (WARN=6) | ✅ |
 | — | ISSUE-005 해소 (keywords.parquet 384→443 canonical) | ✅ |
 | — | **Decision-18 확정** (4축 → **6축**, 일차/이차문헌 분리) | ✅ |
-| **4.1** | 문서 갱신 (SCHEMA·DECISIONS·ISSUES·SESSION_STATE) | ✅ |
-| **4.2** | `concepts.yml` 96 entry source_language → tradition_language rename | ✅ |
-| **4.3** | references.parquet 의 `tier` 컬럼 분류 (primary 2,059 / secondary 10,592 / unknown 236) | ✅ |
-| **4.4** | **paper-level 두 변수 계산** (`primary_source_basis` + `secondary_source_horizon`) | ⏳ **next** |
-| 5 | 검수 표본 (랜덤 50 + 신뢰도 하위 50) → 사전 환류 | ⏸ |
+| 4.1 | 문서 갱신 (SCHEMA·DECISIONS·ISSUES·SESSION_STATE) | ✅ |
+| 4.2 | `concepts.yml` 96 entry source_language → tradition_language rename | ✅ |
+| 4.3 | references.parquet 의 `tier` 컬럼 분류 | ✅ |
+| **4.4** | **paper-level 두 변수 계산** (`paper_labels.parquet` 신규) | ✅ |
+| 5 | 검수 표본 (랜덤 50 + 신뢰도 하위 50) → 사전 환류 | ⏳ **next** |
 | 6 | Streamlit 시각화 (커버리지 + 학제 경계 + 의존도) | ⏸ |
 | — | (사후) 축 3/4/5/7/8 확장 — 축 1+2+6 까지가 1차 범위 | 🚫 |
 
@@ -49,7 +49,49 @@
 | 보고서 | 0 | 41 | 0 | 41 |
 | **합계** | **2,059** | **10,592** | **236** | **12,887** |
 
-자기인용 312건 모두 secondary ✓. unknown 236건 (기관명 39 + 인터넷자원 회색 197) 은 의도된 보수적 처리.
+자기인용 312건 모두 secondary ✓.
+
+### Phase 4.4 결과 — paper-level 두 변수 (636 논문)
+
+`primary_source_basis` 분포:
+
+| 값 | 논문 수 | 비고 |
+|---|---:|---|
+| unknown | 320 | 154 (refs 없음) + 166 (refs 있지만 primary tier 0건) |
+| sanskrit | 219 | 산스크리트 원전 중심 — 인도철학 본류 |
+| chinese_canon | 51 | 한역 자료 중심 (동아시아 불교) |
+| pali | 24 | 빠알리 원전 중심 (남방불교) |
+| mixed | 19 | 다언어 비교 |
+| tibetan_canon | 3 | 티베트 자료 중심 (소수) |
+
+`secondary_source_horizon` 분포:
+
+| 값 | 논문 수 |
+|---|---:|
+| english | 272 |
+| unknown | 155 |
+| korean | 118 |
+| japanese | 47 |
+| mixed | 44 |
+
+**Cross-tab (의존도 패턴 — Phase 6 시각화 핵심)**:
+
+| primary \ secondary | english | japanese | korean | mixed | unknown | 합계 |
+|---|---:|---:|---:|---:|---:|---:|
+| sanskrit | 130 | 25 | 36 | 27 | 1 | 219 |
+| chinese_canon | 16 | 9 | **20** | 6 | 0 | 51 |
+| pali | 11 | 0 | 10 | 3 | 0 | 24 |
+| mixed | 16 | 1 | 2 | 0 | 0 | 19 |
+| tibetan_canon | 1 | 2 | 0 | 0 | 0 | 3 |
+| unknown | 98 | 10 | 50 | 8 | 154 | 320 |
+
+**해석 가능한 패턴**:
+- `sanskrit + english` (130) — 서구 산스크리트학(Indology) 의존 패턴
+- `sanskrit + korean` (36) — 한국 산스크리트학 자립
+- `chinese_canon + korean` (20) — 가장 "한국적" 패턴 (한역불교학)
+- `pali + english` (11) — 서구 팔리학(PTS) 영향
+- `tibetan_canon + japanese` (2) — 일본 티베트학 (강세 학계)
+- `unknown + korean` (50) — references 있지만 일차문헌 0 = 학설사·해설 위주 논문
 
 ---
 
@@ -65,7 +107,8 @@
 
 ```
 branch: claude/festive-elgamal-1dd4b3  (origin 에 push 됨, main 으로 머지 X — 별도 트랙)
-HEAD:   (이번 커밋) — Phase 4.2 + 4.3: concepts.yml rename + references tier 분류
+HEAD:   (이번 커밋) — Phase 4.4: paper-level 두 변수 계산 (paper_labels.parquet)
+이전:   998d52e — Phase 4.2 + 4.3: concepts.yml rename + references tier 분류
 이전:   b3d7fc9 — Phase 4.1: 문서 갱신 (Decision-18 확정 반영)
 이전:   18c78fc — session: 멀티 컴퓨터 portable 환경
 ```
@@ -119,20 +162,23 @@ HEAD:   (이번 커밋) — Phase 4.2 + 4.3: concepts.yml rename + references ti
    cat evaluation/docs/SESSION_STATE.md
    ```
 
-2. **Phase 4.4 — paper-level 두 변수 계산** (Phase 4.3 까지 완료, 이게 next):
-   - `evaluation/labeling/detect_language.py` 신규 — Unicode 휴리스틱 (Hangul/Kana/Hanja/Latin/Tibetan/Devanagari) + journals.yml publisher 메타 결합
-   - `evaluation/labeling/compute_paper_source.py` 신규 — references 의 tier × language 를 paper 단위로 집계
-   - 산출: 별도 `paper_labels.parquet` (논문ID × {primary_source_basis, secondary_source_horizon, 비율 벡터})
-   - 154편 (references 없음) → 두 변수 모두 `unknown`
-   - 검증: verify_all 회귀 점검 + 분포 sanity check
-
-3. **Phase 5 — 검수 표본**:
+2. **Phase 5 — 검수 표본** (next, 우선):
    - 무작위 50 + 신뢰도 하위 50 → 사용자 검수
-   - 사전·룰 환류
+   - 신뢰도 하위 = paper_labels 의 분포에서 plurality 가 약한 (mixed 잡힘) 논문 + 단일 ref 만 가진 paper 등
+   - 검수 결과 → 사전·룰 환류 (concepts.yml surface 추가, 룰 보강 등)
+   - 회귀: 환류 후 verify_all + compute_paper_source 재실행
 
-4. **Phase 6 — Streamlit 시각화**:
+3. **Phase 6 — Streamlit 시각화**:
    - evaluation/app.py + pages/1_커버리지.py + pages/2_학제경계.py 에 6축 통합
-   - 추가 page: 의존도 (primary_source_basis × secondary_source_horizon 분포)
+   - 추가 page: 의존도 시각화
+     - heatmap: primary_source_basis × secondary_source_horizon (Phase 4.4 cross-tab)
+     - 시간 추이: 연도별 의존도 변화 (한국·일본·서구 학계 영향력 시계열)
+     - 학자별 의존도 패턴 (개별 저자의 학적 정체성)
+
+4. **알려진 한계** (Phase 5 검수에서 환류 가능):
+   - 단행본 secondary 의 english 비중이 61% — Indian Indology 가 영어 매체이기 때문 (실제 비율). 단 Indian 학계와 영미 학계 구분 못 함.
+   - 한국 학자의 일본 학자 인용(예: 中村元 책의 한국어 번역서) 은 raw 텍스트 우세에 따라 korean 으로 분류됨 — japanese 가 더 적절할 수도. authors.yml 에 일본 학자 + country 메타 추가로 보강 가능.
+   - 학술지명 multi-slash 오류 30건(메인 브랜치엔 fix 됨, claude 브랜치엔 아직 없음) — paper 단위 통계엔 영향 미미.
 
 ---
 

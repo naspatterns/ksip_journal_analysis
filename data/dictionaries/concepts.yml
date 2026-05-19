@@ -1,14 +1,21 @@
 # 인도철학 학자/개념/학파/원전 정규화 사전
 #
-# canonical_id : 안정 키 (snake_case, ASCII)
-# canonical_kr : 화면 디폴트 표기(한글)
-# canonical_iast : 산스크리트 IAST 표기 (선택)
-# canonical_zh : 한자 표기 (선택)
-# type : 학자 | 개념 | 학파 | 원전 | 문헌
-# era : 시대 (선택, 학자/원전에만)
-# surface_forms : 데이터에 등장할 수 있는 모든 변형
-# verified : true=수동 승인, false=후보
-# notes : 메모 (선택)
+# ── 기본 키 ─────────────────────────────────────────────────
+# canonical_id      : 안정 키 (snake_case, ASCII)
+# canonical_kr      : 화면 디폴트 표기 (한글)
+# canonical_iast    : 산스크리트 IAST 표기 (선택)
+# canonical_zh      : 한자 표기 (선택)
+# type              : 학자 | 개념 | 학파 | 원전 | 문헌 | 인물
+# surface_forms     : 데이터에 등장할 수 있는 모든 변형
+# verified          : true=수동 승인, false=후보
+# notes             : 메모 (선택)
+#
+# ── 분류 체계 메타 (evaluation 프로젝트, evaluation/taxonomy/SCHEMA.md 참조) ──
+# school            : primary_school 라벨 (yoga/yogacara/madhyamaka/pramana 등)
+# era               : 시대 bucket (vedic/upanishadic_sutra/classical/post_classical/late/modern/transversal)
+# source_language   : 1차 자료 언어 (sanskrit/pali/prakrit/chinese/tibetan/mixed/n/a)
+# reception_horizon : 지평 (india/east_asia/tibet/korea/west/mixed)
+# century           : 자유텍스트 시대 (옛 `era:` 가 이리로 rename, 예: "7세기")
 
 # ============================================================
 # 학자 (인도철학자/불교 논사 — 인용 빈도 상위)
@@ -19,16 +26,20 @@
   canonical_iast: Dharmakīrti
   canonical_zh: 法稱
   type: 학자
-  era: 7세기
+  school: pramana
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
+  century: 7세기
   surface_forms:
-    - 다르마키르티
-    - 다르마끼르띠
-    - 다르마끼르티
-    - 다르마키르띠
-    - Dharmakīrti
-    - dharmakirti
-    - Dharmakirti
-    - 法稱
+  - 다르마키르티
+  - 다르마끼르띠
+  - 다르마끼르티
+  - 다르마키르띠
+  - Dharmakīrti
+  - dharmakirti
+  - Dharmakirti
+  - 法稱
   verified: true
   notes: 후기 불교 논리학자. 디그나가 계승.
 
@@ -37,15 +48,19 @@
   canonical_iast: Dignāga
   canonical_zh: 陳那
   type: 학자
-  era: 6세기
+  school: pramana
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
+  century: 6세기
   surface_forms:
-    - 디그나가
-    - 디그나아가
-    - 딘나가
-    - Dignāga
-    - dignaga
-    - Dignaga
-    - 陳那
+  - 디그나가
+  - 디그나아가
+  - 딘나가
+  - Dignāga
+  - dignaga
+  - Dignaga
+  - 陳那
   verified: true
   notes: 불교 논리학파 창시자.
 
@@ -54,15 +69,19 @@
   canonical_iast: Nāgārjuna
   canonical_zh: 龍樹
   type: 학자
-  era: 2-3세기
+  school: madhyamaka
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
+  century: 2-3세기
   surface_forms:
-    - 나가르주나
-    - 나가르주냐
-    - 나가르주나
-    - Nāgārjuna
-    - Nagarjuna
-    - 龍樹
-    - 용수
+  - 나가르주나
+  - 나가르주냐
+  - 나가르주나
+  - Nāgārjuna
+  - Nagarjuna
+  - 龍樹
+  - 용수
   verified: true
   notes: 중관학파 창시자.
 
@@ -71,13 +90,17 @@
   canonical_iast: Vasubandhu
   canonical_zh: 世親
   type: 학자
-  era: 4-5세기
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
+  century: 4-5세기
   surface_forms:
-    - 세친
-    - 바수반두
-    - 와수반두
-    - Vasubandhu
-    - 世親
+  - 세친
+  - 바수반두
+  - 와수반두
+  - Vasubandhu
+  - 世親
   verified: true
   notes: 유가행파의 대표 논사. 형 무착(Asaṅga)과 함께.
 
@@ -86,31 +109,39 @@
   canonical_iast: Asaṅga
   canonical_zh: 無着
   type: 학자
-  era: 4세기
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
+  century: 4세기
   surface_forms:
-    - 무착
-    - 아상가
-    - 아쌍가
-    - Asaṅga
-    - Asanga
-    - 無着
-    - 無著
+  - 무착
+  - 아상가
+  - 아쌍가
+  - Asaṅga
+  - Asanga
+  - 無着
+  - 無著
   verified: true
 
 - canonical_id: shankara
   canonical_kr: 샹까라
   canonical_iast: Śaṅkara
   type: 학자
-  era: 8세기
+  school: vedanta
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
+  century: 8세기
   surface_forms:
-    - 샹까라
-    - 샹카라
-    - 상까라
-    - 상카라
-    - Śaṅkara
-    - Shankara
-    - Sankara
-    - शंकर
+  - 샹까라
+  - 샹카라
+  - 상까라
+  - 상카라
+  - Śaṅkara
+  - Shankara
+  - Sankara
+  - शंकर
   verified: true
   notes: 아드와이타 베단타의 대표 사상가.
 
@@ -118,11 +149,15 @@
   canonical_kr: 파탄잘리
   canonical_iast: Patañjali
   type: 학자
+  school: yoga
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 파탄잘리
-    - 빠딴잘리
-    - Patañjali
-    - Patanjali
+  - 파탄잘리
+  - 빠딴잘리
+  - Patañjali
+  - Patanjali
   verified: true
   notes: 요가수트라 저자.
 
@@ -130,12 +165,16 @@
   canonical_kr: 붓다고사
   canonical_iast: Buddhaghosa
   type: 학자
-  era: 5세기
+  school: abhidharma
+  era: classical
+  source_language: pali
+  reception_horizon: india
+  century: 5세기
   surface_forms:
-    - 붓다고사
-    - 부다고사
-    - Buddhaghosa
-    - 佛音
+  - 붓다고사
+  - 부다고사
+  - Buddhaghosa
+  - 佛音
   verified: true
   notes: 상좌부 주석가.
 
@@ -144,14 +183,18 @@
   canonical_iast: Candrakīrti
   canonical_zh: 月稱
   type: 학자
-  era: 7세기
+  school: madhyamaka
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
+  century: 7세기
   surface_forms:
-    - 짠드라키르티
-    - 찬드라키르티
-    - 짠드라끼르띠
-    - 月稱
-    - Candrakīrti
-    - Candrakirti
+  - 짠드라키르티
+  - 찬드라키르티
+  - 짠드라끼르띠
+  - 月稱
+  - Candrakīrti
+  - Candrakirti
   verified: true
 
 - canonical_id: bhavaviveka
@@ -159,26 +202,34 @@
   canonical_iast: Bhāvaviveka
   canonical_zh: 淸辨
   type: 학자
+  school: madhyamaka
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 바비베카
-    - 바바비베카
-    - 청변
-    - 淸辨
-    - Bhāvaviveka
-    - Bhavaviveka
+  - 바비베카
+  - 바바비베카
+  - 청변
+  - 淸辨
+  - Bhāvaviveka
+  - Bhavaviveka
   verified: true
 
 - canonical_id: shantarakshita
   canonical_kr: 샨타락시타
   canonical_iast: Śāntarakṣita
   type: 학자
-  era: 8세기
+  school: madhyamaka
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
+  century: 8세기
   surface_forms:
-    - 샨타락시타
-    - 산타라크시타
-    - Śāntarakṣita
-    - Santaraksita
-    - 寂護
+  - 샨타락시타
+  - 산타라크시타
+  - Śāntarakṣita
+  - Santaraksita
+  - 寂護
   verified: true
 
 # ============================================================
@@ -189,128 +240,168 @@
   canonical_kr: 유가행파
   canonical_iast: Yogācāra
   type: 학파
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 유가행파
-    - 요가차라
-    - 유식학파
-    - 유식파
-    - Yogācāra
-    - Yogacara
-    - 瑜伽行派
-    - 唯識學派
+  - 유가행파
+  - 요가차라
+  - 유식학파
+  - 유식파
+  - Yogācāra
+  - Yogacara
+  - 瑜伽行派
+  - 唯識學派
   verified: true
 
 - canonical_id: madhyamaka
   canonical_kr: 중관학파
   canonical_iast: Madhyamaka
   type: 학파
+  school: madhyamaka
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 중관학파
-    - 중관파
-    - 마디아마카
-    - Madhyamaka
-    - 中觀
-    - 中觀派
+  - 중관학파
+  - 중관파
+  - 마디아마카
+  - Madhyamaka
+  - 中觀
+  - 中觀派
   verified: true
 
 - canonical_id: sautrantika
   canonical_kr: 경량부
   canonical_iast: Sautrāntika
   type: 학파
+  school: abhidharma
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 경량부
-    - 사우트란티카
-    - Sautrāntika
-    - Sautrantika
-    - 經量部
+  - 경량부
+  - 사우트란티카
+  - Sautrāntika
+  - Sautrantika
+  - 經量部
   verified: true
 
 - canonical_id: vaibhashika
   canonical_kr: 설일체유부
   canonical_iast: Sarvāstivāda
   type: 학파
+  school: abhidharma
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 설일체유부
-    - 유부
-    - 사르바스티바다
-    - 바이바시카
-    - Sarvāstivāda
-    - Vaibhāṣika
-    - 說一切有部
+  - 설일체유부
+  - 유부
+  - 사르바스티바다
+  - 바이바시카
+  - Sarvāstivāda
+  - Vaibhāṣika
+  - 說一切有部
   verified: true
 
 - canonical_id: samkhya
   canonical_kr: 상키야
   canonical_iast: Sāṃkhya
   type: 학파
+  school: samkhya
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 상키야
-    - 삼키야
-    - 상캬
-    - 數論
-    - Sāṃkhya
-    - Samkhya
-    - Sankhya
+  - 상키야
+  - 삼키야
+  - 상캬
+  - 數論
+  - Sāṃkhya
+  - Samkhya
+  - Sankhya
   verified: true
 
 - canonical_id: vaisheshika
   canonical_kr: 와이셰시카
   canonical_iast: Vaiśeṣika
   type: 학파
+  school: vaisheshika
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 와이셰시카
-    - 바이셰시카
-    - 勝論
-    - 勝論派
-    - Vaiśeṣika
-    - Vaisheshika
+  - 와이셰시카
+  - 바이셰시카
+  - 勝論
+  - 勝論派
+  - Vaiśeṣika
+  - Vaisheshika
   verified: true
 
 - canonical_id: nyaya
   canonical_kr: 니야야
   canonical_iast: Nyāya
   type: 학파
+  school: nyaya
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 니야야
-    - 정리학파
-    - 正理學派
-    - Nyāya
-    - Nyaya
+  - 니야야
+  - 정리학파
+  - 正理學派
+  - Nyāya
+  - Nyaya
   verified: true
 
 - canonical_id: vedanta
   canonical_kr: 베단타
   canonical_iast: Vedānta
   type: 학파
+  school: vedanta
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 베단타
-    - 베단따
-    - 吠檀多
-    - Vedānta
-    - Vedanta
+  - 베단타
+  - 베단따
+  - 吠檀多
+  - Vedānta
+  - Vedanta
   verified: true
 
 - canonical_id: advaita_vedanta
   canonical_kr: 아드와이타 베단타
   canonical_iast: Advaita Vedānta
   type: 학파
+  school: vedanta
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 아드와이타 베단타
-    - 아드바이타 베단타
-    - 불이론 베단타
-    - Advaita Vedānta
-    - Advaita
+  - 아드와이타 베단타
+  - 아드바이타 베단타
+  - 불이론 베단타
+  - Advaita Vedānta
+  - Advaita
   verified: true
 
 - canonical_id: jainism
   canonical_kr: 자이나교
   type: 학파
+  school: jainism
+  era: classical
+  source_language: prakrit
+  reception_horizon: india
   surface_forms:
-    - 자이나교
-    - 자이나
-    - 耆那教
-    - Jainism
-    - Jaina
+  - 자이나교
+  - 자이나
+  - 耆那教
+  - Jainism
+  - Jaina
   verified: true
 
 # ============================================================
@@ -322,14 +413,18 @@
   canonical_iast: śūnyatā
   canonical_zh: 空性
   type: 개념
+  school: madhyamaka
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 공성
-    - 슌야타
-    - 순야타
-    - śūnyatā
-    - sunyata
-    - 空性
-    - 空
+  - 공성
+  - 슌야타
+  - 순야타
+  - śūnyatā
+  - sunyata
+  - 空性
+  - 空
   verified: true
 
 - canonical_id: pramana
@@ -337,27 +432,35 @@
   canonical_iast: pramāṇa
   canonical_zh: 量
   type: 개념
+  school: pramana
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 프라마나
-    - 프라마나
-    - pramāṇa
-    - pramana
-    - 量
-    - 인식수단
+  - 프라마나
+  - 프라마나
+  - pramāṇa
+  - pramana
+  - 量
+  - 인식수단
   verified: true
 
 - canonical_id: svasamvedana
   canonical_kr: 자기인식
   canonical_iast: svasaṃvedana
   type: 개념
+  school: pramana
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 자기인식
-    - 자기인지
-    - 자증
-    - 自證
-    - svasaṃvedana
-    - svasamvedana
-    - svasaṃvitti
+  - 자기인식
+  - 자기인지
+  - 자증
+  - 自證
+  - svasaṃvedana
+  - svasamvedana
+  - svasaṃvitti
   verified: true
 
 - canonical_id: trisvabhava
@@ -365,13 +468,17 @@
   canonical_iast: trisvabhāva
   canonical_zh: 三性說
   type: 개념
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 삼성설
-    - 삼성
-    - 三性說
-    - 三性
-    - trisvabhāva
-    - trisvabhava
+  - 삼성설
+  - 삼성
+  - 三性說
+  - 三性
+  - trisvabhāva
+  - trisvabhava
   verified: true
 
 - canonical_id: tathagatagarbha
@@ -379,11 +486,15 @@
   canonical_iast: tathāgatagarbha
   canonical_zh: 如來藏
   type: 개념
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 여래장
-    - 如來藏
-    - tathāgatagarbha
-    - tathagatagarbha
+  - 여래장
+  - 如來藏
+  - tathāgatagarbha
+  - tathagatagarbha
   verified: true
 
 - canonical_id: alaya_vijnana
@@ -391,14 +502,18 @@
   canonical_iast: ālayavijñāna
   canonical_zh: 阿賴耶識
   type: 개념
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 알라야식
-    - 아뢰야식
-    - 아라야식
-    - 阿賴耶識
-    - ālayavijñāna
-    - alayavijnana
-    - alaya-vijnana
+  - 알라야식
+  - 아뢰야식
+  - 아라야식
+  - 阿賴耶識
+  - ālayavijñāna
+  - alayavijnana
+  - alaya-vijnana
   verified: true
 
 - canonical_id: pratityasamutpada
@@ -406,12 +521,16 @@
   canonical_iast: pratītyasamutpāda
   canonical_zh: 緣起
   type: 개념
+  school: madhyamaka
+  era: upanishadic_sutra
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 연기
-    - 緣起
-    - pratītyasamutpāda
-    - pratityasamutpada
-    - 십이연기
+  - 연기
+  - 緣起
+  - pratītyasamutpāda
+  - pratityasamutpada
+  - 십이연기
   verified: true
 
 - canonical_id: anatman
@@ -419,11 +538,15 @@
   canonical_iast: anātman
   canonical_zh: 無我
   type: 개념
+  school: madhyamaka
+  era: upanishadic_sutra
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 무아
-    - 無我
-    - anātman
-    - anatman
+  - 무아
+  - 無我
+  - anātman
+  - anatman
   verified: true
 
 - canonical_id: atman
@@ -431,12 +554,16 @@
   canonical_iast: ātman
   canonical_zh: 我
   type: 개념
+  school: vedanta
+  era: upanishadic_sutra
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 아트만
-    - 我
-    - ātman
-    - atman
-    - 자아
+  - 아트만
+  - 我
+  - ātman
+  - atman
+  - 자아
   verified: true
   notes: 인도철학 일반에서 '자아'와 '아트만'은 학파/맥락에 따라 동의어로 사용. 통합.
 
@@ -444,35 +571,47 @@
   canonical_kr: 업
   canonical_iast: karman
   type: 개념
+  school: vedanta
+  era: transversal
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 업
-    - 業
-    - 카르마
-    - 까르마
-    - karma
-    - karman
+  - 업
+  - 業
+  - 카르마
+  - 까르마
+  - karma
+  - karman
   verified: true
 
 - canonical_id: moksha
   canonical_kr: 해탈
   canonical_iast: mokṣa
   type: 개념
+  school: vedanta
+  era: transversal
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 해탈
-    - 解脫
-    - 모크샤
-    - mokṣa
-    - moksha
+  - 해탈
+  - 解脫
+  - 모크샤
+  - mokṣa
+  - moksha
   verified: true
 
 - canonical_id: yoga
   canonical_kr: 요가
   canonical_iast: yoga
   type: 개념
+  school: yoga
+  era: transversal
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 요가
-    - 瑜伽
-    - yoga
+  - 요가
+  - 瑜伽
+  - yoga
   verified: true
 
 - canonical_id: prajna
@@ -480,24 +619,32 @@
   canonical_iast: prajñā
   canonical_zh: 般若
   type: 개념
+  school: madhyamaka
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 반야
-    - 般若
-    - 지혜
-    - prajñā
-    - prajna
+  - 반야
+  - 般若
+  - 지혜
+  - prajñā
+  - prajna
   verified: true
 
 - canonical_id: catuskoti
   canonical_kr: 사구분별
   canonical_iast: catuṣkoṭi
   type: 개념
+  school: madhyamaka
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 사구분별
-    - 四句分別
-    - 사구
-    - catuṣkoṭi
-    - catuskoti
+  - 사구분별
+  - 四句分別
+  - 사구
+  - catuṣkoṭi
+  - catuskoti
   verified: true
 
 - canonical_id: vijnanavada
@@ -505,22 +652,30 @@
   canonical_iast: Vijñānavāda
   canonical_zh: 唯識
   type: 개념
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 유식
-    - 唯識
-    - Vijñānavāda
-    - Vijnanavada
+  - 유식
+  - 唯識
+  - Vijñānavāda
+  - Vijnanavada
   verified: true
 
 - canonical_id: apoha
   canonical_kr: 아포하
   canonical_iast: apoha
   type: 개념
+  school: pramana
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 아포하
-    - apoha
-    - 차이론
-    - 타자배제
+  - 아포하
+  - apoha
+  - 차이론
+  - 타자배제
   verified: true
   notes: 디그나가-다르마키르티 논리학의 의미론.
 
@@ -533,12 +688,16 @@
   canonical_iast: Yogācārabhūmi
   canonical_zh: 瑜伽師地論
   type: 원전
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 유가사지론
-    - 瑜伽師地論
-    - Yogācārabhūmi
-    - Yogacarabhumi
-    - 유가론
+  - 유가사지론
+  - 瑜伽師地論
+  - Yogācārabhūmi
+  - Yogacarabhumi
+  - 유가론
   verified: true
 
 - canonical_id: mulamadhyamakakarika
@@ -546,13 +705,17 @@
   canonical_iast: Mūlamadhyamakakārikā
   canonical_zh: 中論
   type: 원전
+  school: madhyamaka
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 중론
-    - 中論
-    - Mūlamadhyamakakārikā
-    - Mulamadhyamakakarika
-    - MMK
-    - 근본중송
+  - 중론
+  - 中論
+  - Mūlamadhyamakakārikā
+  - Mulamadhyamakakarika
+  - MMK
+  - 근본중송
   verified: true
 
 - canonical_id: pramanavarttika
@@ -560,12 +723,16 @@
   canonical_iast: Pramāṇavārttika
   canonical_zh: 量評釋
   type: 원전
+  school: pramana
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 양평석
-    - 量評釋
-    - Pramāṇavārttika
-    - Pramanavarttika
-    - PV
+  - 양평석
+  - 量評釋
+  - Pramāṇavārttika
+  - Pramanavarttika
+  - PV
   verified: true
 
 - canonical_id: pramanasamuccaya
@@ -573,36 +740,48 @@
   canonical_iast: Pramāṇasamuccaya
   canonical_zh: 集量論
   type: 원전
+  school: pramana
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 집량론
-    - 集量論
-    - Pramāṇasamuccaya
-    - Pramanasamuccaya
-    - PS
+  - 집량론
+  - 集量論
+  - Pramāṇasamuccaya
+  - Pramanasamuccaya
+  - PS
   verified: true
 
 - canonical_id: vimsatika
   canonical_kr: 유식이십론
   canonical_iast: Viṃśatikā
   type: 원전
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 유식이십론
-    - 唯識二十論
-    - Viṃśatikā
-    - Vimsatika
-    - 이십론
+  - 유식이십론
+  - 唯識二十論
+  - Viṃśatikā
+  - Vimsatika
+  - 이십론
   verified: true
 
 - canonical_id: trimsika
   canonical_kr: 유식삼십송
   canonical_iast: Triṃśikā
   type: 원전
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 유식삼십송
-    - 唯識三十頌
-    - Triṃśikā
-    - Trimsika
-    - 삼십송
+  - 유식삼십송
+  - 唯識三十頌
+  - Triṃśikā
+  - Trimsika
+  - 삼십송
   verified: true
 
 - canonical_id: abhidharmakosa
@@ -610,50 +789,66 @@
   canonical_iast: Abhidharmakośa
   canonical_zh: 阿毘達磨俱舍論
   type: 원전
+  school: abhidharma
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 구사론
-    - 俱舍論
-    - 阿毘達磨俱舍論
-    - Abhidharmakośa
-    - Abhidharmakosa
-    - AKBh
+  - 구사론
+  - 俱舍論
+  - 阿毘達磨俱舍論
+  - Abhidharmakośa
+  - Abhidharmakosa
+  - AKBh
   verified: true
 
 - canonical_id: yogasutra
   canonical_kr: 요가수트라
   canonical_iast: Yogasūtra
   type: 원전
+  school: yoga
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 요가수트라
-    - 요가수뜨라
-    - Yogasūtra
-    - Yogasutra
-    - 瑜伽經
+  - 요가수트라
+  - 요가수뜨라
+  - Yogasūtra
+  - Yogasutra
+  - 瑜伽經
   verified: true
 
 - canonical_id: bhagavadgita
   canonical_kr: 바가바드기타
   canonical_iast: Bhagavadgītā
   type: 원전
+  school: vedanta
+  era: upanishadic_sutra
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 바가바드기타
-    - 바가바드 기따
-    - Bhagavadgītā
-    - Bhagavad Gītā
-    - Bhagavadgita
-    - 박가바드기타
+  - 바가바드기타
+  - 바가바드 기따
+  - Bhagavadgītā
+  - Bhagavad Gītā
+  - Bhagavadgita
+  - 박가바드기타
   verified: true
 
 - canonical_id: upanishad
   canonical_kr: 우파니샤드
   canonical_iast: Upaniṣad
   type: 원전
+  school: vedic
+  era: upanishadic_sutra
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 우파니샤드
-    - 우빠니샤드
-    - Upaniṣad
-    - Upanisad
-    - Upanishad
+  - 우파니샤드
+  - 우빠니샤드
+  - Upaniṣad
+  - Upanisad
+  - Upanishad
   verified: false
   notes: "단일 텍스트가 아닌 텍스트군. 개별 우파니샤드(예: Bṛhadāraṇyaka)는 별도 entry로 다룰지 검토."
 
@@ -661,12 +856,16 @@
   canonical_kr: 브라흐마수트라
   canonical_iast: Brahmasūtra
   type: 원전
+  school: vedanta
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 브라흐마수트라
-    - 브라흐마수뜨라
-    - Brahmasūtra
-    - Brahmasutra
-    - 梵經
+  - 브라흐마수트라
+  - 브라흐마수뜨라
+  - Brahmasūtra
+  - Brahmasutra
+  - 梵經
   verified: true
 
 # ============================================================
@@ -677,12 +876,16 @@
   canonical_kr: 현장
   canonical_zh: 玄奘
   type: 학자
-  era: 7세기
+  school: yogacara
+  era: classical
+  source_language: chinese
+  reception_horizon: india
+  century: 7세기
   surface_forms:
-    - 현장
-    - 玄奘
-    - Xuanzang
-    - "Hsuan Tsang"
+  - 현장
+  - 玄奘
+  - Xuanzang
+  - "Hsuan Tsang"
   verified: true
   notes: 唐代 승려, 인도 유학 후 다수 한역. 유식 문헌 한역의 핵심.
 
@@ -690,23 +893,31 @@
   canonical_kr: 원효
   canonical_zh: 元曉
   type: 학자
-  era: 7세기
+  school: korean_buddhism
+  era: classical
+  source_language: chinese
+  reception_horizon: korea
+  century: 7세기
   surface_forms:
-    - 원효
-    - 元曉
-    - Wonhyo
+  - 원효
+  - 元曉
+  - Wonhyo
   verified: true
   notes: 한국 신라 시대 승려, 화엄·기신론 주석.
 
 - canonical_id: gandhi
   canonical_kr: 간디
   type: 인물
-  era: 20세기
+  school: hindu_modern
+  era: modern
+  source_language: mixed
+  reception_horizon: india
+  century: 20세기
   surface_forms:
-    - 간디
-    - 마하트마 간디
-    - Gandhi
-    - "M. K. Gandhi"
+  - 간디
+  - 마하트마 간디
+  - Gandhi
+  - "M. K. Gandhi"
   verified: true
   notes: Mohandas K. Gandhi.
 
@@ -719,13 +930,17 @@
   canonical_iast: Ratnagotravibhāga
   canonical_zh: 寶性論
   type: 원전
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 보성론
-    - 寶性論
-    - Ratnagotravibhāga
-    - Ratnagotravibhaga
-    - RGV
-    - 究竟一乘寶性論
+  - 보성론
+  - 寶性論
+  - Ratnagotravibhāga
+  - Ratnagotravibhaga
+  - RGV
+  - 究竟一乘寶性論
   verified: true
 
 - canonical_id: bodhisattvabhumi
@@ -733,22 +948,30 @@
   canonical_iast: Bodhisattvabhūmi
   canonical_zh: 菩薩地
   type: 원전
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 보살지
-    - 菩薩地
-    - Bodhisattvabhūmi
-    - Bodhisattvabhumi
+  - 보살지
+  - 菩薩地
+  - Bodhisattvabhūmi
+  - Bodhisattvabhumi
   verified: true
 
 - canonical_id: veda
   canonical_kr: 베다
   canonical_iast: Veda
   type: 원전
+  school: vedic
+  era: vedic
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 베다
-    - Veda
-    - Vedas
-    - 吠陀
+  - 베다
+  - Veda
+  - Vedas
+  - 吠陀
   verified: true
   notes: "베다 문헌 일반. 개별 베다(Ṛgveda 등)는 별도 entry로."
 
@@ -756,10 +979,14 @@
   canonical_kr: 요가주
   canonical_iast: Yogasūtra-bhāṣya
   type: 원전
+  school: yoga
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 요가주
-    - "Yogasūtra-bhāṣya"
-    - Yogasutrabhasya
+  - 요가주
+  - "Yogasūtra-bhāṣya"
+  - Yogasutrabhasya
   verified: true
   notes: "Vyāsa의 Yogasūtra 주석. 요가 학파의 핵심 주석서."
 
@@ -772,13 +999,17 @@
   canonical_iast: vipaśyanā
   canonical_zh: 觀
   type: 개념
+  school: abhidharma
+  era: upanishadic_sutra
+  source_language: pali
+  reception_horizon: india
   surface_forms:
-    - 위빠사나
-    - 위빳사나
-    - 위파사나
-    - vipaśyanā
-    - vipassana
-    - 觀
+  - 위빠사나
+  - 위빳사나
+  - 위파사나
+  - vipaśyanā
+  - vipassana
+  - 觀
   verified: true
   notes: 통찰 명상.
 
@@ -787,11 +1018,15 @@
   canonical_iast: svabhāva
   canonical_zh: 自性
   type: 개념
+  school: madhyamaka
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 자성
-    - 自性
-    - svabhāva
-    - svabhava
+  - 자성
+  - 自性
+  - svabhāva
+  - svabhava
   verified: true
   notes: 본성 / 고유한 성질. 중관학파의 비판 대상.
 
@@ -800,13 +1035,17 @@
   canonical_iast: smṛti
   canonical_zh: 念
   type: 개념
+  school: abhidharma
+  era: upanishadic_sutra
+  source_language: pali
+  reception_horizon: india
   surface_forms:
-    - 사띠
-    - 念
-    - smṛti
-    - smriti
-    - sati
-    - 기억
+  - 사띠
+  - 念
+  - smṛti
+  - smriti
+  - sati
+  - 기억
   verified: true
   notes: 마음챙김 / 기억. 빠알리어 sati와 산스크리트 smṛti가 통합된 표기.
 
@@ -815,11 +1054,15 @@
   canonical_iast: vijñāna-pariṇāma
   canonical_zh: 識轉變
   type: 개념
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 식전변
-    - 識轉變
-    - "vijñāna-pariṇāma"
-    - vijnanaparinama
+  - 식전변
+  - 識轉變
+  - "vijñāna-pariṇāma"
+  - vijnanaparinama
   verified: true
   notes: 유식학파의 인식 발생 모델.
 
@@ -828,12 +1071,16 @@
   canonical_iast: tathatā
   canonical_zh: 眞如
   type: 개념
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 진여
-    - 眞如
-    - 真如
-    - tathatā
-    - tathata
+  - 진여
+  - 眞如
+  - 真如
+  - tathatā
+  - tathata
   verified: true
 
 - canonical_id: paramartha_satya
@@ -841,23 +1088,31 @@
   canonical_iast: paramārtha-satya
   canonical_zh: 勝義諦
   type: 개념
+  school: madhyamaka
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 승의제
-    - 勝義諦
-    - "paramārtha-satya"
-    - paramartha
+  - 승의제
+  - 勝義諦
+  - "paramārtha-satya"
+  - paramartha
   verified: true
 
 - canonical_id: dvi_satya
   canonical_kr: 이제설
   canonical_zh: 二諦說
   type: 개념
+  school: madhyamaka
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 이제설
-    - 二諦說
-    - 二諦
-    - dvi-satya
-    - "two-truth theory"
+  - 이제설
+  - 二諦說
+  - 二諦
+  - dvi-satya
+  - "two-truth theory"
   verified: true
   notes: 승의제(paramārtha) + 세속제(saṃvṛti) 두 진리. 중관학파.
 
@@ -865,20 +1120,28 @@
   canonical_kr: 푸루샤
   canonical_iast: puruṣa
   type: 개념
+  school: samkhya
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 푸루샤
-    - puruṣa
-    - purusa
-    - Puruṣa
+  - 푸루샤
+  - puruṣa
+  - purusa
+  - Puruṣa
   verified: true
   notes: 상키야 학파의 순수 의식 원리.
 
 - canonical_id: meditation
   canonical_kr: 명상
   type: 개념
+  school: comparative
+  era: transversal
+  source_language: n/a
+  reception_horizon: india
   surface_forms:
-    - 명상
-    - meditation
+  - 명상
+  - meditation
   verified: false
   notes: "너무 일반적 — 사띠/위빠사나/요가 등으로 분리하는 게 나을 수 있음."
 
@@ -887,36 +1150,48 @@
   canonical_iast: saṃsāra
   canonical_zh: 輪廻
   type: 개념
+  school: vedanta
+  era: transversal
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 윤회
-    - 輪廻
-    - 輪迴
-    - saṃsāra
-    - samsara
+  - 윤회
+  - 輪廻
+  - 輪迴
+  - saṃsāra
+  - samsara
   verified: true
 
 - canonical_id: tantric_buddhism
   canonical_kr: 밀교
   canonical_zh: 密敎
   type: 학파
+  school: tantric_buddhism
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 밀교
-    - 密敎
-    - 密教
-    - "Tantric Buddhism"
-    - "Esoteric Buddhism"
-    - Vajrayāna
-    - Vajrayana
+  - 밀교
+  - 密敎
+  - 密教
+  - "Tantric Buddhism"
+  - "Esoteric Buddhism"
+  - Vajrayāna
+  - Vajrayana
   verified: true
 
 - canonical_id: alamkara
   canonical_kr: 알람카라
   canonical_iast: alaṃkāra
   type: 개념
+  school: comparative
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 알람카라
-    - alaṃkāra
-    - alamkara
+  - 알람카라
+  - alaṃkāra
+  - alamkara
   verified: true
   notes: 산스크리트 시학(詩學)의 수사 / 장식 개념.
 
@@ -925,23 +1200,490 @@
   canonical_iast: abhūta-parikalpa
   canonical_zh: 虛妄分別
   type: 개념
+  school: yogacara
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 허망분별
-    - 虛妄分別
-    - "abhūta-parikalpa"
-    - "abhuta-parikalpa"
+  - 허망분별
+  - 虛妄分別
+  - "abhūta-parikalpa"
+  - "abhuta-parikalpa"
   verified: true
   notes: 유식학파에서 "허위로 분별하는 사유" — 三性說의 의타기성과 연관.
 
 - canonical_id: sanskrit_lang
   canonical_kr: 범어
   type: 개념
+  school: comparative
+  era: transversal
+  source_language: sanskrit
+  reception_horizon: india
   surface_forms:
-    - 범어
-    - 梵語
-    - Sanskrit
-    - 산스크리트
-    - 산스끄리뜨
-    - saṃskṛtā
+  - 범어
+  - 梵語
+  - Sanskrit
+  - 산스크리트
+  - 산스끄리뜨
+  - saṃskṛtā
   verified: true
   notes: 인도 고전어. 학파/원전의 메타 정보로 자주 등장.
+- canonical_id: mimamsa
+  canonical_kr: 미맘사
+  canonical_iast: Mīmāṃsā
+  canonical_zh: 彌曼差
+  type: 학파
+  school: mimamsa
+  era: classical
+  source_language: sanskrit
+  reception_horizon: india
+  surface_forms:
+  - 미맘사
+  - 미망사
+  - Mīmāṃsā
+  - Mimamsa
+  - 彌曼差
+  - 迷曼差
+  verified: true
+  notes: 인도 정통 6파 중 하나. 베다 해석학·제식 행위론.
+- canonical_id: huayan
+  canonical_kr: 화엄종
+  canonical_zh: 華嚴宗
+  type: 학파
+  school: huayan
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 화엄
+  - 화엄종
+  - 華嚴
+  - 華嚴宗
+  - Huayan
+  - Hua-yen
+  - Hwaom
+  verified: true
+  notes: 동아시아 화엄종. 法藏·智儼·澄觀·義湘 등. 7-8세기 중국 형성.
+- canonical_id: chan
+  canonical_kr: 선종
+  canonical_zh: 禪宗
+  type: 학파
+  school: chan
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 선
+  - 禪
+  - 선종
+  - 禪宗
+  - 선불교
+  - Chan
+  - Zen
+  - Son
+  - Seon
+  verified: true
+  notes: 중국·한국·일본 선종 통합 (사용자 결정 4). 지역은 reception_horizon 으로 분기.
+- canonical_id: pure_land
+  canonical_kr: 정토종
+  canonical_zh: 淨土宗
+  type: 학파
+  school: pure_land
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 정토
+  - 정토종
+  - 淨土
+  - 淨土宗
+  - Pure Land
+  - Jingtu
+  verified: true
+  notes: 동아시아 정토 신앙 학파. 善導·法然·親鸞 (단 일본 인물은 데이터에 부재).
+- canonical_id: esoteric_east_asia
+  canonical_kr: 동아시아 밀교 / 진언
+  canonical_zh: 眞言宗
+  type: 학파
+  school: esoteric_east_asia
+  era: post_classical
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 진언
+  - 진언종
+  - 眞言
+  - 眞言宗
+  - 동아시아 밀교
+  - Shingon
+  verified: true
+  notes: 동아시아 밀교 (한국·일본). 인도 후기 탄트라 (tantric_buddhism) 의 동아시아 수용. ★ school 값 'esoteric_east_asia' 는 SCHEMA.md 동아시아 section 에 추가됨.
+- canonical_id: tibetan_buddhism_general
+  canonical_kr: 티베트 불교 일반
+  type: 학파
+  school: tibetan_other
+  era: post_classical
+  source_language: tibetan
+  reception_horizon: tibet
+  surface_forms:
+  - 티베트 불교
+  - 티벳 불교
+  - 티벳불교
+  - 티베트불교
+  - Tibetan Buddhism
+  - 서장불교
+  verified: true
+  notes: 티베트 불교 일반어 entry. 겔룩·닝마·카규·사캬 등 학파 미세분류 키워드가 부재할 때 fallback.
+- canonical_id: kamalasila
+  canonical_kr: 까말라쉴라
+  canonical_iast: Kamalaśīla
+  canonical_zh: 蓮華戒
+  type: 학자
+  school: madhyamaka
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
+  century: 8세기
+  surface_forms:
+  - 까말라쉴라
+  - 카말라실라
+  - Kamalaśīla
+  - Kamalashila
+  - 蓮華戒
+  verified: true
+  notes: 인도 후기 중관학파. 티베트 삼예논쟁(792-794)에서 점오 입장. 활동은 티베트지만 학적 출신은 인도.
+- canonical_id: zhiyi
+  canonical_kr: 지의
+  canonical_zh: 智顗
+  type: 학자
+  school: tiantai
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  century: 6세기
+  surface_forms:
+  - 지의
+  - 智顗
+  - Zhiyi
+  - Chih-i
+  - 천태대사
+  verified: true
+  notes: 중국 천태종 대성자. 法華玄義·摩訶止觀·法華文句.
+- canonical_id: kuiji
+  canonical_kr: 규기
+  canonical_zh: 窺基
+  type: 학자
+  school: faxiang
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  century: 7세기
+  surface_forms:
+  - 규기
+  - 窺基
+  - 자은
+  - 慈恩
+  - Kuiji
+  verified: true
+  notes: 중국 법상종 (동아시아 유식) 대성자. 玄奘 문하. 成唯識論述記.
+- canonical_id: kumarajiva
+  canonical_kr: 구마라집
+  canonical_iast: Kumārajīva
+  canonical_zh: 鳩摩羅什
+  type: 학자
+  school: madhyamaka
+  era: classical
+  source_language: mixed
+  reception_horizon: east_asia
+  century: 4-5세기
+  surface_forms:
+  - 구마라집
+  - 구마라십
+  - 鳩摩羅什
+  - 羅什
+  - Kumārajīva
+  - Kumarajiva
+  verified: true
+  notes: '★ Q1c (사용자 결정): school=madhyamaka, reception=east_asia. 쿠차 출신, 인도 madhyamaka 사상가지만 한역 작업이 동아시아 불교의 토대.'
+- canonical_id: jizang
+  canonical_kr: 길장
+  canonical_zh: 吉藏
+  type: 학자
+  school: sanlun
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  century: 6-7세기
+  surface_forms:
+  - 길장
+  - 吉藏
+  - 가상
+  - 嘉祥
+  - Jizang
+  verified: true
+  notes: 중국 삼론종 (동아시아 중관) 대성자. 中觀論疏·百論疏·十二門論疏.
+- canonical_id: wonchuk
+  canonical_kr: 원측
+  canonical_zh: 圓測
+  type: 학자
+  school: yogacara
+  era: classical
+  source_language: chinese
+  reception_horizon: korea
+  century: 7세기
+  surface_forms:
+  - 원측
+  - 圓測
+  - Wonchuk
+  verified: true
+  notes: 한국(신라) 출신, 玄奘 문하의 유식학자. 解深密經疏 등. school=yogacara (인도 유식 연구), reception=korea (한국 출신).
+- canonical_id: iryeon
+  canonical_kr: 일연
+  canonical_zh: 一然
+  type: 학자
+  school: korean_buddhism
+  era: late
+  source_language: chinese
+  reception_horizon: korea
+  century: 13세기
+  surface_forms:
+  - 일연
+  - 一然
+  - Iryeon
+  verified: true
+  notes: 고려 시대 승려. 三國遺事 저자.
+- canonical_id: tsongkhapa
+  canonical_kr: 쫑카파
+  canonical_zh: 宗喀巴
+  type: 학자
+  school: gelug
+  era: late
+  source_language: tibetan
+  reception_horizon: tibet
+  century: 14-15세기
+  surface_forms:
+  - 쫑카파
+  - 쫑카빠
+  - 총카파
+  - Tsongkhapa
+  - Tsong-kha-pa
+  - Je Tsongkhapa
+  - 宗喀巴
+  verified: true
+  notes: 티베트 겔룩파 창시자. Lam rim chen mo·Lam gtso rnam gsum 등.
+- canonical_id: awakening_of_faith
+  canonical_kr: 대승기신론
+  canonical_zh: 大乘起信論
+  type: 원전
+  school: east_asian_other
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 기신론
+  - 대승기신론
+  - 大乘起信論
+  - 起信論
+  - Awakening of Faith
+  verified: true
+  notes: '★ Q2c (사용자 결정): school=east_asian_other. 전통 귀속은 馬鳴(Aśvaghoṣa)이나 위경 가능성, 동아시아 자체 형성. 여래장 + 유식 결합.'
+- canonical_id: avatamsaka
+  canonical_kr: 화엄경
+  canonical_iast: Avataṃsakasūtra
+  canonical_zh: 華嚴經
+  type: 원전
+  school: contextual
+  era: upanishadic_sutra
+  source_language: chinese
+  reception_horizon: contextual
+  surface_forms:
+  - 화엄경
+  - 華嚴經
+  - 大方廣佛華嚴經
+  - Avataṃsaka
+  - Avatamsaka
+  - Gaṇḍavyūha
+  verified: true
+  notes: '★ Q3 (사용자 결정): school·reception 단정 회피. 인도 산스크리트 원전(c.1-4세기) 이지만 동아시아 화엄종 텍스트로 더 활발히 다뤄짐. 공출현 키워드 기반 contextual disambiguation 룰이 결정 (SCHEMA.md §8).'
+- canonical_id: lotus_sutra
+  canonical_kr: 법화경
+  canonical_iast: Saddharmapuṇḍarīkasūtra
+  canonical_zh: 妙法蓮華經
+  type: 원전
+  school: contextual
+  era: upanishadic_sutra
+  source_language: chinese
+  reception_horizon: contextual
+  surface_forms:
+  - 법화경
+  - 妙法蓮華經
+  - 法華經
+  - Saddharmapuṇḍarīka
+  - Saddharmapundarika
+  - Lotus Sūtra
+  verified: true
+  notes: '★ Q3 (사용자 결정): school·reception 단정 회피. 인도 산스크리트 원전(c.1-2세기) 이지만 동아시아 천태·일련 등 다수 종파가 다룸.'
+- canonical_id: larger_sukhavativyuha
+  canonical_kr: 무량수경
+  canonical_iast: Sukhāvatīvyūhasūtra
+  canonical_zh: 無量壽經
+  type: 원전
+  school: pure_land
+  era: upanishadic_sutra
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 무량수경
+  - 無量壽經
+  - Larger Sukhāvatīvyūha
+  - Sukhāvatīvyūha
+  verified: true
+  notes: 정토삼부경의 하나. 인도 산스크리트 원전 있으나 동아시아 정토종 텍스트로 자리매김.
+- canonical_id: smaller_sukhavativyuha
+  canonical_kr: 아미타경
+  canonical_zh: 阿彌陀經
+  type: 원전
+  school: pure_land
+  era: upanishadic_sutra
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 아미타경
+  - 阿彌陀經
+  - Smaller Sukhāvatīvyūha
+  verified: true
+  notes: 정토삼부경의 하나.
+- canonical_id: contemplation_sutra
+  canonical_kr: 관무량수경
+  canonical_zh: 觀無量壽經
+  type: 원전
+  school: pure_land
+  era: classical
+  source_language: chinese
+  reception_horizon: east_asia
+  surface_forms:
+  - 관무량수경
+  - 觀無量壽經
+  - Contemplation Sūtra
+  - Amitāyurdhyāna
+  verified: true
+  notes: 정토삼부경의 하나. 동아시아 composed 가능성 (위경 논의).
+- canonical_id: ramakrishna
+  canonical_kr: 라마크리슈나
+  canonical_iast: Rāmakṛṣṇa
+  type: 학자
+  school: hindu_modern
+  era: modern
+  source_language: mixed
+  reception_horizon: india
+  century: 19세기
+  surface_forms:
+  - 라마크리슈나
+  - 라마끄리슈나
+  - Ramakrishna
+  - Rāmakṛṣṇa
+  verified: true
+  notes: 근대 인도 신비주의자. 비베카난다의 스승.
+- canonical_id: vivekananda
+  canonical_kr: 비베카난다
+  canonical_iast: Vivekānanda
+  type: 학자
+  school: hindu_modern
+  era: modern
+  source_language: mixed
+  reception_horizon: india
+  century: 19세기
+  surface_forms:
+  - 비베카난다
+  - 비배카난다
+  - Vivekananda
+  - Vivekānanda
+  verified: true
+  notes: 라마크리슈나 미션 창설자. 1893 시카고 종교회의.
+- canonical_id: radhakrishnan
+  canonical_kr: 라다크리슈난
+  type: 학자
+  school: hindu_modern
+  era: modern
+  source_language: mixed
+  reception_horizon: india
+  century: 20세기
+  surface_forms:
+  - 라다크리슈난
+  - 라다끄리슈난
+  - Radhakrishnan
+  - S. Radhakrishnan
+  - Sarvepalli Radhakrishnan
+  verified: true
+  notes: 근대 인도 철학자·정치가. 인도철학 통사 저술. 인도 부통령·대통령 역임.
+- canonical_id: hatha_yoga
+  canonical_kr: 하타 요가
+  canonical_iast: Haṭhayoga
+  type: 개념
+  school: yoga
+  era: post_classical
+  source_language: sanskrit
+  reception_horizon: india
+  surface_forms:
+  - 하타 요가
+  - 하타요가
+  - 하타
+  - 하타프라디피카
+  - 하타(요가)쁘라디삐까
+  - Haṭha Yoga
+  - Hatha Yoga
+  - Haṭhayoga
+  verified: true
+  notes: 후기 요가 신체 수행 전통 (c.10-17세기). yoga 학파의 post_classical 시대 변종. Hatha Yoga Pradīpikā·Gheraṇḍa Saṃhitā 등.
+- canonical_id: chinese_buddhist_canon
+  canonical_kr: 한역 자료 / 대장경
+  type: 개념
+  school: comparative
+  era: transversal
+  source_language: chinese
+  reception_horizon: mixed
+  surface_forms:
+  - 한역
+  - 한역(漢譯)
+  - 대장경
+  - 高麗大藏經
+  - Taishō
+  - Taisho
+  verified: true
+  notes: 자료 언어 표지. 한역 자료를 사용한 연구에 source_language=chinese 추론을 위해 추가.
+- canonical_id: tibetan_canon
+  canonical_kr: 티베트역 자료 / 깡규르 텡규르
+  type: 개념
+  school: comparative
+  era: transversal
+  source_language: tibetan
+  reception_horizon: mixed
+  surface_forms:
+  - 티벳 사본
+  - 티베트역
+  - 티벳어 번역
+  - 서장어
+  - Kangyur
+  - Tengyur
+  - bKa' 'gyur
+  - bsTan 'gyur
+  verified: true
+  notes: 자료 언어 표지. 티베트역 자료를 사용한 연구에 source_language=tibetan 추론.
+- canonical_id: dunhuang
+  canonical_kr: 돈황 사본
+  canonical_zh: 敦煌
+  type: 개념
+  school: comparative
+  era: transversal
+  source_language: mixed
+  reception_horizon: east_asia
+  surface_forms:
+  - 돈황
+  - 돈황 막고굴
+  - 돈황 필사본
+  - 돈황본
+  - 돈황사본
+  - Dunhuang
+  - 敦煌
+  verified: true
+  notes: 돈황 사본학. 동아시아 자료 + 사본학 방법론 표지.

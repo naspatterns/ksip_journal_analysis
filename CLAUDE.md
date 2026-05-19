@@ -1,7 +1,26 @@
 # CLAUDE.md — KSIP 인도철학 학술지 분석 대시보드
 
 다른 세션에서도 동일한 작업을 이어가기 위한 프로젝트 캐논 문서.
-이 폴더에 처음 들어오면 이 파일을 먼저 읽을 것.
+
+## 🟢 새 세션 시작 시 (멀티 컴퓨터)
+
+**가장 먼저 읽을 파일**: [`evaluation/docs/SESSION_STATE.md`](evaluation/docs/SESSION_STATE.md) — 현재 위치 + 진행 중 토론 + 다음 액션
+
+```bash
+# 1) 최신 받기
+git pull origin main
+
+# 2) 환경 검증
+.venv/bin/python evaluation/scripts/check_env.py
+
+# 3) 현재 위치 파악 (필수)
+cat evaluation/docs/SESSION_STATE.md
+```
+
+새 컴퓨터 셋업: [`evaluation/docs/ENVIRONMENT.md`](evaluation/docs/ENVIRONMENT.md)
+세션 시작/종료 프로토콜: [`evaluation/docs/HANDOFF_PROTOCOL.md`](evaluation/docs/HANDOFF_PROTOCOL.md)
+
+이 파일(CLAUDE.md) 은 **장기 안정적인 프로젝트 캐논**이고, SESSION_STATE.md 는 **세션마다 갱신되는 현재 위치 포인터** 입니다.
 
 ---
 
@@ -344,3 +363,54 @@ Streamlit의 `st.plotly_chart(on_select="rerun")` 은 selection 상태가 리렌
 - ❌ KCI `referenceSearch` endpoint 사용 (text-only, REFARTIID 없음 — `articleDetail`이 권위 source)
 - ❌ KCI API 키 / `data/cache/` git 커밋 (.gitignore에 등록됨)
 - ❌ Streamlit 페이지에서 KCI API 직접 호출 (CORS/키 노출 — 빌드 단계에서만 호출, parquet에 저장)
+- ❌ 인접 학술지를 자의적으로 선정 (반드시 사용자 사전 문의 — 평가 프로젝트 운영 규칙)
+
+---
+
+## 13. evaluation/ — 학술지 평가 서브프로젝트
+
+기존 대시보드와 분리된 별도 Streamlit 프로젝트 (`evaluation/`). 학술지를 8개 축으로 통합 평가.
+
+**진입 순서** (멀티 컴퓨터 작업):
+1. [`evaluation/docs/SESSION_STATE.md`](evaluation/docs/SESSION_STATE.md) — 현재 위치 + 다음 액션 (가장 먼저)
+2. [`evaluation/docs/HANDOFF_PROTOCOL.md`](evaluation/docs/HANDOFF_PROTOCOL.md) — 세션 시작/종료 절차
+3. [`evaluation/docs/ENVIRONMENT.md`](evaluation/docs/ENVIRONMENT.md) — 새 컴퓨터 셋업 (1회)
+4. [`evaluation/README.md`](evaluation/README.md) — 프로젝트 전체 지도
+5. [`evaluation/docs/PIPELINE.md`](evaluation/docs/PIPELINE.md) — 데이터 구축 과정 narrative
+
+### 13.1 진행 단계
+
+| Phase | 내용 | 상태 |
+|---|---|---|
+| 0. 분류 체계 설계 | 8축 합의 + 17개 세부 결정 (다중라벨, 4축 직교: school × era × source_language × reception_horizon) | ✅ |
+| 1. 사전 스키마 확장 | `concepts.yml` 의 69 entry 에 신규 4필드 backfill. 옛 free-form `era` → `century` rename | ✅ |
+| 2. 키워드 등장 빈도 감사 | 후보 ~85개를 keywords/제목에서 substring 매칭 → INCLUDE/MARGINAL/SKIP 판정 | ✅ |
+| 3. 신규 27 entry 추가 (Q1c·Q2c·Q3 contextual). entry 69 → 96, 커버리지 12.4% → 14.3% | ✅ |
+| 4. 라벨링 파이프라인 (사전 1차 → BERTopic → contextual disambiguation → 다수결 집계) | 🚫 |
+| 5. 검수 표본 (랜덤 50 + 신뢰도 하위 50) | 🚫 |
+| 6. Streamlit 시각화 (커버리지 streamgraph + entropy / 학제경계 reception 비율) | 🚫 |
+
+### 13.2 핵심 결정 (전체는 `evaluation/docs/DECISIONS.md`)
+
+- **4축 직교 라벨**: `school` (사상 학파) × `era` (시대 bucket) × `source_language` (자료 언어) × `reception_horizon` (다뤄진 지평).
+- **축 6 측정 정의**: `reception_horizon == "india"` 비율 = "인도철학 비중". 한역·티베트역 자료라도 사상 *원천* 이 인도면 india.
+- **다중 라벨**: 주 1 + 부 N.
+- **yoga era 필수**: classical / post_classical (하타) / modern.
+- **chan 3국 통합** (지역은 reception 으로 구분), **nyaya/vaisheshika/pramana 별도**, **vedanta 단일**.
+- **Q1 (구마라집)**: `school=madhyamaka, reception=east_asia`.
+- **Q2 (대승기신론)**: `school=east_asian_other`.
+- **Q3 (법화경류 모호 텍스트)**: 사전 단정 회피 → 공출현 키워드 contextual rule 로 Phase 4 에서 처리.
+- **신규 entry 추가 원칙**: 키워드 감사에서 빈도 ≥ 1 인 것만. 親鸞·道元·空海·법장·혜능 등 빈도 0 후보는 제외.
+
+### 13.3 산출 데이터
+
+- `data/dictionaries/concepts.yml` — 신규 4필드 (school/era/source_language/reception_horizon) + 옛 era → century rename. (전체 본 프로젝트가 공유)
+- `evaluation/output/keyword_audit.csv` — 키워드 등장 빈도 감사 결과 (멱등 재실행 가능)
+
+### 13.4 운영 규칙
+
+- 인접 학술지 비교 시 **반드시 사용자 사전 문의**. 자의적 선정 금지.
+- 라벨링 정확도 목표 80% → 시각화 → 시간 남으면 환류.
+- 모호 텍스트의 학파는 사전이 아닌 라벨링 파이프라인에서 contextual 결정.
+- ruamel.yaml 의존 (`backfill_concepts_metadata.py`).
+- evaluation/ 의 변경이 기존 대시보드 코드를 깨지 않음 (사전 신규 필드는 `extras` 로 흘러들어가 무시됨).

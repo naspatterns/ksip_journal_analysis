@@ -314,57 +314,129 @@ for paper in 논문:
 
 ---
 
-## Decision-18 (PENDING) — `source_language` 변수의 의미론 재설계
+## Decision-18 — `source_language` 변수의 의미론 재설계 + 일차/이차문헌 분리
 
-**상태**: ⏳ **사용자 결정 대기**
+**상태**: ✅ **확정** (2026-05-20)
 
 **컨텍스트** (2026-05-20 토론):
 사용자가 sharp 지적함 — concept-level `source_language` (다르마키르티 entry 의 `source_language=sanskrit`) 는 *사상의 원천 언어* 를 가리키는데, 이는 *논문 저자가 실제로 사용한 자료의 언어* 와 다른 변수. 둘을 같은 이름으로 뭉개고 있었음.
 
-**문제의 예**:
-한국 학자 두 명이 모두 세친의 유식학을 다루는 논문을 쓴다고 가정.
-- 학자 X: 산스크리트 원전 + 독일 학계 (Schmithausen) 인용
-- 학자 Y: 玄奘 한역 + 일본 학계 (戸崎宏正) + 한국 학계 (정승석) 인용
+**확정 과정에서 사용자가 추가로 제시한 핵심 인사이트** (이게 설계를 한 단계 더 끌어올림):
 
-현 설계: 둘 다 `source_language=sanskrit` (vasubandhu entry 의 메타 전파).
-실제: 두 논문은 *완전히 다른 학적 작업* — 학자 X 는 philological·서구학계, 학자 Y 는 동아시아 학계 의존.
+> "인도철학쪽 논문들은 일차문헌과 이차문헌을 철저히 나누는 편이야. 참고문헌 목록에서 일차문헌들을 기준으로 어떤 원전에 기반해서 논문을 작성하였는지 판단하고, 이차문헌들은 현재 태깅 안되어 있는데, 외국 논문들을 살펴보고 다른 어느 나라의 (예: 영어권, 일본어권, 독일어권) 학계에 영향을 받았는지도 평가해서 태깅하면 좋지 않을까?"
 
-**제안된 redesign**:
+→ paper-level 자료 의존도는 **단일 변수** 가 아니라 **두 차원**:
+- (A) **어떤 원전에 기반?** — 일차문헌의 언어 분포 (Sanskrit / Pali / Tibetan / Chinese 대장경 …)
+- (B) **어느 학계 영향?** — 이차문헌의 학적 horizon (한국어권 / 일본어권 / 영어권 / 독일어권 …)
 
-| 새 변수 | 위치 | 의미 |
+이건 인도철학 분야의 학적 작업 패턴을 정확히 반영. **A 는 사상사적 충실성, B 는 학계 lineage** 를 측정.
+
+**문제의 예** (확정된 6축 라벨로 재해석):
+
+| 한국 학자가 쓴 두 세친 유식 논문 | tradition_language | primary_source_basis | secondary_source_horizon |
+|---|---|---|---|
+| 학자 X: 산스크리트 원전 + Schmithausen 인용 | sanskrit (concept-level, 동일) | sanskrit | german |
+| 학자 Y: 玄奘 한역 + 戸崎宏正·정승석 인용 | sanskrit (concept-level, 동일) | chinese_canon | mixed (japanese + korean) |
+
+→ 같은 `tradition_language=sanskrit` 이지만 paper-level 두 변수가 두 작업의 *학적 결*을 분리해서 드러냄.
+
+---
+
+### 확정 변수 재설계 (4축 → 6축)
+
+| 변수 | 레벨 | 의미 | 옛 변수 |
+|---|---|---|---|
+| `school` | concept→paper | 사상 학파 | (동일) |
+| `era` | concept→paper | 시대 bucket | (동일) |
+| `reception_horizon` | concept→paper | 사상이 형성·전개된 지평 | (동일) |
+| `tradition_language` | **concept-level only** | **사상의 원천 언어** | ← `source_language` rename |
+| `primary_source_basis` ⭐ | **paper-level (계산)** | **이 논문이 어떤 일차문헌에 기반?** | (NEW) |
+| `secondary_source_horizon` ⭐ | **paper-level (계산)** | **이 논문이 어느 학계 영향?** | (NEW) |
+
+**값 도메인**:
+
+`tradition_language` (옛 source_language 와 동일 enum, 의미만 명확화):
+- `sanskrit` / `pali` / `prakrit` / `chinese` / `tibetan` / `modern_korean` / `mixed` / `n/a`
+
+`primary_source_basis` (paper-level):
+- `sanskrit` — 산스크리트 원전 다수
+- `pali` — 빠알리 니까야·아비담마 중심
+- `prakrit` — 자이나 아가마 등
+- `chinese_canon` — 大正藏·續藏·고려대장경 등 한역 대장경
+- `tibetan_canon` — bKa' 'gyur / bsTan 'gyur
+- `mixed` — 다언어 균형 사용
+- `unknown` — references 부재 (154편) 또는 미판정
+
+`secondary_source_horizon` (paper-level):
+- `korean` — 한국어권 (인도철학회 자기인용은 별도 추적)
+- `japanese` — 일본어권 (印度学仏教学研究·密教文化 등)
+- `english` — 영어권 (JIP·JIABS·PEW·BSOAS·JAOS 등 + Brill·Springer·Oxford 출판물)
+- `german` — 독일어권 (WZKS·Austrian/German 대학 출판 + 독일어 단행본)
+- `french` — 프랑스어권 (드물 예상)
+- `mixed` — 다국적 균형
+- `unknown` — references 부재 또는 미판정
+
+---
+
+### 사용자 확정 답 (대기였던 3개 결정)
+
+**1. 변수 재설계 방향**: ✅ (a) rename + 신규 변수 — 단, **신규 변수 1개가 아니라 2개** (primary/secondary 분리, 사용자 인사이트).
+
+**2. 언어 detection 방법**: ✅ (a) Unicode 범위 휴리스틱.
+- Hangul U+AC00–U+D7AF → korean
+- Kana U+3040–U+30FF (Hiragana/Katakana) → japanese
+- Han(CJK) only 없이 일본 가나 → chinese (한역 + 대만/중국 현대)
+- Latin → 1차로 english, journals.yml 의 publisher 메타로 정밀화 (Austrian Academy·Brill 등 → german/english)
+- Tibetan U+0F00–U+0FFF → tibetan (일차문헌일 가능성 높음)
+- Devanagari U+0900–U+097F → sanskrit (일차문헌)
+
+→ Unicode 1차 + `journals.yml` 의 `publisher` 메타 보강 (이미 publisher 필드 다수 entry 보유). 추후 `journals.yml` 에 `lang` 명시 필드 추가는 옵션 (Decision-19 후보).
+
+**3. references 없는 154편**: ✅ (a) `primary_source_basis = "unknown"` + `secondary_source_horizon = "unknown"`. `tradition_language` fallback 안 함 (의미가 다른 변수).
+
+---
+
+### 일차/이차문헌 분류 룰 (Phase 4.3 에서 구현)
+
+`references.parquet` 의 7유형 + 사전 매칭 결합:
+
+| 유형 | 건수 | 일/이차 결정 |
 |---|---|---|
-| `tradition_language` (옛 source_language) | concepts.yml 메타 | 사상의 원천 언어 |
-| `paper_source_profile` (신규) | references.parquet 에서 집계 | 저자가 실제 인용한 자료의 언어 분포 |
+| 기타자료 | 2,020 | **거의 일차** — 원전 카탈로그 (D 4203, T 32, NyāyamukhaTib. 등). 단 ATBS 같은 시리즈명도 섞임 → 사전 매칭으로 확인. |
+| 단행본 | 6,708 | **혼합** — 저자가 사상가(고전) 또는 제목이 텍스트명이면 일차. 학자명+학자 저작이면 이차. concepts.yml 매칭으로 판정. |
+| 학술지(정기간행물) | 3,578 | **거의 이차** — 학자 연구. 자기인용(인도철학) 제외. |
+| 학위논문 | 245 | **이차** |
+| 학술대회논문 | 77 | **이차** |
+| 보고서 | 41 | **이차** (대부분 학자 보고서) |
+| 인터넷자원 | 218 | **회색** — URL·DOI·온라인 텍스트. 매칭 가능하면 일차, 아니면 unknown. |
 
-→ SCHEMA.md 의 4축 라벨 → 5축 확장.
+분류 결과는 `references.parquet` 의 신규 컬럼 `tier` (`primary` / `secondary` / `unknown`) 로 저장.
 
-**대기 결정 3가지**:
+---
 
-1. **변수 재설계 방향**:
-   - (a, 권장) rename + 신규 변수 두 개 분리
-   - (b) 현재 source_language 유지 + paper_source_profile 만 추가
-   - (c) 다른 안
+### 축 2 (의존도) 와의 관계
 
-2. **언어 detection 방법** (paper_source_profile 계산용):
-   - (a, 권장) Unicode 범위 휴리스틱: Hangul(0xAC00-0xD7AF) → 한국어, Kana → 일본어, Hanja-only → 중국어/한역, Latin → 영어/독일어, Tibetan(0x0F00-0x0FFF), Devanagari(0x0900-0x097F)
-   - (b) journals.yml 에 `lang` 메타필드 추가 → 학술지 단위 언어 룰북 (더 정확, 더 작업 필요)
-   - (a+b 결합 가능 — 휴리스틱 1차, journal 룰북 보강)
+이 재설계는 단순 변수 정정이 아니라 **사용자 원래 4축 평가요소 중 (2) "학술지가 인용하는 연구의 권역 분포" 의 직접 답**. 즉:
+- `secondary_source_horizon` = 학계 lineage 측정의 핵심 변수
+- 분포가 한국·일본 80% / 영어권 15% / 독일어권 5% 면 동아시아 의존 패턴
+- 분포가 영어권 60% / 독일어권 30% / 한국 10% 면 서구 학계 의존 패턴
 
-3. **references 없는 154편 처리**:
-   - (a, 권장) `source_profile = "unknown"`
-   - (b) `tradition_language` 로 fallback
+축 1+6 의 범위를 넘어 **축 2 (의존도) 의 발판** 이 됨.
 
-**축 2 (의존도) 와의 관계**:
-`paper_source_profile` 은 단순히 source_language 의 paper-level 정확화가 아니라 **사용자 원래 4축 평가요소 중 (2) "학술지가 인용하는 연구의 권역 분포" 의 직접 답**. 즉 이 재설계는 축 1+6 의 범위를 넘어 축 2 의 발판이 됨.
+---
 
-**해소 후 영향**:
-- SCHEMA.md 의 변수 표 갱신
-- `concepts.yml` 일괄 rename
-- `evaluation/labeling/` 에 `language_detect.py` 신규 모듈
-- 검증 스크립트 (verify_05_dictionary.py) 의 enum 갱신
-- ISSUES.md 에 ISSUE-008 등록 (RESOLVED 시 해소)
+### 영향 받는 산출물
 
-**커밋**: (해소 시 기록)
+- [`SCHEMA.md`](../taxonomy/SCHEMA.md) — §4 재구성 (`source_language` 절 분할), §1·§6·§7 갱신
+- [`concepts.yml`](../../data/dictionaries/concepts.yml) — 96 entry 의 `source_language` → `tradition_language` 일괄 rename (의미 동일, 키만)
+- [`PIPELINE.md`](./PIPELINE.md) — Phase 4 단계 상세 추가
+- 신규 모듈 `evaluation/labeling/`:
+  - `classify_reference_tier.py` — references 의 일/이차 분류
+  - `detect_language.py` — Unicode 휴리스틱 + journals.yml publisher 결합
+  - `compute_paper_source.py` — paper-level 두 변수 계산
+- 검증: `verify_05_dictionary.py` 의 enum 갱신 + Phase 5 검수 표본에 새 변수 포함
+
+**커밋**: (Phase 4.1 문서 갱신 커밋 — 이번 작업)
 
 ---
 

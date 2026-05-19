@@ -11,12 +11,11 @@
 
 ---
 
-## 마지막 갱신: 2026-05-20
+## 마지막 갱신: 2026-05-20 (Phase 4.1 문서 갱신 직후)
 
 ### 현재 위치 (한 줄 요약)
 
-> Phase 3 (사전 96 entry) + 무결성 검증 (WARN 6) + ISSUE-005 해소 완료.
-> **다음 단계는 Phase 4 라벨링 파이프라인. 단, source_language 재설계 (Decision-18) 가 선행되어야 함.**
+> **Decision-18 확정** (source_language → tradition_language + 일차/이차문헌 분리). Phase 4.1 (문서 갱신) 완료, Phase 4.2 (concepts.yml rename) 부터 코드 작업 착수 예정.
 
 ### Phase 진행도
 
@@ -26,60 +25,39 @@
 | 1 | 사전 메타필드 backfill (69 entry) | ✅ |
 | 2 | 키워드 등장 빈도 감사 | ✅ |
 | 3 | 신규 27 entry 추가 (Q1c·Q2c·Q3) | ✅ |
-| — | 데이터 무결성 검증 10 레이어 | ✅ |
-| — | ISSUE-005 해소 (keywords.parquet 갱신) | ✅ |
-| — | **Decision-18 (source_language 재설계)** | **⏳ 사용자 결정 대기** |
-| 4 | 라벨링 파이프라인 | ⏸ |
-| 5 | 검수 표본 (랜덤 50 + 신뢰도 하위 50) | ⏸ |
-| 6 | Streamlit 시각화 (커버리지 + 학제 경계) | ⏸ |
-| — | (사후) 축 2/3/4/5/7/8 확장 | 🚫 |
+| — | 데이터 무결성 검증 10 레이어 (WARN=6) | ✅ |
+| — | ISSUE-005 해소 (keywords.parquet 384→443 canonical) | ✅ |
+| — | **Decision-18 확정** (4축 → **6축**, 일차/이차문헌 분리) | ✅ |
+| **4.1** | **문서 갱신** (SCHEMA·DECISIONS·ISSUES·SESSION_STATE) | ✅ **(이번)** |
+| **4.2** | **`concepts.yml` 96 entry 의 source_language → tradition_language rename** | ⏳ next |
+| **4.3** | references.parquet 에 `tier` 컬럼 (일차/이차/unknown) 분류 | ⏸ |
+| **4.4** | paper-level 두 변수 계산 (Unicode detection + publisher 보강) | ⏸ |
+| 5 | 검수 표본 (랜덤 50 + 신뢰도 하위 50) → 사전 환류 | ⏸ |
+| 6 | Streamlit 시각화 (커버리지 + 학제 경계 + 의존도) | ⏸ |
+| — | (사후) 축 3/4/5/7/8 확장 — 축 1+2+6 까지가 1차 범위 | 🚫 |
 
 ---
 
 ## ⏳ 진행 중인 토론 — 다음 세션에서 결정 필요
 
-### Decision-18 — `source_language` 변수의 의미론 재설계
+(현재 차단 결정 없음 — Decision-18 확정 후 Phase 4.2 부터 코드 작업 가능)
 
-**배경 (2026-05-20 토론)**:
-사용자가 sharp 지적함 — 현재 `concepts.yml` 의 `source_language` 는 *사상의 원천 언어* (예: dharmakirti → sanskrit) 인데, 이는 *논문 저자가 실제로 사용한 자료의 언어* 와 다른 변수임. 두 가지를 같은 이름으로 뭉개고 있었음.
-
-**제안된 redesign**:
-- `concepts.yml` 의 `source_language` → **`tradition_language`** 로 rename (사상의 원천)
-- 새 변수 **`paper_source_profile`** 추가 — `references.parquet` 의 언어 detection 으로 계산 (저자의 실제 자료 분포)
-- SCHEMA.md 의 4축 → 5축 확장
-
-**대기 결정 3가지** (사용자 답변 필요):
-
-1. **변수 재설계 방향**:
-   - (a, 권장) rename + 신규 변수 두 개 분리
-   - (b) 현재 source_language 유지 + 신규 paper_source_profile 만 추가
-   - (c) 다른 안
-
-2. **언어 detection 방법**:
-   - (a, 권장) Unicode 범위 휴리스틱 (Hangul / Kana / Hanja-only / Latin / Tibetan)
-   - (b) journals.yml 에 `lang` 메타필드 추가 → 학술지 단위 룰북 (더 정확, 더 작업 필요)
-   - (a+b 결합 가능)
-
-3. **references 없는 154편 처리**:
-   - (a, 권장) `source_profile = "unknown"`
-   - (b) `tradition_language` 로 fallback
-
-**다음 세션 첫 행동**: 위 3개 답 받고 → SCHEMA·concepts.yml 재설계 → Phase 4 착수.
+다만 Phase 4.3 의 일차/이차 분류 룰을 구현하며 **회색 케이스** (인터넷자원·매칭 안 되는 단행본) 의 fallback 결정이 발생할 수 있음. 그때 즉시 사용자 컨펌 요청.
 
 ---
 
 ## 직전 커밋 정보
 
 ```
-brnch: claude/festive-elgamal-1dd4b3 (worktree, [ahead 4, behind 4] vs origin/main)
-HEAD:  994b563 — data: ISSUE-005 해소 — build_data.py 재실행, keywords.parquet 갱신
+branch: claude/festive-elgamal-1dd4b3  (origin 에 push 됨, main 으로 머지 X — 별도 트랙)
+HEAD:   18c78fc — session: 멀티 컴퓨터 작업을 위한 단일 진입점·portable 환경 정립
+다음 커밋: Phase 4.1 문서 갱신 (Decision-18 확정 반영)
 ```
 
-**워크트리 ↔ origin/main 의 4↑/4↓ 분기 상태**:
-- 우리 쪽 4 commits: evaluation/ Phase 0-3 + 검증 + ISSUE-005
-- main 쪽 4 commits: stlite + gh-pages + KCI integration + 사전 보강 + slash parsing
-
-→ 다음 세션 또는 다른 컴퓨터로 옮길 때 **merge 가 필요**. [`HANDOFF_PROTOCOL.md`](./HANDOFF_PROTOCOL.md) 의 "git sync 전략" 참조.
+**main 과의 분기 상태** (의도된, 머지 안 함):
+- claude 쪽 5 commits: evaluation/ Phase 0-3 + 검증 + ISSUE-005 + portable 환경
+- main 쪽 5 commits: stlite + gh-pages + KCI integration + 사전 보강 + slash parsing fix
+- **두 트랙은 분리 유지** — 평가 서브프로젝트(`evaluation/`)는 메인 대시보드와 별도 진행. push 만 origin 에 동기화.
 
 ---
 
@@ -106,10 +84,10 @@ HEAD:  994b563 — data: ISSUE-005 해소 — build_data.py 재실행, keywords.
 
 - **ISSUE-001** 초록 PUA 2건 (의도된 raw 보존)
 - **ISSUE-002/003** concepts.yml surface 중복 (코스메틱, last-wins 동작)
-- **ISSUE-004** journals.yml `佛敎學硏究` 충돌 (사용자 결정 필요, 축 2 단계 영향)
+- **ISSUE-004** journals.yml `佛敎學硏究` 충돌 (사용자 결정 필요, 축 2 단계 영향 — Phase 4.4 의 publisher 메타 활용 시 발견 가능)
 - **ISSUE-006** surface 확장 (yoga 56 등) — Phase 4 환류로 자연 해소
 - **ISSUE-007** 601-636 reference 부재 (KCI 원본 한계, Phase 4 단계 2 보강)
-- **ISSUE-008** (아직 미등록) — Decision-18 의 source_language 재설계
+- ~~**ISSUE-008**~~ — **RESOLVED (설계)**, 2026-05-20. Decision-18 합의로 변수 재설계 확정. 구현은 Phase 4.2–4.4.
 
 → 상세: [`ISSUES.md`](./ISSUES.md)
 
@@ -119,18 +97,27 @@ HEAD:  994b563 — data: ISSUE-005 해소 — build_data.py 재실행, keywords.
 
 1. **시작 절차** ([`HANDOFF_PROTOCOL.md`](./HANDOFF_PROTOCOL.md)):
    ```bash
-   git pull origin main          # 또는 워크트리 동기화
+   git checkout claude/festive-elgamal-1dd4b3   # 평가 트랙 (main 머지 X)
+   git pull origin claude/festive-elgamal-1dd4b3
    .venv/bin/python evaluation/scripts/check_env.py
    cat evaluation/docs/SESSION_STATE.md
    ```
 
-2. **Decision-18 의 3개 결정 답하기** (위 § "진행 중인 토론")
+2. **Phase 4.2 부터 시작** — `concepts.yml` 96 entry rename:
+   - `source_language` 키 → `tradition_language` (의미 동일, 키만 변경)
+   - 멱등 스크립트 (ruamel.yaml 기반, 주석·순서 보존)
+   - 부수: `verify_05_dictionary.py` 의 enum 갱신 (`tradition_language` 인식)
+   - 회귀: `verify_all.py` 실행 → 새 키 인식 확인
 
-3. **결정 받은 후 Phase 4 착수**:
-   - SCHEMA 갱신 (variable rename + 신규 변수)
-   - `concepts.yml` 의 `source_language` → `tradition_language` 일괄 rename
-   - `paper_source_profile` 계산 로직 (references 언어 detection)
-   - 라벨링 파이프라인 본체 구현
+3. **Phase 4.3 — references 일/이차 분류**:
+   - `evaluation/labeling/classify_reference_tier.py` 신규
+   - `references.parquet` 에 `tier` 컬럼 (`primary` / `secondary` / `unknown`) 추가
+   - 룰: 유형 기반 1차 + concepts.yml 매칭으로 단행본의 일/이차 구분
+
+4. **Phase 4.4 — paper-level 두 변수 계산**:
+   - `evaluation/labeling/detect_language.py` (Unicode 휴리스틱 + publisher 보강)
+   - `evaluation/labeling/compute_paper_source.py` (paper-level 집계)
+   - `papers.parquet` 또는 별도 `paper_labels.parquet` 에 두 컬럼 추가
 
 ---
 

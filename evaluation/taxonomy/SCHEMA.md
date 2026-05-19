@@ -5,16 +5,16 @@
 
 ## 1. 사전(`concepts.yml`) 신규 메타필드
 
-기존 entry 의 끝에 다음 4개 필드를 옵션으로 추가. `verified=true` 항목부터 우선 라벨링.
+기존 entry 의 끝에 다음 4개 concept-level 필드를 옵션으로 추가. `verified=true` 항목부터 우선 라벨링.
 
 ```yaml
 - canonical_id: yogacara
   canonical_kr: 유가행파
   type: 학파
-  # ── 신규 4필드 ──
+  # ── 신규 4필드 (concept-level) ──
   school: yogacara              # primary_school 라벨 (자기 자신과 동일하면 명시 또는 생략)
   era: classical                # 시대 (학파/원전/학자/개념에 부착 가능)
-  source_language: sanskrit     # 1차 자료 언어 (원전·개념에 부착 가능)
+  tradition_language: sanskrit  # 사상의 원천 언어 (원전·개념에 부착) ★ 옛 source_language 의 의미 명확화 (Decision-18)
   reception_horizon: india      # 사상의 출처 지평
   # ── 기존 ──
   surface_forms: [...]
@@ -22,6 +22,12 @@
 ```
 
 라벨링 파이프라인은 논문의 키워드/제목에서 발견된 entry 들의 메타필드를 집계해 논문 단위 라벨을 결정.
+
+**paper-level 자료 의존도 변수 2개** (concept-level 메타에 없음 — `references.parquet` 에서 계산):
+- `primary_source_basis` — 이 논문이 어떤 일차문헌(원전)에 기반? § 4.2 참조
+- `secondary_source_horizon` — 이 논문이 어느 학계(영어권·일본어권·독일어권 등) 영향? § 4.3 참조
+
+(2026-05-20 Decision-18 — 사용자의 일차/이차문헌 분리 인사이트로 4축 → 6축 확장.)
 
 ## 2. `primary_school` — 학파 (옵션 2 입자, 13~15개)
 
@@ -115,20 +121,83 @@
 
 라벨링 결정 룰: 학파 + 인용 원전·인물의 시대로 추론. 모호하면 검수.
 
-## 4. `source_language` — 자료 언어
+## 4. 자료 언어 변수군 — `tradition_language` + `primary_source_basis` + `secondary_source_horizon`
+
+옛 단일 `source_language` 가 *사상의 원천 언어* (concept-level) 와 *저자가 실제 사용한 자료의 언어* (paper-level) 를 뭉개고 있었음. 사용자 지적 (2026-05-20, Decision-18) 으로 **3개 변수로 분리**. 또한 paper-level 은 인도철학 논문의 **일차/이차문헌 구분** 관습을 반영해 다시 2개로 나뉨.
+
+### 4.1 `tradition_language` — 사상의 원천 언어 (concept-level)
+
+`concepts.yml` 의 entry 메타. 다르마키르티 → sanskrit, 龍樹의 中論 → sanskrit (한역 자료라도 원천이 인도면 sanskrit), 法藏 → chinese, 쫑카파 → tibetan.
 
 | 값 | 비고 |
 |---|---|
 | `sanskrit` | 산스크리트 원전 |
 | `pali` | 빠알리 원전 |
 | `prakrit` | 자이나 등 프라크리트 |
-| `chinese` | 한역 (대장경 포함) |
-| `tibetan` | 티베트역·티베트어 저작 |
+| `chinese` | 동아시아 자체 저술의 한문 (法藏·智儼 등) |
+| `tibetan` | 티베트어 자체 저작 (쫑카파 등) |
 | `modern_korean` | 현대 한국어 1차 텍스트 (간디 한국 수용 등 드문 케이스) |
 | `mixed` | 다언어 비교 |
 | `n/a` | 학술사·메타 논문 등 1차 자료 무관 |
 
-키워드/제목에 한자(아 — 한자 비율 N% 이상) → chinese, 산스크리트 IAST 음역 → sanskrit 같은 휴리스틱 + 사전 매칭 결합.
+→ 옛 `source_language` 와 enum 동일, **의미만 명확화** (Decision-18). `concepts.yml` 96 entry 의 키 일괄 rename 은 Phase 4.2 에서.
+
+### 4.2 `primary_source_basis` — 이 논문이 어떤 일차문헌에 기반? (paper-level)
+
+`references.parquet` 의 *일차문헌 reference* 들의 언어 분포 → 다수결 + 비율 벡터로 저장.
+
+| 값 | 비고 |
+|---|---|
+| `sanskrit` | 산스크리트 원전 다수 (Pramāṇasamuccaya·Yogasūtra 등) |
+| `pali` | 빠알리 니까야·아비담마 중심 |
+| `prakrit` | 자이나 아가마 등 |
+| `chinese_canon` | 한역 대장경 (大正藏·續藏·고려대장경) — `tradition_language=chinese` 와 다른 점: 인도 원전의 한역도 포함 |
+| `tibetan_canon` | bKa' 'gyur / bsTan 'gyur — 인도 원전의 티베트역 포함 |
+| `mixed` | 다언어 균형 (예: 산스크리트 원전 + 티베트역 비교) |
+| `unknown` | references 부재 (154편) 또는 미판정 |
+
+→ Phase 4.3 에서 `references.parquet` 에 `tier` 컬럼 (primary/secondary/unknown) 분류 + Phase 4.4 에서 paper-level 집계.
+
+### 4.3 `secondary_source_horizon` — 이 논문이 어느 학계 영향? (paper-level)
+
+`references.parquet` 의 *이차문헌 reference* 들의 학계 horizon 분포. 인도철학회 자기인용은 별도 추적.
+
+| 값 | 비고 |
+|---|---|
+| `korean` | 한국어권 (한국 학술지·단행본·학위논문) |
+| `japanese` | 일본어권 (印度学仏教学研究·密教文化 등) |
+| `english` | 영어권 (JIP·JIABS·PEW·BSOAS·JAOS + Brill·Springer·Oxford 등) |
+| `german` | 독일어권 (WZKS·Austrian/German 대학 출판 + 독일어 단행본) |
+| `french` | 프랑스어권 (드물 예상) |
+| `mixed` | 다국적 균형 |
+| `unknown` | references 부재 또는 미판정 |
+
+→ Decision-18 의 추가 인사이트: 이 변수는 **축 2 (의존도) 의 직접 답** — 학계 lineage 측정. 예: 한국·일본 80% / 영어권 15% / 독일어권 5% → 동아시아 의존 패턴. 영어권 60% / 독일어권 30% / 한국 10% → 서구 학계 의존 패턴.
+
+### 4.4 일차/이차문헌 분류 룰 (Phase 4.3 구현)
+
+`references.parquet` 의 7유형 + 사전 매칭 결합:
+
+| 유형 | 건수 | 일/이차 결정 |
+|---|---|---|
+| 기타자료 | 2,020 | **거의 일차** — 원전 카탈로그 (D 4203, T 32, Tib. 등). 단 ATBS·시리즈명 등은 사전 매칭으로 확인. |
+| 단행본 | 6,708 | **혼합** — 저자가 사상가(고전, concepts.yml 매칭) 또는 제목이 텍스트명이면 일차. 학자명+학자 저작이면 이차. |
+| 학술지(정기간행물) | 3,578 | **거의 이차** — 학자 연구. 자기인용(인도철학) 제외. |
+| 학위논문 / 학술대회 / 보고서 | 363 | **이차** |
+| 인터넷자원 | 218 | **회색** — 매칭 가능하면 일차, 아니면 unknown |
+
+분류 결과 → `references.parquet` 의 신규 컬럼 `tier` (`primary` / `secondary` / `unknown`).
+
+### 4.5 언어 detection 방법 (Phase 4.4 구현)
+
+Unicode 휴리스틱 1차 + `journals.yml` 의 `publisher` 메타 보강 (Decision-18 확정):
+
+- Hangul U+AC00–U+D7AF → `korean`
+- Kana U+3040–U+30FF (Hiragana/Katakana) → `japanese`
+- Han(CJK) only, no Kana → `chinese` (한역 + 대만/중국 현대)
+- Latin → 1차로 `english`, publisher 메타로 정밀화 (Austrian Academy·Brill 독일어권 → `german`, Springer/Oxford → `english` 등)
+- Tibetan U+0F00–U+0FFF → `tibetan` (대부분 일차문헌)
+- Devanagari U+0900–U+097F → `sanskrit` (대부분 일차문헌)
 
 ## 5. `reception_horizon` — 지평 (축 6 핵심 변수)
 
@@ -147,18 +216,30 @@
 
 ```
 키워드 (정규화 → canonical_id) ─┐
-제목 (사전 매칭)             ─┤── 논문 단위 라벨 집계
-[초록 — 보조, 모호 시]        ─┘     (다수결 / 가중)
-                                      │
-                                      ▼
-                              논문 × {primary_school+, era+, source_language?, reception_horizon}
-                                      │
-                                      ▼
-                          BERTopic 으로 미해결·저신뢰 보강
-                                      │
-                                      ▼
-                              검수 표본 100편 → 사전 환류
+제목 (사전 매칭)             ─┤── concept-level 메타 집계 ──┐
+[초록 — 보조, 모호 시]        ─┘     (다수결 / 가중)         │
+                                                            ▼
+                                              논문 × { school+, era+,
+                                                       tradition_language?,
+                                                       reception_horizon }
+
+references.parquet ────► tier 분류 (primary/secondary) ────► paper-level 집계
+                                                            ▼
+                                              논문 × { primary_source_basis,
+                                                       secondary_source_horizon }
+                                                            │
+                                                            ▼
+                                              BERTopic 으로 미해결·저신뢰 보강
+                                                            │
+                                                            ▼
+                                              검수 표본 (Phase 5) → 사전 환류
 ```
+
+**두 개의 독립 집계 경로**:
+- (위) 키워드·제목·초록 → 사전 매칭 → concept-level 메타 (school·era·tradition_language·reception_horizon) 집계
+- (아래) references → 일/이차 분류 + Unicode·publisher detection → paper-level 두 변수 (primary_source_basis·secondary_source_horizon) 계산
+
+두 경로의 산출을 논문 단위로 join → 6축 라벨 완성.
 
 ## 7. 결정 사항 (사용자 확정 / 변경 시 환류)
 
@@ -177,6 +258,9 @@
 - ✅ **Q2 (대승기신론)** — 옵션 c: `school=east_asian_other` (동아시아 자체 형성, 인도 yogacara 와 분리)
 - ✅ **Q3 (법화경·화엄경 류 모호 텍스트)** — 사전에서 단일 학파 단정 안 함. **공출현 키워드 기반 contextual disambiguation** 룰을 Phase 4 라벨링 파이프라인이 처리 (§8 참조).
 - ✅ **신규 entry 후보 키워드 빈도 감사 기반 선정** — `docs/KEYWORD_AUDIT.md` 참조. 빈도 0 후보(法藏·智儼·親鸞·道元·空海·의상·지눌·휴정 등) 는 사전 추가 안 함.
+- ✅ **Decision-18 (2026-05-20)** — `source_language` → `tradition_language` (concept-level) rename. paper-level 두 신규 변수 추가: `primary_source_basis` (일차문헌 기반) + `secondary_source_horizon` (이차문헌 학계). 인도철학 학계의 일차/이차문헌 분리 관습을 반영. 4축 → **6축 확장**.
+- ✅ **Decision-18 (언어 detection)** — Unicode 휴리스틱 1차 + `journals.yml` 의 publisher 메타 보강.
+- ✅ **Decision-18 (154편 references 부재)** — `primary_source_basis=unknown` + `secondary_source_horizon=unknown` (tradition_language fallback 안 함).
 
 전체 결정 로그는 [`../docs/DECISIONS.md`](../docs/DECISIONS.md) 참조.
 

@@ -197,16 +197,28 @@
 |---|---|
 | 분류 | WARN (설계 오류, 분석 신뢰성 영향) |
 | 발견 | 2026-05-20 사용자 지적 (Phase 4 설계 토론 중) |
-| 상태 | OPEN — Decision-18 결정 대기 |
+| 상태 | **RESOLVED (설계)** — 구현은 Phase 4.2–4.4 에서 |
 | 영향 | concepts.yml 96 entry 의 source_language 메타 + 미래의 라벨링 파이프라인 |
 
 **현상**: concept-level `source_language` (다르마키르티 entry 의 `source_language=sanskrit`) 는 *사상의 원천 언어* 인데, 자연어 이름 "source_language" 는 *논문 저자가 실제 사용한 자료의 언어* 로 읽힘. 두 가지가 *다른 변수*.
 
 **원인**: SCHEMA 설계 시 두 가지를 구분하지 않았음. 사용자가 *2차 자료 의존도* 분석 (축 2) 의 맥락에서 지적함.
 
-**해소 방안**: Decision-18 의 3가지 결정 (rename + 신규 변수 + detection 방법 + fallback) 합의 후 일괄 변경. 상세 [`DECISIONS.md`](./DECISIONS.md) Decision-18 참조.
+**해소 방안**: Decision-18 합의 — 변수 재설계 + 일차/이차문헌 분리 도입.
 
-**완료** (해소 시 기록 예정):
+**완료** (2026-05-20, 설계):
+
+1. Decision-18 확정 — 4축 → 6축 변수 재설계. 상세 [`DECISIONS.md` §Decision-18](./DECISIONS.md) 참조.
+2. 사용자 추가 인사이트로 paper-level 단일 변수 (`paper_source_profile`) → 두 변수 분리:
+   - `primary_source_basis` (일차문헌 기반 원전 언어)
+   - `secondary_source_horizon` (이차문헌 학계 horizon)
+3. 후속 구현 (Phase 4 sub-tasks, 별도 진행):
+   - **4.2** — `concepts.yml` 96 entry 의 `source_language` → `tradition_language` 일괄 rename
+   - **4.3** — `references.parquet` 에 `tier` 컬럼 (primary/secondary/unknown) 분류 룰
+   - **4.4** — paper-level 두 변수 계산 모듈 (`detect_language.py` + `compute_paper_source.py`)
+   - **검증** — `verify_05_dictionary.py` enum 갱신, 새 변수 검증 추가
+
+**커밋**: (Phase 4.1 문서 갱신 커밋 — 이번)
 
 ---
 

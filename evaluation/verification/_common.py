@@ -1,6 +1,6 @@
 """검증 스크립트 공통 헬퍼.
 
-- 경로 상수 (raw 는 메인 프로젝트, processed/dictionaries 는 워크트리)
+- 경로 상수 (자동 탐지 + env var override) — 멀티 컴퓨터 portable
 - 검증 결과를 FATAL/WARN/INFO 로 누적해 CSV·요약 출력
 """
 from __future__ import annotations
@@ -11,18 +11,73 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 # ============================================================
-# 경로
+# 경로 자동 탐지 — 멀티 컴퓨터 환경에서 hardcoded path 회피
 # ============================================================
 
-# 워크트리 루트
+# 워크트리 루트 (이 파일이 있는 위치 기준)
 WORKTREE_ROOT = Path(__file__).resolve().parent.parent.parent
 
-# raw 는 메인 프로젝트에. KSIP_RAW_DIR 환경변수로 override 가능.
-DEFAULT_RAW = Path(
-    "/Users/jibak/Documents/@CLASSES/2026-1/DigitalHumanities/"
-    "ksip_journal_analysis/data/raw"
-)
-RAW_DIR = Path(os.environ.get("KSIP_RAW_DIR", DEFAULT_RAW))
+
+def find_main_root() -> Path:
+    """ksip_journal_analysis 메인 프로젝트 루트.
+
+    탐지 우선순위:
+    1. 환경변수 KSIP_HOME
+    2. parent 중 이름이 'ksip_journal_analysis' 인 디렉토리
+    3. ksip/load.py + scripts/build_data.py 가 함께 있는 가장 가까운 parent
+    """
+    env = os.environ.get("KSIP_HOME")
+    if env:
+        p = Path(env).resolve()
+        if p.exists():
+            return p
+    here = Path(__file__).resolve()
+    for parent in [here, *here.parents]:
+        if parent.name == "ksip_journal_analysis":
+            return parent
+    # fallback: marker files
+    for parent in here.parents:
+        if (parent / "ksip" / "load.py").exists() and \
+           (parent / "scripts" / "build_data.py").exists():
+            return parent
+    raise FileNotFoundError(
+        "ksip_journal_analysis 루트 못 찾음. "
+        "KSIP_HOME 환경변수 설정 또는 리포 이름을 'ksip_journal_analysis' 로 유지하세요."
+    )
+
+
+def find_raw_dir() -> Path:
+    """raw .xls 데이터 디렉토리.
+
+    워크트리에서는 메인 프로젝트의 data/raw/. KSIP_RAW_DIR 환경변수로 override.
+    """
+    env = os.environ.get("KSIP_RAW_DIR")
+    if env:
+        return Path(env)
+    return find_main_root() / "data" / "raw"
+
+
+def find_kci_key_file() -> Path | None:
+    """KCI Open API key 파일.
+
+    탐지: KSIP_KCI_KEY_FILE 환경변수 → 메인 프로젝트 루트의 KCI_OpenAPI_Key*.txt.
+    """
+    env = os.environ.get("KSIP_KCI_KEY_FILE")
+    if env:
+        p = Path(env)
+        return p if p.exists() else None
+    try:
+        main = find_main_root()
+    except FileNotFoundError:
+        return None
+    for pattern in ["KCI_OpenAPI_Key*.txt", "KCI_API_KEY.txt", "kci_api_key.txt"]:
+        matches = sorted(main.glob(pattern))
+        if matches:
+            return matches[-1]  # 가장 최근 (이름순)
+    return None
+
+
+RAW_DIR = find_raw_dir()
 
 PROCESSED_DIR = WORKTREE_ROOT / "data" / "processed"
 DICT_DIR = WORKTREE_ROOT / "data" / "dictionaries"

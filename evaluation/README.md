@@ -3,6 +3,13 @@
 기존 대시보드(루트 `app.py` + `pages/1, 2`) 와 분리된 별도 Streamlit 앱.
 학술지 「인도철학」(1989–2025, 636편) 을 통합 평가·진단하는 워크벤치.
 
+## 🟢 새 세션 시작 — 무엇부터 읽나
+
+1. **현재 위치**: [`docs/SESSION_STATE.md`](docs/SESSION_STATE.md) ← **가장 먼저**
+2. 새 컴퓨터 셋업: [`docs/ENVIRONMENT.md`](docs/ENVIRONMENT.md)
+3. 세션 시작/종료 프로토콜: [`docs/HANDOFF_PROTOCOL.md`](docs/HANDOFF_PROTOCOL.md)
+4. 환경 검증: `.venv/bin/python evaluation/scripts/check_env.py`
+
 ## 1. 평가의 8축
 
 | 축 | 질문 | 단계 |
@@ -18,19 +25,22 @@
 
 축 1+6 은 KCI API 없이 기존 parquet 만으로 가능.
 
-## 2. 문서 — 어디부터 읽나
+## 2. 문서 지도
 
-| 문서 | 역할 |
-|---|---|
-| 본 파일 (README) | 입구 — 폴더 구조 + 실행 명령 + 현황 |
-| [`docs/PIPELINE.md`](docs/PIPELINE.md) | 데이터 구축 과정 전체 — 재현 절차 포함 |
-| [`docs/DECISIONS.md`](docs/DECISIONS.md) | 결정 로그 (시간순, append-only) |
-| [`docs/KEYWORD_AUDIT.md`](docs/KEYWORD_AUDIT.md) | 키워드 등장 빈도 감사 결과 분석 |
-| [`taxonomy/SCHEMA.md`](taxonomy/SCHEMA.md) | 분류 4축 값 목록·결정 룰 |
+| 우선순위 | 문서 | 역할 |
+|---|---|---|
+| **1순위** | [`docs/SESSION_STATE.md`](docs/SESSION_STATE.md) | **현재 위치 + 다음 액션** (멀티 컴퓨터 단일 진입점) |
+| **2순위** | [`docs/HANDOFF_PROTOCOL.md`](docs/HANDOFF_PROTOCOL.md) | 세션 시작/종료 + git sync 절차 |
+| 셋업 | [`docs/ENVIRONMENT.md`](docs/ENVIRONMENT.md) | 새 컴퓨터에서 셋업할 때 |
+| 이해 | [`docs/PIPELINE.md`](docs/PIPELINE.md) | 데이터 구축 과정 전체 + 재현 절차 |
+| 정의 | [`taxonomy/SCHEMA.md`](taxonomy/SCHEMA.md) | 분류 4축 값 목록·결정 룰 |
+| 이력 | [`docs/DECISIONS.md`](docs/DECISIONS.md) | 결정 로그 (시간순, append-only) |
+| 데이터 | [`docs/KEYWORD_AUDIT.md`](docs/KEYWORD_AUDIT.md) | 키워드 등장 빈도 감사 결과 |
+| 추적 | [`docs/ISSUES.md`](docs/ISSUES.md) | 발견된 이슈 ticket |
+| 검증 | [`docs/VERIFICATION_PLAN.md`](docs/VERIFICATION_PLAN.md) | 무결성 검증 10 레이어 계획 |
 
-**새로 들어오는 사람** → `PIPELINE.md` 먼저, 그 다음 `SCHEMA.md`.
-**결정 이유가 궁금하면** → `DECISIONS.md`.
-**데이터 자체에 대해서** → `KEYWORD_AUDIT.md`.
+**복귀 시**: SESSION_STATE → check_env → SESSION_STATE의 "다음 액션".
+**새 컴퓨터**: ENVIRONMENT → SESSION_STATE → HANDOFF_PROTOCOL.
 
 ## 3. 폴더 구조
 
@@ -60,7 +70,7 @@ evaluation/
 ## 4. 실행
 
 ```bash
-PY=/Users/jibak/Documents/@CLASSES/2026-1/DigitalHumanities/ksip_journal_analysis/.venv/bin/python
+PY=.venv/bin/python    # 메인 프로젝트 루트에서. 워크트리에서는 메인의 .venv 사용
 
 # 사전 메타필드 backfill (멱등)
 $PY evaluation/labeling/backfill_concepts_metadata.py

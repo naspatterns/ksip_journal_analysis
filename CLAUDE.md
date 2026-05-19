@@ -1,7 +1,26 @@
 # CLAUDE.md — KSIP 인도철학 학술지 분석 대시보드
 
 다른 세션에서도 동일한 작업을 이어가기 위한 프로젝트 캐논 문서.
-이 폴더에 처음 들어오면 이 파일을 먼저 읽을 것.
+
+## 🟢 새 세션 시작 시 (멀티 컴퓨터)
+
+**가장 먼저 읽을 파일**: [`evaluation/docs/SESSION_STATE.md`](evaluation/docs/SESSION_STATE.md) — 현재 위치 + 진행 중 토론 + 다음 액션
+
+```bash
+# 1) 최신 받기
+git pull origin main
+
+# 2) 환경 검증
+.venv/bin/python evaluation/scripts/check_env.py
+
+# 3) 현재 위치 파악 (필수)
+cat evaluation/docs/SESSION_STATE.md
+```
+
+새 컴퓨터 셋업: [`evaluation/docs/ENVIRONMENT.md`](evaluation/docs/ENVIRONMENT.md)
+세션 시작/종료 프로토콜: [`evaluation/docs/HANDOFF_PROTOCOL.md`](evaluation/docs/HANDOFF_PROTOCOL.md)
+
+이 파일(CLAUDE.md) 은 **장기 안정적인 프로젝트 캐논**이고, SESSION_STATE.md 는 **세션마다 갱신되는 현재 위치 포인터** 입니다.
 
 ---
 
@@ -302,7 +321,14 @@ Streamlit의 `st.plotly_chart(on_select="rerun")` 은 selection 상태가 리렌
 
 ## 13. evaluation/ — 학술지 평가 서브프로젝트
 
-기존 대시보드와 분리된 별도 Streamlit 프로젝트 (`evaluation/`). 학술지를 8개 축으로 통합 평가. **이 폴더에 처음 들어오면 `evaluation/README.md` → `evaluation/docs/PIPELINE.md` 순서로 읽을 것.**
+기존 대시보드와 분리된 별도 Streamlit 프로젝트 (`evaluation/`). 학술지를 8개 축으로 통합 평가.
+
+**진입 순서** (멀티 컴퓨터 작업):
+1. [`evaluation/docs/SESSION_STATE.md`](evaluation/docs/SESSION_STATE.md) — 현재 위치 + 다음 액션 (가장 먼저)
+2. [`evaluation/docs/HANDOFF_PROTOCOL.md`](evaluation/docs/HANDOFF_PROTOCOL.md) — 세션 시작/종료 절차
+3. [`evaluation/docs/ENVIRONMENT.md`](evaluation/docs/ENVIRONMENT.md) — 새 컴퓨터 셋업 (1회)
+4. [`evaluation/README.md`](evaluation/README.md) — 프로젝트 전체 지도
+5. [`evaluation/docs/PIPELINE.md`](evaluation/docs/PIPELINE.md) — 데이터 구축 과정 narrative
 
 ### 13.1 진행 단계
 

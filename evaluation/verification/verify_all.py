@@ -13,7 +13,8 @@ import pandas as pd
 
 from _common import OUTPUT_DIR, WORKTREE_ROOT, ensure_output_dir
 
-PY = "/Users/jibak/Documents/@CLASSES/2026-1/DigitalHumanities/ksip_journal_analysis/.venv/bin/python"
+# 실행 중인 python 을 그대로 사용 — venv 자동 상속, 멀티 컴퓨터 portable
+PY = sys.executable
 VERIF_DIR = WORKTREE_ROOT / "evaluation" / "verification"
 
 VERIFIERS = [

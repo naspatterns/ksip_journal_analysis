@@ -88,8 +88,7 @@
 
 **실행**:
 ```bash
-/Users/jibak/.../ksip_journal_analysis/.venv/bin/python \
-    evaluation/labeling/backfill_concepts_metadata.py
+.venv/bin/python evaluation/labeling/backfill_concepts_metadata.py
 ```
 
 **결과 분포** (사전 자체의 분포 — 학술지 데이터 분포 아님):
@@ -176,7 +175,7 @@ Phase 2 에서 골라낸 27개 신규 entry 일괄 추가. Q1c·Q2c·Q3 contextu
 
 ```bash
 # 0. 환경 확인 (venv 는 메인 프로젝트의 것 사용)
-PY=/Users/jibak/Documents/@CLASSES/2026-1/DigitalHumanities/ksip_journal_analysis/.venv/bin/python
+PY=.venv/bin/python                    # 또는 sys.executable 의 path. 자세한건 ENVIRONMENT.md
 $PY --version                          # Python 3.14.x
 $PY -m pip install ruamel.yaml         # backfill 스크립트 의존
 

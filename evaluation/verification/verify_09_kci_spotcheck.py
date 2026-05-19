@@ -27,37 +27,40 @@ from pathlib import Path
 import pandas as pd
 import requests
 
-from _common import PAPERS_PARQUET, CheckRun, ensure_output_dir
+from _common import PAPERS_PARQUET, CheckRun, ensure_output_dir, find_kci_key_file
 
 SAMPLE_N = 30
 RANDOM_SEED = 42
 API_URL = "https://open.kci.go.kr/po/openapi/openApiSearch.kci"
 RATE_LIMIT_SEC = 1.0
 
-KEY_FILE_CANDIDATES = [
-    Path("/Users/jibak/Documents/@CLASSES/2026-1/DigitalHumanities/"
-         "ksip_journal_analysis/KCI_OpenAPI_Key 2.txt"),
-    Path("/Users/jibak/Documents/@CLASSES/2026-1/DigitalHumanities/"
-         "ksip_journal_analysis/KCI_OpenAPI_Key 3.txt"),
-]
-
 
 def load_api_key() -> str | None:
-    """파일은 'KCI OpenAPI Key: 12345678' 형식일 수 있음 — 라벨 제거 후 숫자/문자열만."""
+    """KCI API key 로드. 멀티 컴퓨터 portable.
+
+    탐지 우선순위:
+    1. 환경변수 KSIP_KCI_API_KEY (값 자체)
+    2. 환경변수 KSIP_KCI_KEY_FILE 이 가리키는 파일
+    3. 메인 프로젝트 루트의 KCI_OpenAPI_Key*.txt (_common.find_kci_key_file)
+
+    파일 형식: 'KCI OpenAPI Key: 12345678' (라벨 포함) 또는 그냥 키 — 모두 처리.
+    """
     import re
     raw = os.environ.get("KSIP_KCI_API_KEY")
     if not raw:
-        for p in KEY_FILE_CANDIDATES:
-            if p.exists():
-                raw = p.read_text(encoding="utf-8")
-                break
+        key_file = find_kci_key_file()
+        if key_file and key_file.exists():
+            raw = key_file.read_text(encoding="utf-8")
     if not raw:
         return None
     raw = raw.strip()
-    # "KCI OpenAPI Key: XXXX" 같은 라벨 제거
+    # KCI 키는 영숫자 토큰 — "KCI OpenAPI Key" 같은 라벨 단어 제거
+    # 1) "KCI OpenAPI Key" 라벨 명시적 제거 (대소문자·공백 무관)
+    raw = re.sub(r"KCI\s*OpenAPI\s*Key", "", raw, flags=re.IGNORECASE)
+    # 2) 콜론 분리도 처리
     if ":" in raw:
-        raw = raw.split(":", 1)[1].strip()
-    # 공백·따옴표 제거
+        raw = raw.split(":", 1)[1]
+    # 3) 공백·따옴표·newline 제거 → 토큰만
     return re.sub(r"\s+", "", raw).strip("'\"")
 
 

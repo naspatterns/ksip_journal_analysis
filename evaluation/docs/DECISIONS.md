@@ -314,6 +314,60 @@ for paper in 논문:
 
 ---
 
+## Decision-18 (PENDING) — `source_language` 변수의 의미론 재설계
+
+**상태**: ⏳ **사용자 결정 대기**
+
+**컨텍스트** (2026-05-20 토론):
+사용자가 sharp 지적함 — concept-level `source_language` (다르마키르티 entry 의 `source_language=sanskrit`) 는 *사상의 원천 언어* 를 가리키는데, 이는 *논문 저자가 실제로 사용한 자료의 언어* 와 다른 변수. 둘을 같은 이름으로 뭉개고 있었음.
+
+**문제의 예**:
+한국 학자 두 명이 모두 세친의 유식학을 다루는 논문을 쓴다고 가정.
+- 학자 X: 산스크리트 원전 + 독일 학계 (Schmithausen) 인용
+- 학자 Y: 玄奘 한역 + 일본 학계 (戸崎宏正) + 한국 학계 (정승석) 인용
+
+현 설계: 둘 다 `source_language=sanskrit` (vasubandhu entry 의 메타 전파).
+실제: 두 논문은 *완전히 다른 학적 작업* — 학자 X 는 philological·서구학계, 학자 Y 는 동아시아 학계 의존.
+
+**제안된 redesign**:
+
+| 새 변수 | 위치 | 의미 |
+|---|---|---|
+| `tradition_language` (옛 source_language) | concepts.yml 메타 | 사상의 원천 언어 |
+| `paper_source_profile` (신규) | references.parquet 에서 집계 | 저자가 실제 인용한 자료의 언어 분포 |
+
+→ SCHEMA.md 의 4축 라벨 → 5축 확장.
+
+**대기 결정 3가지**:
+
+1. **변수 재설계 방향**:
+   - (a, 권장) rename + 신규 변수 두 개 분리
+   - (b) 현재 source_language 유지 + paper_source_profile 만 추가
+   - (c) 다른 안
+
+2. **언어 detection 방법** (paper_source_profile 계산용):
+   - (a, 권장) Unicode 범위 휴리스틱: Hangul(0xAC00-0xD7AF) → 한국어, Kana → 일본어, Hanja-only → 중국어/한역, Latin → 영어/독일어, Tibetan(0x0F00-0x0FFF), Devanagari(0x0900-0x097F)
+   - (b) journals.yml 에 `lang` 메타필드 추가 → 학술지 단위 언어 룰북 (더 정확, 더 작업 필요)
+   - (a+b 결합 가능 — 휴리스틱 1차, journal 룰북 보강)
+
+3. **references 없는 154편 처리**:
+   - (a, 권장) `source_profile = "unknown"`
+   - (b) `tradition_language` 로 fallback
+
+**축 2 (의존도) 와의 관계**:
+`paper_source_profile` 은 단순히 source_language 의 paper-level 정확화가 아니라 **사용자 원래 4축 평가요소 중 (2) "학술지가 인용하는 연구의 권역 분포" 의 직접 답**. 즉 이 재설계는 축 1+6 의 범위를 넘어 축 2 의 발판이 됨.
+
+**해소 후 영향**:
+- SCHEMA.md 의 변수 표 갱신
+- `concepts.yml` 일괄 rename
+- `evaluation/labeling/` 에 `language_detect.py` 신규 모듈
+- 검증 스크립트 (verify_05_dictionary.py) 의 enum 갱신
+- ISSUES.md 에 ISSUE-008 등록 (RESOLVED 시 해소)
+
+**커밋**: (해소 시 기록)
+
+---
+
 ## 변경 이력 가이드
 
 새 결정을 append 할 때:

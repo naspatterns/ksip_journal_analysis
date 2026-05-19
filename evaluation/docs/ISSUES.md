@@ -191,6 +191,25 @@
 
 ---
 
+## ISSUE-008 — `source_language` 변수가 두 가지 의미를 뭉개고 있음
+
+| 항목 | 값 |
+|---|---|
+| 분류 | WARN (설계 오류, 분석 신뢰성 영향) |
+| 발견 | 2026-05-20 사용자 지적 (Phase 4 설계 토론 중) |
+| 상태 | OPEN — Decision-18 결정 대기 |
+| 영향 | concepts.yml 96 entry 의 source_language 메타 + 미래의 라벨링 파이프라인 |
+
+**현상**: concept-level `source_language` (다르마키르티 entry 의 `source_language=sanskrit`) 는 *사상의 원천 언어* 인데, 자연어 이름 "source_language" 는 *논문 저자가 실제 사용한 자료의 언어* 로 읽힘. 두 가지가 *다른 변수*.
+
+**원인**: SCHEMA 설계 시 두 가지를 구분하지 않았음. 사용자가 *2차 자료 의존도* 분석 (축 2) 의 맥락에서 지적함.
+
+**해소 방안**: Decision-18 의 3가지 결정 (rename + 신규 변수 + detection 방법 + fallback) 합의 후 일괄 변경. 상세 [`DECISIONS.md`](./DECISIONS.md) Decision-18 참조.
+
+**완료** (해소 시 기록 예정):
+
+---
+
 ## 변경 이력 가이드
 
 새 ticket 은 `ISSUE-NNN` 로 다음 번호 사용. RESOLVED 처리 시 "완료" 항목에 커밋 해시 + 회귀 검증 결과 기록.

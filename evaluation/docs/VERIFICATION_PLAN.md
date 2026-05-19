@@ -107,7 +107,7 @@ evaluation/
 ## 6. 실행 명령
 
 ```bash
-PY=/Users/jibak/Documents/@CLASSES/2026-1/DigitalHumanities/ksip_journal_analysis/.venv/bin/python
+PY=.venv/bin/python    # 메인 프로젝트 루트의 venv. ENVIRONMENT.md 참조
 
 # 개별
 $PY evaluation/verification/verify_01_source.py

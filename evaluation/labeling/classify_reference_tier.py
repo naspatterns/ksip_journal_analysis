@@ -49,7 +49,18 @@ CONCEPTS_PATH = ROOT / "data" / "dictionaries" / "concepts.yml"
 AUTHORS_PATH = ROOT / "data" / "dictionaries" / "authors.yml"
 
 # 매칭 시 short surface 의 false positive 위험 회피
-MIN_SURFACE_LEN = 3
+MIN_SURFACE_LEN = 2  # 2자 CJK 인명까지 매칭 (世親·玄奘 등)
+# Latin/숫자만의 2자는 false positive 위험 (PV/TS 등)
+_ALL_LATIN_NUM_RE = re.compile(r"^[A-Za-z0-9 \-.]+$")
+
+
+def _surface_keep(s: str) -> bool:
+    """detect_language._surface_keep 와 동일 — len 2 CJK keep, 2자 Latin reject."""
+    if not s or len(s) < 2:
+        return False
+    if len(s) >= 3:
+        return True
+    return not bool(_ALL_LATIN_NUM_RE.fullmatch(s))
 
 
 def _norm(s: str) -> str:
@@ -89,7 +100,7 @@ def _surface_sets() -> tuple[set[str], set[str], set[str]]:
         for k in ("canonical_kr", "canonical_iast", "canonical_zh"):
             if e.get(k):
                 surfaces.append(_norm(e[k]))
-        surfaces = [s for s in surfaces if len(s) >= MIN_SURFACE_LEN]
+        surfaces = [s for s in surfaces if _surface_keep(s)]
         if t in ("학자", "인물"):
             thinkers.update(surfaces)
         elif t in ("원전", "문헌"):
@@ -101,7 +112,7 @@ def _surface_sets() -> tuple[set[str], set[str], set[str]]:
         surfaces = [_norm(s) for s in (e.get("surface_forms") or []) if isinstance(s, str)]
         if e.get("canonical_form"):
             surfaces.append(_norm(e["canonical_form"]))
-        surfaces = [s for s in surfaces if len(s) >= MIN_SURFACE_LEN]
+        surfaces = [s for s in surfaces if _surface_keep(s)]
         scholars.update(surfaces)
 
     return thinkers, texts, scholars
@@ -114,7 +125,7 @@ _PAREN_RE = re.compile(r"\([^)]*\)")  # 괄호 안 (편)/(역)/(주) 제거
 def _author_tokens(name: str) -> list[str]:
     n = _norm(name)
     n = _PAREN_RE.sub(" ", n)
-    return [t for t in _AUTHOR_TOKEN_RE.split(n) if len(t) >= 2]
+    return [t for t in _AUTHOR_TOKEN_RE.split(n) if _surface_keep(t)]
 
 
 def _author_in(name: str, surface_set: set[str]) -> bool:

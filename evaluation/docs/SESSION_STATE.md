@@ -11,11 +11,11 @@
 
 ---
 
-## 마지막 갱신: 2026-05-20 (Phase 4 전체 완료 직후)
+## 마지막 갱신: 2026-05-20 (Phase 5 사전 보강 round 1 완료 직후)
 
 ### 현재 위치 (한 줄 요약)
 
-> **Phase 4 완료** — 6축 변수 계산 끝. 사전·tier 분류·paper-level 두 변수 모두 산출됨. 다음은 **Phase 5 (검수 표본)** 또는 **Phase 6 (시각화)**.
+> **Phase 5 round 1 (사전 보강) 완료** — authors.yml 에 horizon 메타 추가 (52 + 11 신규 외국 학자), concepts.yml 에 眞諦 신규, 玄奘 기존 활용. MIN_SURFACE_LEN 2→1로 CJK 2자 인명 매칭. 효과: 비엔나학파(독일권) 영향 ref-level +35% 정확화. 다음은 **Phase 5 검수 표본** 또는 **Phase 6 시각화**.
 
 ### Phase 진행도
 
@@ -31,7 +31,9 @@
 | 4.1 | 문서 갱신 (SCHEMA·DECISIONS·ISSUES·SESSION_STATE) | ✅ |
 | 4.2 | `concepts.yml` 96 entry source_language → tradition_language rename | ✅ |
 | 4.3 | references.parquet 의 `tier` 컬럼 분류 | ✅ |
-| **4.4** | **paper-level 두 변수 계산** (`paper_labels.parquet` 신규) | ✅ |
+| **4.4** | paper-level 두 변수 계산 (`paper_labels.parquet` 신규) | ✅ |
+| **5R1** | **사전 보강 round 1** — authors.yml horizon 메타 + 외국 학자 11명 + 眞諦 entry + MIN_SURFACE_LEN 3→2 (世親·玄奘 매칭) | ✅ |
+| 5R2 | (선택) 사전 보강 round 2 — 한국 학자 16명 추가 (horizon 영향 적음, 우선순위 낮음) | ⏸ |
 | 5 | 검수 표본 (랜덤 50 + 신뢰도 하위 50) → 사전 환류 | ⏳ **next** |
 | 6 | Streamlit 시각화 (커버리지 + 학제 경계 + 의존도) | ⏸ |
 | — | (사후) 축 3/4/5/7/8 확장 — 축 1+2+6 까지가 1차 범위 | 🚫 |
@@ -51,28 +53,34 @@
 
 자기인용 312건 모두 secondary ✓.
 
-### Phase 4.4 결과 — paper-level 두 변수 (636 논문)
+### Phase 4.4 + 5R1 결과 — paper-level 두 변수 (636 논문)
 
-`primary_source_basis` 분포:
+`primary_source_basis` 분포 (Phase 5R1 후):
 
 | 값 | 논문 수 | 비고 |
 |---|---:|---|
-| unknown | 320 | 154 (refs 없음) + 166 (refs 있지만 primary tier 0건) |
-| sanskrit | 219 | 산스크리트 원전 중심 — 인도철학 본류 |
-| chinese_canon | 51 | 한역 자료 중심 (동아시아 불교) |
+| unknown | 319 | 154 (refs 없음) + 165 (refs 있지만 primary tier 0건) |
+| sanskrit | 218 | 산스크리트 원전 중심 — 인도철학 본류 |
+| chinese_canon | 53 | 한역 자료 (玄奘·眞諦·世親 매칭 강화로 +2) |
 | pali | 24 | 빠알리 원전 중심 (남방불교) |
 | mixed | 19 | 다언어 비교 |
 | tibetan_canon | 3 | 티베트 자료 중심 (소수) |
 
-`secondary_source_horizon` 분포:
+`secondary_source_horizon` 분포 (Phase 5R1 후):
 
-| 값 | 논문 수 |
-|---|---:|
-| english | 272 |
-| unknown | 155 |
-| korean | 118 |
-| japanese | 47 |
-| mixed | 44 |
+| 값 | 논문 수 | Phase 4.4 → 5R1 변화 |
+|---|---:|---|
+| english | 262 | 272 → 262 (-10, 외국 학자 정정) |
+| unknown | 155 | (변화 없음) |
+| korean | 113 | 118 → 113 (-5) |
+| mixed | 54 | 44 → 54 (+10, 더 정확한 다양성) |
+| japanese | 52 | 47 → 52 (+5, 일본 학자 매칭) |
+
+reference-level (10,582건) 변화:
+- german: 225 → 303 (+35%) — **가장 큰 정정** (Steinkellner·Frauwallner·Franco·Schmithausen·Halbfass)
+- japanese: 1,572 → 1,690 (+7.5%) — 일본 학자 직접 매칭
+- english: 5,506 → 5,364 (-2.6%) — 외국 학자가 잘못 분류되던 것 정정
+- korean: 3,259 → 3,185 (-2.3%) — 단행본 default 정리
 
 **Cross-tab (의존도 패턴 — Phase 6 시각화 핵심)**:
 
@@ -107,7 +115,8 @@
 
 ```
 branch: claude/festive-elgamal-1dd4b3  (origin 에 push 됨, main 으로 머지 X — 별도 트랙)
-HEAD:   (이번 커밋) — Phase 4.4: paper-level 두 변수 계산 (paper_labels.parquet)
+HEAD:   (이번 커밋) — Phase 5R1: 사전 보강 (authors horizon + 외국 학자 11명 + 眞諦 + CJK 2자 매칭)
+이전:   6ae0a51 — Phase 4.4: paper-level 두 변수 계산
 이전:   998d52e — Phase 4.2 + 4.3: concepts.yml rename + references tier 분류
 이전:   b3d7fc9 — Phase 4.1: 문서 갱신 (Decision-18 확정 반영)
 이전:   18c78fc — session: 멀티 컴퓨터 portable 환경

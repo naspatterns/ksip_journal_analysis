@@ -1405,6 +1405,24 @@
   - Kumarajiva
   verified: true
   notes: '★ Q1c (사용자 결정): school=madhyamaka, reception=east_asia. 쿠차 출신, 인도 madhyamaka 사상가지만 한역 작업이 동아시아 불교의 토대.'
+- canonical_id: paramartha
+  canonical_kr: 진제
+  canonical_iast: Paramārtha
+  canonical_zh: 眞諦
+  type: 학자
+  school: yogacara
+  era: classical
+  tradition_language: chinese
+  reception_horizon: east_asia
+  century: 6세기
+  surface_forms:
+  - 眞諦
+  - 真諦
+  - 진제
+  - Paramārtha
+  - Paramartha
+  verified: true
+  notes: 인도 출신 6세기 번역가, 중국에서 활동. Vasubandhu 의 攝大乘論·俱舍論釋 등 한역. 攝論宗 시조. 인용 빈도 13건 (Phase 5 추가).
 - canonical_id: jizang
   canonical_kr: 길장
   canonical_zh: 吉藏

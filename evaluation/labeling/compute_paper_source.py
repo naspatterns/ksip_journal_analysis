@@ -33,6 +33,7 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 sys.path.insert(0, str(ROOT))
 
 from evaluation.labeling.detect_language import (  # noqa: E402
+    build_authors_horizon_lookup,
     build_concepts_primary_lookup,
     build_journals_horizon_lookups,
     detect_primary_language,
@@ -109,10 +110,12 @@ def main() -> int:
     # 사전 lookup 빌드
     concepts_lookup = build_concepts_primary_lookup()
     journals_by_id, journals_by_surface = build_journals_horizon_lookups()
+    authors_horizon = build_authors_horizon_lookup()
     print(f"\n=== 사전 lookup ===")
     print(f"  concepts primary surfaces : {len(concepts_lookup):,}")
     print(f"  journals by canonical_id  : {len(journals_by_id):,}")
     print(f"  journals by surface       : {len(journals_by_surface):,}")
+    print(f"  authors horizon surfaces  : {len(authors_horizon):,}")
 
     # 언어 / horizon 탐지
     print(f"\n=== Detection ===")
@@ -132,7 +135,7 @@ def main() -> int:
     refs.loc[secondary_mask, "_detected_secondary"] = (
         refs.loc[secondary_mask].apply(
             lambda r: detect_secondary_horizon(
-                r, journals_by_id, journals_by_surface
+                r, journals_by_id, journals_by_surface, authors_horizon
             ),
             axis=1,
         )

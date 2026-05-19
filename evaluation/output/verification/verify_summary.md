@@ -1,4 +1,4 @@
-# 무결성 검증 결과 — 2026-05-20 02:57
+# 무결성 검증 결과 — 2026-05-20 03:37
 
 관련 문서: [`VERIFICATION_PLAN.md`](../../docs/VERIFICATION_PLAN.md), [`ISSUES.md`](../../docs/ISSUES.md)
 
@@ -27,7 +27,7 @@
 
 - **[WARN]** L2 `pua_in_초록` — papers.초록 에 PUA 문자 잔존 2건
 - **[WARN]** L6 `concepts_intra_surface_dup` — concepts.yml: entry 내 surface_forms 중복 5건
-- **[WARN]** L6 `concepts_inter_surface_dup` — concepts.yml: 여러 entry 가 공유하는 surface 5건 — normalize.py 는 last-wins. 예: [('dharmakirti', ['dharmakirti', 'dharmakirti']), ('dignaga', ['dignaga', 'dignaga']), ('나가르주나', ['nagarjuna', 'nagarjuna'])]
+- **[WARN]** L6 `concepts_inter_surface_dup` — concepts.yml: 여러 entry 가 공유하는 surface 6건 — normalize.py 는 last-wins. 예: [('dharmakirti', ['dharmakirti', 'dharmakirti']), ('dignaga', ['dignaga', 'dignaga']), ('나가르주나', ['nagarjuna', 'nagarjuna'])]
 - **[WARN]** L6 `journals_intra_surface_dup` — journals.yml: entry 내 surface_forms 중복 2건
 - **[WARN]** L6 `journals_inter_surface_dup` — journals.yml: 여러 entry 가 공유하는 surface 3건 — normalize.py 는 last-wins. 예: [('印度學佛敎學硏究', ['jibs_japan', 'jibs_japan']), ('佛敎學硏究', ['bukkyogaku_kenkyu', 'buddhist_studies_research']), ('annual report of the international research institute for advanced buddhology', ['arir_iab', 'arir_iab'])]
 - **[WARN]** L7 `substring_exact_gap` — substring > exact gap 큰 entry TOP 30 → verify_06_coverage_gap_substring_vs_exact.csv. surface_forms 확장 필요. 예: [('yoga', 56), ('vijnanavada', 29), ('prajna', 19)]

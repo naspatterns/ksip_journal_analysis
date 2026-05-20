@@ -33,7 +33,7 @@
 | 4.3 | references.parquet 의 `tier` 컬럼 분류 | ✅ |
 | **4.4** | paper-level 두 변수 계산 (`paper_labels.parquet` 신규) | ✅ |
 | **5R1** | **사전 보강 round 1** — authors.yml horizon 메타 + 외국 학자 11명 + 眞諦 entry + MIN_SURFACE_LEN 3→2 (世親·玄奘 매칭) | ✅ |
-| 5R2 | (선택) 사전 보강 round 2 — 한국 학자 16명 추가 (horizon 영향 적음, 우선순위 낮음) | ⏸ |
+| **5R2** | **사전 보강 round 2** — 한국 학자 16명 추가 (modern_scholars 221→265). 분포 변화 미미 (예상대로 — Unicode dominance 가 이미 잡고 있음) | ✅ |
 | 5 | 검수 표본 (랜덤 50 + 신뢰도 하위 50) → 사전 환류 | ⏳ **next** |
 | 6 | Streamlit 시각화 (커버리지 + 학제 경계 + 의존도) | ⏸ |
 | — | (사후) 축 3/4/5/7/8 확장 — 축 1+2+6 까지가 1차 범위 | 🚫 |

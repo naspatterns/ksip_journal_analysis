@@ -681,3 +681,164 @@
   - 사이토 아키라
   verified: true
   notes: 도쿄대, 중관 사상사 (Candrakīrti). 인용 11건 (Phase 5 추가).
+
+# ============================================================
+# 한국 학자 보강 round 2 (Phase 5R2, 미매칭 빈도 TOP 30 중 한국)
+# Hangul dominance 가 이미 korean 으로 잡아주지만 사전 완성도·정확도 차원에서 등록.
+# ============================================================
+
+- canonical_id: seo_gyeongsu
+  canonical_form: 서경수
+  horizon: korean
+  surface_forms:
+  - 서경수
+  - "Seo, Gyeong-su"
+  - "Seo Gyeong-su"
+  verified: true
+  notes: 인용 빈도 15건 (Phase 5R2 추가).
+
+- canonical_id: lee_youngjin
+  canonical_form: 이영진
+  horizon: korean
+  surface_forms:
+  - 이영진
+  - "Lee, Young-jin"
+  verified: true
+  notes: 인용 빈도 13건 (Phase 5R2 추가).
+
+- canonical_id: cho_junho
+  canonical_form: 조준호
+  horizon: korean
+  surface_forms:
+  - 조준호
+  - "Cho, Jun-ho"
+  - "Jo, Jun-ho"
+  verified: true
+  notes: 인용 빈도 13건 (Phase 5R2 추가).
+
+- canonical_id: lee_jongcheol
+  canonical_form: 이종철
+  horizon: korean
+  surface_forms:
+  - 이종철
+  - "Lee, Jong-cheol"
+  verified: true
+  notes: 인용 빈도 13건 (Phase 5R2 추가).
+
+- canonical_id: shim_jaegwan
+  canonical_form: 심재관
+  horizon: korean
+  surface_forms:
+  - 심재관
+  - "Shim, Jae-gwan"
+  - "Sim, Jae-gwan"
+  verified: true
+  notes: 인용 빈도 13건 (Phase 5R2 추가).
+
+- canonical_id: lee_jaesook
+  canonical_form: 이재숙
+  horizon: korean
+  surface_forms:
+  - 이재숙
+  - "Lee, Jae-sook"
+  verified: true
+  notes: 인용 빈도 12건 (Phase 5R2 추가).
+
+- canonical_id: park_changhwan
+  canonical_form: 박창환
+  horizon: korean
+  surface_forms:
+  - 박창환
+  - "Park, Chang-hwan"
+  verified: true
+  notes: 인용 빈도 12건 (Phase 5R2 추가).
+
+- canonical_id: jeong_junyeong
+  canonical_form: 정준영
+  horizon: korean
+  surface_forms:
+  - 정준영
+  - "Jeong, Jun-yeong"
+  - "Jung, Joon-young"
+  verified: true
+  notes: 인용 빈도 12건 (Phase 5R2 추가).
+
+- canonical_id: kim_misook
+  canonical_form: 김미숙
+  horizon: korean
+  surface_forms:
+  - 김미숙
+  - "Kim, Mi-sook"
+  verified: true
+  notes: 인용 빈도 12건 (Phase 5R2 추가).
+
+- canonical_id: han_jakyung
+  canonical_form: 한자경
+  horizon: korean
+  surface_forms:
+  - 한자경
+  - "Han, Ja-kyung"
+  - 韓慈卿
+  verified: true
+  notes: 이화여대 철학과, 동서 비교철학·유식학. 인용 빈도 11건 (Phase 5R2 추가).
+
+- canonical_id: ham_sokhon
+  canonical_form: 함석헌
+  horizon: korean
+  surface_forms:
+  - 함석헌
+  - 咸錫憲
+  - "Ham, Sok-hon"
+  - "Ham Sŏk-hŏn"
+  verified: true
+  notes: 종교철학자·사회운동가, 간디 영향 수용. 인용 빈도 11건 (Phase 5R2 추가).
+
+- canonical_id: baek_dosoo
+  canonical_form: 백도수
+  horizon: korean
+  surface_forms:
+  - 백도수
+  - "Baek, Do-soo"
+  verified: true
+  notes: 빠알리 불교 연구. 인용 빈도 11건 (Phase 5R2 추가).
+
+- canonical_id: kim_beobrin
+  canonical_form: 김법린
+  horizon: korean
+  surface_forms:
+  - 김법린
+  - 金法麟
+  - "Kim, Beob-rin"
+  - "Kim Pŏb-rin"
+  verified: true
+  notes: 일제강점기 불교학자·독립운동가 (1899-1964). 인용 빈도 11건 (Phase 5R2 추가).
+
+- canonical_id: lee_kiyoung
+  canonical_form: 이기영
+  horizon: korean
+  surface_forms:
+  - 이기영
+  - 李箕永
+  - "Lee, Ki-young"
+  - "Yi, Ki-yŏng"
+  verified: true
+  notes: 동국대 한국 불교학자 (1922-1996). 인용 빈도 11건 (Phase 5R2 추가).
+
+- canonical_id: park_geumpyo
+  canonical_form: 박금표
+  horizon: korean
+  surface_forms:
+  - 박금표
+  - "Park, Geum-pyo"
+  verified: true
+  notes: 인도 종교 연구. 인용 빈도 11건 (Phase 5R2 추가).
+
+- canonical_id: seo_sungwon
+  canonical_form: 서성원
+  horizon: korean
+  surface_forms:
+  - 서성원
+  - "Seo, Sung-won"
+  - "Suh, Sung-won"
+  verified: true
+  notes: 인용 빈도 11건 (Phase 5R2 추가).

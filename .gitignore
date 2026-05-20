@@ -39,6 +39,10 @@ data/raw/wos_export/
 # KCI raw API responses (포함된 API key 보호)
 evaluation/output/**/*.xml
 
+# 평가 산출 CSV 는 commit (raw .csv 는 제외, 산출은 포함)
+!evaluation/output/*.csv
+!evaluation/output/**/*.csv
+
 # KCI API key files
 KCI_OpenAPI_Key*.txt
 data/raw

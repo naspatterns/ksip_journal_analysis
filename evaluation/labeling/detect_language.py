@@ -87,6 +87,17 @@ TRADITION_TO_PRIMARY = {
 }
 
 
+_CJK_RE = re.compile(r"[぀-ヿ一-鿿가-힯]")
+
+
+def _is_cjk_surface(s: str) -> bool:
+    """surface 가 한자·가나·한글 위주인지 (substring 매칭 안전성 판단용)."""
+    if not s:
+        return False
+    cjk = sum(1 for c in s if _CJK_RE.fullmatch(c))
+    return cjk >= len(s) / 2  # 절반 이상 CJK 면 OK
+
+
 def _norm(s: str) -> str:
     if not isinstance(s, str):
         return ""
@@ -95,11 +106,26 @@ def _norm(s: str) -> str:
 
 @lru_cache(maxsize=1)
 def build_concepts_primary_lookup() -> dict[str, str]:
-    """concepts.yml 의 surface → primary_source_basis 매핑.
+    """concepts.yml 의 surface → primary_source_basis 매핑 (refs 기반 detect 전용).
 
     type=학자/인물/원전/문헌 entry 만 포함 (저자·텍스트 후보).
     surface_forms + canonical_kr/iast/zh 모두 인덱싱.
     """
+    return _build_concepts_lookup(types=("학자", "인물", "원전", "문헌"))
+
+
+@lru_cache(maxsize=1)
+def build_concepts_all_lookup() -> dict[str, str]:
+    """concepts.yml 의 ALL types surface → primary_source_basis 매핑.
+
+    키워드·제목 기반 paper-level fallback 추론용. 학자/인물/원전/문헌 +
+    학파(yoga·samkhya·madhyamaka 등) + 개념(śūnyatā·ālayavijñāna 등) 모두 포함.
+    학파·개념의 tradition_language 는 그 학파의 1차 자료 언어 (대부분 sanskrit).
+    """
+    return _build_concepts_lookup(types=None)  # None = 모든 type
+
+
+def _build_concepts_lookup(types: tuple[str, ...] | None) -> dict[str, str]:
     if not CONCEPTS_PATH.exists():
         return {}
     data = yaml.safe_load(CONCEPTS_PATH.read_text(encoding="utf-8")) or []
@@ -108,13 +134,14 @@ def build_concepts_primary_lookup() -> dict[str, str]:
         if not e.get("verified", False):
             continue
         t = e.get("type")
-        if t not in ("학자", "인물", "원전", "문헌"):
+        if types is not None and t not in types:
             continue
         tlang = e.get("tradition_language")
         if not tlang or tlang not in TRADITION_TO_PRIMARY:
             continue
         primary_basis = TRADITION_TO_PRIMARY[tlang]
-        # surface forms (NFC + lower normalized)
+        if primary_basis == "unknown":
+            continue
         surfaces = list(e.get("surface_forms") or [])
         for k in ("canonical_kr", "canonical_iast", "canonical_zh", "canonical_form"):
             if e.get(k):
@@ -124,10 +151,66 @@ def build_concepts_primary_lookup() -> dict[str, str]:
                 continue
             n = _norm(s)
             if _surface_keep(n):
-                # last-wins: if collision, later entry overwrites. Acceptable since
-                # collision cases (e.g., '구사론' could be vasubandhu's or sanghabhadra's)
-                # would both have sanskrit anyway.
                 out[n] = primary_basis
+    return out
+
+
+@lru_cache(maxsize=1)
+def build_canonical_id_primary_lookup() -> dict[str, str]:
+    """concepts.yml 의 canonical_id → primary_source_basis 매핑.
+
+    keywords.parquet 의 resolved canonical_id 컬럼 매칭용. exact + 빠름.
+    """
+    if not CONCEPTS_PATH.exists():
+        return {}
+    data = yaml.safe_load(CONCEPTS_PATH.read_text(encoding="utf-8")) or []
+    out: dict[str, str] = {}
+    for e in data:
+        if not e.get("verified", False):
+            continue
+        tlang = e.get("tradition_language")
+        if not tlang:
+            continue
+        primary = TRADITION_TO_PRIMARY.get(tlang, "unknown")
+        if primary != "unknown":
+            out[e["canonical_id"]] = primary
+    return out
+
+
+_TEXT_TOKEN_RE = re.compile(r"[\s,;·/\(\)\[\]\{\}＂\"'\.\?!:：·]+")
+
+
+def detect_primary_from_text(text: str, lookup: dict[str, str]) -> list[str]:
+    """text (키워드 또는 제목) 에서 concepts surface 매칭 → primary values list.
+
+    매칭 종류:
+    1. NFC+lower exact full match (e.g., title == "중관")
+    2. 토큰 분해 후 각 토큰 매칭 (e.g., "다르마키르티의 인식론" → "다르마키르티" 매칭)
+    3. CJK substring 매칭 (len ≥ 2): "세친의 유위..." → "세친" 부분 매칭
+       Latin/혼합 substring 은 len ≥ 4 (false positive 회피)
+    """
+    if not text:
+        return []
+    t = _norm(text)
+    out: list[str] = []
+
+    # exact
+    if t in lookup:
+        out.append(lookup[t])
+
+    # tokens
+    for tok in _TEXT_TOKEN_RE.split(t):
+        if _surface_keep(tok) and tok in lookup:
+            out.append(lookup[tok])
+
+    # substring — CJK ≥ 2, Latin ≥ 4
+    for surf, primary in lookup.items():
+        if surf in t:
+            if _is_cjk_surface(surf) and len(surf) >= 2:
+                out.append(primary)
+            elif len(surf) >= 4:
+                out.append(primary)
+
     return out
 
 

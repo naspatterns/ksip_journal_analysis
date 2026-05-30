@@ -11,11 +11,11 @@
 
 ---
 
-## 마지막 갱신: 2026-05-20 (Phase 5 사전 보강 round 1 완료 직후)
+## 마지막 갱신: 2026-05-20 (Phase 5R3 완료 + 새 대시보드 작업 분기 시점)
 
 ### 현재 위치 (한 줄 요약)
 
-> **Phase 5 round 1 (사전 보강) 완료** — authors.yml 에 horizon 메타 추가 (52 + 11 신규 외국 학자), concepts.yml 에 眞諦 신규, 玄奘 기존 활용. MIN_SURFACE_LEN 2→1로 CJK 2자 인명 매칭. 효과: 비엔나학파(독일권) 영향 ref-level +35% 정확화. 다음은 **Phase 5 검수 표본** 또는 **Phase 6 시각화**.
+> **Phase 5R3 완료** — primary_source_basis 의 unknown 320 → **114 (-64%)** 정정 (키워드/제목 fallback + CJK substring 매칭). evaluation/ 트랙은 **자원 산출 완료** 상태. 사용자는 이 폴더의 자원으로 **새 폴더에서 새 대시보드** 작업 시작 예정. evaluation/ 의 후속 (Phase 5 검수 / Phase 6 시각화) 은 보류.
 
 ### Phase 진행도
 
@@ -35,8 +35,11 @@
 | **5R1** | **사전 보강 round 1** — authors.yml horizon 메타 + 외국 학자 11명 + 眞諦 entry + MIN_SURFACE_LEN 3→2 (世親·玄奘 매칭) | ✅ |
 | **5R2** | **사전 보강 round 2** — 한국 학자 16명 추가 (modern_scholars 221→265). 분포 변화 미미 (예상대로 — Unicode dominance 가 이미 잡고 있음) | ✅ |
 | **5 표본 추출** | **검수 표본 100 paper CSV** (`review_sample.csv`) — random 50 + low-confidence 50 (사유 균등) | ✅ |
-| 5 검수 | 사용자가 CSV 검수 → 결과 환류 (사전 추가·룰 보강) | ⏳ **next (사용자 작업)** |
-| 6 | Streamlit 시각화 (커버리지 + 학제 경계 + 의존도) | ⏸ |
+| **5R3** | **primary fallback** — 키워드/제목 → concepts ALL types 매칭. unknown 320→**114 (-64%)**. CJK 2자 substring 허용 ("세친의" → "세친" 매칭) | ✅ |
+| 5R4 | (옵션) 사전 보강 round 4 — 남은 unknown 114 의 TOP 키워드 (문법·빠알리어·목갈라나·깟짜야나·라마야나·힌두뜨바 등) entry 추가 | ⏸ |
+| 5 검수 | 사용자가 CSV 검수 → 결과 환류 (사전 추가·룰 보강) | ⏸ (보류 — 새 대시보드 분기) |
+| 6 | Streamlit 시각화 (커버리지 + 학제 경계 + 의존도) | ⏸ (보류 — 새 대시보드 분기) |
+| **— ★** | **새 작업 분기 (2026-05-20)** — 사용자가 이 폴더 자원으로 별도 폴더에서 새 대시보드 개발 시작 | 🔀 |
 | — | (사후) 축 3/4/5/7/8 확장 — 축 1+2+6 까지가 1차 범위 | 🚫 |
 
 ### Phase 4.3 결과 — `tier` 분류 분포
@@ -116,7 +119,9 @@ reference-level (10,582건) 변화:
 
 ```
 branch: claude/festive-elgamal-1dd4b3  (origin 에 push 됨, main 으로 머지 X — 별도 트랙)
-HEAD:   (이번 커밋) — Phase 5R1: 사전 보강 (authors horizon + 외국 학자 11명 + 眞諦 + CJK 2자 매칭)
+HEAD:   5e75dc5 — Phase 5R3: primary fallback (키워드/제목 → unknown -64%)
+이전:   dc26393 — Phase 5R2: 한국 학자 16명 + 검수 표본 CSV 추출
+이전:   0dd8fd1 — Phase 5R1: authors horizon + 외국 학자 + 眞諦 + CJK 2자 매칭
 이전:   6ae0a51 — Phase 4.4: paper-level 두 변수 계산
 이전:   998d52e — Phase 4.2 + 4.3: concepts.yml rename + references tier 분류
 이전:   b3d7fc9 — Phase 4.1: 문서 갱신 (Decision-18 확정 반영)
@@ -164,38 +169,31 @@ HEAD:   (이번 커밋) — Phase 5R1: 사전 보강 (authors horizon + 외국 �
 
 ## 다음 세션 권장 첫 행동
 
-1. **시작 절차** ([`HANDOFF_PROTOCOL.md`](./HANDOFF_PROTOCOL.md)):
-   ```bash
-   git checkout claude/festive-elgamal-1dd4b3   # 평가 트랙 (main 머지 X)
-   git pull origin claude/festive-elgamal-1dd4b3
-   .venv/bin/python evaluation/scripts/check_env.py
-   cat evaluation/docs/SESSION_STATE.md
-   ```
+### 옵션 A — ★ 새 대시보드 작업 (사용자 2026-05-20 선언한 방향)
 
-2. **Phase 5 검수** (사용자 작업, next):
-   - **표본 CSV**: [`evaluation/output/review_sample.csv`](../output/review_sample.csv) (100 paper, UTF-8 BOM)
-   - 검수 절차:
-     1. CSV 를 Excel·Numbers·Google Sheets 에서 열어 검토
-     2. 각 row 의 `primary_source_basis` / `secondary_source_horizon` 자동 라벨이 적절한지 판정
-     3. `검수_상태` 컬럼에 `OK` / `FIX` / `SKIP` 입력
-     4. FIX 시 `교정_primary` / `교정_secondary` 컬럼에 새 값 입력
-     5. 필요 시 `비고` 에 메모
-   - 검수 후 CSV 다시 저장 → Claude 가 환류 처리:
-     - FIX 패턴 분석 → 사전 어디에 surface 추가 필요한지 파악
-     - 룰 보강이 필요한 경우 → detect_language.py·classify_reference_tier.py 수정
-     - 재실행 → 분포 비교 → 추가 검수 반복 또는 Phase 6 진행
+새 폴더에서 이 폴더의 자원 (`data/processed/*.parquet` + `data/dictionaries/*.yml` + `ksip/` 패키지) 을 활용. **자원 활용 가이드**: [`RESOURCE_INDEX.md`](./RESOURCE_INDEX.md).
 
-3. **Phase 6 — Streamlit 시각화**:
-   - evaluation/app.py + pages/1_커버리지.py + pages/2_학제경계.py 에 6축 통합
-   - 추가 page: 의존도 시각화
-     - heatmap: primary_source_basis × secondary_source_horizon (Phase 4.4 cross-tab)
-     - 시간 추이: 연도별 의존도 변화 (한국·일본·서구 학계 영향력 시계열)
-     - 학자별 의존도 패턴 (개별 저자의 학적 정체성)
+핵심 산출물 (Phase 4+5 결과, 새 대시보드의 입력 데이터):
+- `data/processed/paper_labels.parquet` — 636 논문 × {primary_source_basis, secondary_source_horizon, primary_basis_source, n_primary, n_secondary, n_inferred, primary_dist, secondary_dist}
+- `data/processed/references.parquet` — 12,887 refs × {tier, 학술지_canonical, 자기인용, ...}
+- `data/processed/papers.parquet` — 636 papers × 29 컬럼 (메타데이터)
+- `data/processed/keywords.parquet` — 3,089 keyword × {canonical_id, ...}
+- `data/processed/authors.parquet` — 654 author × canonical_id
+- `data/dictionaries/concepts.yml` — 96 entry × 6 메타필드
+- `data/dictionaries/authors.yml` — 63 entry × horizon
+- `data/dictionaries/journals.yml` — 53 entry × publisher
 
-4. **알려진 한계** (Phase 5 검수에서 환류 가능):
-   - 단행본 secondary 의 english 비중이 61% — Indian Indology 가 영어 매체이기 때문 (실제 비율). 단 Indian 학계와 영미 학계 구분 못 함.
-   - 한국 학자의 일본 학자 인용(예: 中村元 책의 한국어 번역서) 은 raw 텍스트 우세에 따라 korean 으로 분류됨 — japanese 가 더 적절할 수도. authors.yml 에 일본 학자 + country 메타 추가로 보강 가능.
-   - 학술지명 multi-slash 오류 30건(메인 브랜치엔 fix 됨, claude 브랜치엔 아직 없음) — paper 단위 통계엔 영향 미미.
+### 옵션 B — evaluation/ 트랙 계속
+
+평가 서브프로젝트 작업 재개:
+1. **Phase 5 검수** — [`review_sample.csv`](../output/review_sample.csv) 사용자 검수 → 환류
+2. **Phase 5R4** — 추가 사전 보강 (남은 unknown 114 의 TOP 키워드: 문법 15·빠알리어 9·목갈라나 8·깟짜야나 6 등)
+3. **Phase 6** — Streamlit 시각화 (커버리지 + 학제 경계 + 의존도)
+
+### 알려진 한계 (옵션 A·B 공통, 환류 대상)
+- 단행본 secondary 의 english 비중 61% — Indian Indology 매체가 영어이기 때문 (실제 비율). Indian vs Anglo-American 구분 못 함.
+- 한국 학자가 일본 학자 책의 한국어 번역서 인용 시 Hangul dominance 로 korean 분류 (예: 정토삼부경/中村元/岩波文庫).
+- 학술지명 multi-slash 오류 30건 (main 에 fix, claude 엔 미적용) — paper 단위 통계 영향 미미.
 
 ---
 

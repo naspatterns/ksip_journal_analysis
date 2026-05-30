@@ -440,6 +440,69 @@ for paper in 논문:
 
 ---
 
+## Decision-19 — primary_source_basis 의 키워드/제목 fallback (Phase 5R3)
+
+**상태**: ✅ **확정 + 구현** (2026-05-20)
+
+**컨텍스트**: 사용자가 Phase 4.4 직후의 `review_sample.csv` 검토 중 지적 — "primary_source_basis 의 unknown 320 (50%) 이 너무 많고, 쉽게 알 수 있는 paper 도 unknown". 진단:
+- unknown 320 중 154 = refs 자체 없음
+- unknown 320 중 166 = refs 있지만 tier=primary 0건
+- 키워드·제목에 명백히 sanskrit 기반인 paper 도 refs 부재 시 unknown 분류됨
+  - 예: "Pramaa.na와 Pratyak.sa에 대하여", "상키아의 아관", "세친의 유위 4상 비판", "고전 요가 좌법의 다양성"
+
+**옵션**:
+- (a, 권장) refs 기반 결정 + unknown 일 때 키워드/제목 → concepts ALL types 매칭 fallback 추가
+- (b) refs 만 유지 + 사전 surface 만 보강 (효과 제한적)
+- (c) 다른 안
+
+**확정**: **(a)**. 다층 결정 룰:
+
+1. **refs 기반** (Phase 4.4): tier=primary references → `detect_primary_language` → 분포 → aggregate
+2. **(1) 이 unknown 일 때 fallback**:
+   - (a) keywords.parquet 의 canonical_id → 그 concept entry 의 `tradition_language`
+   - (b) keywords_원본 (raw) → concepts ALL types surface 매칭 → `tradition_language`
+   - (c) 논문 제목 → concepts ALL types surface 매칭 → `tradition_language`
+   - 세 출처 합쳐 분포 → aggregate
+3. **둘 다 실패** → `unknown`
+
+**ALL types lookup**: 옛 (학자/인물/원전/문헌 만) 에서 + 학파(yoga/samkhya/...) + 개념(śūnyatā/...) 추가. 학파·개념의 tradition_language 는 그 학파의 1차 자료 언어 (대부분 sanskrit).
+
+**CJK 2자 substring 허용**: "세친의 유위 4상" → "세친" 부분 매칭. Latin substring 은 false positive 회피로 len ≥ 4 유지.
+
+**산출 컬럼 확장** (`paper_labels.parquet`):
+- 신규: `primary_basis_source` (`refs` / `keywords_title` / `none`)
+- 신규: `n_inferred` (fallback 시 매칭 evidence 개수)
+
+**이유**:
+- 인도철학회 paper 의 사상사적 맥락은 제목·키워드에 충분히 드러남 — references 만으로는 정보 손실 큼
+- `references` 없는 paper (154편) 도 제목만으로 판정 가능한 경우 다수
+- 신호 다층화로 정확도 ↑, 동시에 `primary_basis_source` 컬럼으로 신뢰도 구분 (refs > keywords_title > none)
+
+**효과** (636 paper):
+| primary_source_basis | Phase 5R1 | Phase 5R3 | Δ |
+|---|---:|---:|---|
+| **unknown** | **319** | **114** | **−205 (−64%)** ⭐ |
+| sanskrit | 218 | 387 | +169 |
+| chinese_canon | 53 | 66 | +13 |
+| pali | 24 | 29 | +5 |
+| prakrit | 0 | 11 | +11 (신규 검출) |
+| mixed | 19 | 24 | +5 |
+| tibetan_canon | 3 | 5 | +2 |
+
+source 분포: refs 316 / keywords_title 206 / none 114.
+
+**남은 unknown 114 의 키워드** (Phase 5R4 후보):
+- 문법 (15), 빠알리어 (9), 목갈라나 (8), 깟짜야나 (6), 링가 (6), 힌두교 (5), 힌두뜨바 (4), 라마야나 (3)
+
+**영향 받은 산출물**:
+- `evaluation/labeling/detect_language.py` — ALL types lookup + canonical_id lookup + text-based detect 함수
+- `evaluation/labeling/compute_paper_source.py` — fallback 통합 + 신규 컬럼
+- `data/processed/paper_labels.parquet` — 컬럼 확장 + 라벨 갱신
+
+**커밋**: 5e75dc5
+
+---
+
 ## 변경 이력 가이드
 
 새 결정을 append 할 때:

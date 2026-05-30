@@ -240,3 +240,60 @@ data/dictionaries/concepts.yml          ← Phase 1 에서 확장됨 (69 entry, 
 - 모호 텍스트 (Q3) 의 학파 결정 = **공출현 키워드 기반 contextual rule**. Phase 4 에서 구현. 사전에는 강한 단정 회피.
 - Surface form 은 절대 덮어쓰지 않음. canonical_id 만 추가 (`ksip/normalize.py` 의 기존 원칙).
 - `verified=false` 항목은 분석에 자동 사용 안 됨 (`include_unverified=True` 명시 필요).
+
+---
+
+## 7. Phase 4 + 5 흐름 보강 (2026-05-20)
+
+Decision-18 (4축 → 6축) + Decision-19 (paper-level fallback) 이후 추가된 단계. SCHEMA·DECISIONS 와 함께 봐야 함.
+
+### 7.1 Phase 4.1–4.4 — 6축 라벨 계산
+- 4.1 **문서 갱신** — Decision-18 의 6축 정의 반영 (SCHEMA·DECISIONS·SESSION_STATE)
+- 4.2 **`concepts.yml` 96 entry rename** — `source_language` → `tradition_language` (`evaluation/labeling/rename_source_language_key.py`, 멱등)
+- 4.3 **`references.parquet` tier 분류** — primary / secondary / unknown (`classify_reference_tier.py`). 일/이차 결정 룰: concepts 매칭(저자=고전 학자→primary, 저자=modern 학자→secondary) + 유형별 default
+- 4.4 **paper-level 두 변수 계산** (`compute_paper_source.py` + `detect_language.py`):
+  - `primary_source_basis` — refs 의 tier=primary 의 언어 분포 → aggregate
+  - `secondary_source_horizon` — refs 의 tier=secondary 의 학계 horizon 분포 → aggregate
+  - **산출**: `data/processed/paper_labels.parquet` (636 paper × 6 컬럼)
+
+### 7.2 Phase 5R1 — 사전 보강 round 1
+- `authors.yml horizon` 메타 52 entry 추가 + 외국 학자 11명 신규 (`add_authors_horizon.py`)
+- `concepts.yml` 에 眞諦 entry 추가 (玄奘 은 기존 존재)
+- `MIN_SURFACE_LEN` 3 → 2: CJK 2자 인명 (世親·玄奘) 매칭. Latin 2자(PV/TS) 는 여전히 reject
+- **효과** (reference-level secondary 10,582건): german +35% / japanese +7.5% / english -2.6% / korean -2.3%
+
+### 7.3 Phase 5R2 — 사전 보강 round 2
+- 한국 학자 16명 추가 (modern_scholars 221→265)
+- 분포 변화 미미 (예상대로 — Hangul Unicode dominance 가 이미 잡음)
+- **검수 표본 추출**: `evaluation/output/review_sample.csv` — random 50 + low-confidence 50 (사유 균등 분포)
+
+### 7.4 Phase 5R3 — 키워드/제목 fallback (Decision-19)
+- `detect_primary_language` 옆에 **`detect_primary_from_text(text, lookup)`** 신규
+- `compute_paper_source` 에 paper-level fallback 로직 추가
+- ALL types lookup (학자/인물/원전/문헌 + **학파/개념**) — 표층 매칭 폭 ↑
+- CJK 2자 substring 허용 ("세친의" → "세친")
+- **효과**: primary_source_basis 의 unknown **320 → 114 (-64%)** ⭐
+
+### 7.5 산출물 흐름 다이어그램
+
+```
+data/raw/*.xls
+   │
+   ▼ scripts/build_data.py (Phase 0)
+   │
+data/processed/
+   ├── papers.parquet         636
+   ├── keywords.parquet     3,089 (canonical_id 채워짐)
+   ├── authors.parquet        654
+   └── references.parquet  12,887 ──▼ classify_reference_tier.py (Phase 4.3)
+                                    │
+                                    references.parquet 의 tier 컬럼 갱신
+                                    │
+                                    ▼ compute_paper_source.py (Phase 4.4 + 5R3)
+                                    │      (사용: detect_language.py 의
+                                    │       concepts/authors/journals lookups)
+                                    │
+                                    paper_labels.parquet   636 × 6축
+```
+
+데이터 표 + 6축 라벨이 모두 갖춰진 시점 = **Phase 5R3 완료** (2026-05-20).
